@@ -162,7 +162,9 @@ table.t th{font-weight:600;color:var(--muted);font-size:13px}
 .f input,.f select,.f textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);min-height:44px}
 .f textarea{min-height:70px}
 .f small{display:block;color:var(--muted);font-size:13px;margin-top:3px}
-.f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.f2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.f2>*{min-width:0}
+.sheet{overflow-x:hidden}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));background:var(--navy);color:#fff;padding:10px 16px;border-radius:12px;z-index:30;font-weight:600;max-width:90vw}
 
 .loginwrap{min-height:100vh;position:relative;overflow:hidden;background:#0e2457}
@@ -439,7 +441,7 @@ function FireStore() {
   const conv = d => { const o = {}; for (const [k, v] of Object.entries(d)) o[k] = isInc(v) ? firebase.firestore.FieldValue.increment(v.__inc) : v; return o; };
   const docs = s => s.docs.map(d => ({ ...d.data(), id: d.id }));
   // Customers are cached on the device; after the first load only changed customers are read.
-  const CKEY = 'oz_cust_' + (FIREBASE_CONFIG.projectId || '');
+  const CKEY = 'oz_cust2_' + (FIREBASE_CONFIG.projectId || '');
   const uMs = v => v && typeof v.toMillis === 'function' ? v.toMillis() : (typeof v === 'number' ? v : 0);
   const cust = store.get(CKEY, null) || { u: 0, docs: {} };
   let saveT; const saveCust = () => { clearTimeout(saveT); saveT = setTimeout(() => store.set(CKEY, cust), 800); };
@@ -477,7 +479,9 @@ function FireStore() {
     },
     async commit(ops) {
       const b = fs.batch(); const ts = firebase.firestore.FieldValue.serverTimestamp(); let touched = false;
-      for (const o of ops) {
+      const backup = JSON.stringify(cust.docs);
+      for (const o0 of ops) {
+        const o = { ...o0, data: o0.data && Array.isArray(o0.data.fx) ? { ...o0.data, fx: fxOut(o0.data.fx) } : o0.data };
         const ref = fs.collection(o.col).doc(o.id);
         if (o.col === 'customers') {
           // show the change at once (also offline), then stamp it so other devices pick it up
@@ -494,7 +498,7 @@ function FireStore() {
       if (touched) { saveCust(); showCust(); }
       // Offline: Firestore saves on the device at once and syncs later; don't wait for the server.
       const done = b.commit();
-      done.catch(e => { console.error(e); toast(e.message); });
+      done.catch(e => { console.error(e); toast(e.message); if (touched) { cust.docs = JSON.parse(backup); saveCust(); showCust(); } });
       await Promise.race([done, new Promise(r => setTimeout(r, 1200))]);
     },
     async range(col, from, to, f = 'at') { return docs(await fs.collection(col).where(f, '>=', from).where(f, '<=', to).get()); },
@@ -680,7 +684,10 @@ const A = {
     if (!DEMO) { const names = {}; for (const p of s.partners) if (S.slots[p.id]) names[p.id] = { name: p.name }; if (Object.keys(names).length) b.merge('public', 'slots', names); } b.log('log_settings', {}); return run(b, t('Settings saved'));
   }
 };
-const neg = fx => fx.map(([c, i, p, n]) => [c, i, p, -n]);
+// fx entries are stored as {c,i,p,n} objects (Firestore does not allow arrays inside arrays)
+const fxIn = e => Array.isArray(e) ? e : [e.c, e.i, e.p, e.n];
+const fxOut = fx => Array.isArray(fx) ? fx.map(e => { const [c, i, p, n] = fxIn(e); return { c, i, p, n }; }) : fx;
+const neg = fx => (fx || []).map(fxIn).map(([c, i, p, n]) => [c, i, p, -n]);
 
 /* ---------------- derived numbers ---------------- */
 function stockTotals() {
@@ -1418,7 +1425,7 @@ document.addEventListener('click', async e => {
         $('#geoOut').textContent = `${f.lat.value}, ${f.lng.value}`; toast(t('Location saved'));
       }, () => toast(t('Location not available')), { enableHighAccuracy: true, timeout: 15000 });
       break; }
-    case 'logout': try { localStorage.removeItem('oz_cust_' + (FIREBASE_CONFIG.projectId || '')); } catch (e) {} firebase.auth().signOut(); break;
+    case 'logout': try { localStorage.removeItem('oz_cust2_' + (FIREBASE_CONFIG.projectId || '')); localStorage.removeItem('oz_cust_' + (FIREBASE_CONFIG.projectId || '')); } catch (e) {} firebase.auth().signOut(); break;
     case 'regView': R.reg = el.dataset.v === '1'; renderLogin(); break;
     case 'chpw': openSheet(t('Change password'), `
       <label class="f"><span>${t('Current password')}</span><input name="cur" type="password" autocomplete="current-password"></label>
