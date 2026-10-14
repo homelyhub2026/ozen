@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ne">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e2457">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OZEN Order">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<title>OZEN — Order water</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0e2457;--brand:#0b3fa8;--sky:#14a6e6;--green:#2f9a43;--ink:#10234f;--muted:#5f6f8e;--paper:#f1f6fc;--card:#fff;--line:#dde6f2;--bad:#c53a3a;--warn:#fdf2dc;--ok:#e2f5e3;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--ink:#e6eefb;--muted:#9fb0cf;--paper:#09142b;--card:#0f1e3d;--line:#1f3360;--warn:#3a2d10;--ok:#123220}}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%}
+body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font:16px/1.45 "Mukta","Noto Sans Devanagari",system-ui,sans-serif}
+h1,h2,.big{font-family:"Poppins","Mukta",sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+.hero{position:relative;color:#fff;padding:calc(18px + env(safe-area-inset-top,0px)) 18px 70px;background:#0e2457;overflow:hidden;margin-top:calc(-1 * env(safe-area-inset-top,0px))}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,36,87,.95),rgba(11,52,150,.75) 50%,rgba(11,63,168,.1)),url(poster.jpg) 70% 40%/cover}
+.hero::after{content:"";position:absolute;left:-5%;right:-5%;bottom:-1px;height:40px;background:var(--paper);border-radius:55% 45% 0 0/100% 100% 0 0}
+.hero>*{position:relative;z-index:1}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:42px;height:42px;border-radius:50%;background:#fff;padding:3px}
+.brand b{font-family:Poppins,Mukta,sans-serif;font-size:17px;display:block;line-height:1.1}
+.brand span{font-size:12px;opacity:.85}
+.hello{font-size:22px;font-weight:700;margin:16px 0 2px;max-width:70%}
+.sub{opacity:.9;font-size:14px;max-width:70%}
+.lang{position:absolute;right:16px;top:calc(18px + env(safe-area-inset-top,0px));background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:20px;padding:3px 12px;cursor:pointer;z-index:2}
+main{max-width:520px;margin:-40px auto 0;padding:0 16px 40px;position:relative;z-index:2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 4px 18px rgba(14,36,87,.08);margin-bottom:14px}
+.card h2{margin:0 0 10px;font-size:18px}
+.qty{display:flex;align-items:center;justify-content:center;gap:18px;margin:6px 0 4px}
+.qty button{width:52px;height:52px;border-radius:50%;border:0;background:var(--brand);color:#fff;font-size:28px;cursor:pointer}
+.qty output{font:700 44px Poppins,sans-serif;min-width:70px;text-align:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:8px 0}
+.chip{border:1px solid var(--line);background:var(--paper);border-radius:20px;padding:6px 14px;cursor:pointer;font-weight:600}
+.chip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+label{display:block;font-size:14px;font-weight:600;color:var(--muted);margin:10px 0 4px}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--paper);min-height:46px}
+textarea{min-height:64px}
+.total{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.total b{font-size:20px}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:15px;font-weight:700;font-size:17px;background:var(--brand);color:#fff;cursor:pointer;margin-top:14px}
+.btn:disabled{opacity:.5}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.contact a{display:block;text-align:center;text-decoration:none;border-radius:12px;padding:11px;font-weight:700;border:1px solid var(--line);color:var(--ink);background:var(--paper)}
+.ord{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.ord:last-child{border-bottom:0}
+.st{font-size:13px;font-weight:700;border-radius:20px;padding:2px 10px;white-space:nowrap;height:fit-content}
+.st.new{background:var(--warn)} .st.accepted{background:#dbeafe;color:#0b3fa8} .st.delivered{background:var(--ok);color:var(--green)} .st.rejected,.st.cancelled{background:#fbe5e5;color:var(--bad)}
+.muted{color:var(--muted)} .small{font-size:13.5px}
+.alert{border-radius:12px;padding:10px 12px;margin:10px 0;font-size:15px;background:var(--warn)}
+.alert.ok{background:var(--ok)} .alert.bad{background:#fbe5e5}
+.center{text-align:center}
+.link{background:none;border:0;color:var(--brand);text-decoration:underline;cursor:pointer;padding:0;font-weight:600}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="../config.js"></script>
+<script>
+/* OZEN Order — customers order water jars from their personal link.
+   ?c=<token> (sent by a partner on WhatsApp). The token is remembered on the phone so the installed app keeps working. */
+const CFG = window.OZEN_CONFIG || {};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ls = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+const money = n => (S.lang === 'ne' ? 'रु ' : 'Rs ') + Math.round(+n || 0).toLocaleString('en-IN');
+const NE = {
+  'Order drinking water':'पिउने पानी अर्डर गर्नुस्','Namaste':'नमस्ते','How many jars?':'कति जार?','When?':'कहिले?','As soon as possible':'सकेसम्म छिटो','Morning':'बिहान','Afternoon':'दिउँसो','Evening':'बेलुका','Tomorrow':'भोलि',
+  'Note (optional)':'नोट (चाहिए मात्र)','e.g. 3rd floor, call before coming':'जस्तै: ३ तला, आउनुअघि फोन गर्नुस्','Estimated bill':'अनुमानित बिल','Place order':'अर्डर गर्नुस्','Sending…':'पठाउँदैछ…',
+  'Order sent! We will deliver soon.':'अर्डर पठाइयो! छिट्टै डेलिभर गर्छौं।','My orders':'मेरा अर्डर','Order received':'अर्डर आयो','Confirmed':'पक्का भयो','Delivered':'डेलिभर भयो','Not accepted':'स्वीकार भएन','Cancelled':'रद्द',
+  'Cancel':'रद्द गर्नुस्','Cancel this order?':'यो अर्डर रद्द गर्ने?','will deliver':'ले डेलिभर गर्नुहुन्छ','Call us':'फोन गर्नुस्','WhatsApp':'ह्वाट्सएप','jars':'जार','Package':'प्याकेज',
+  'You already have an order waiting. Order again anyway?':'तपाईंको एउटा अर्डर पर्खिरहेको छ। फेरि पनि अर्डर गर्ने?',
+  'This link is not active. Please contact us.':'यो लिंक चलेको छैन। कृपया हामीलाई सम्पर्क गर्नुस्।','No internet. Please try again when connected.':'इन्टरनेट छैन। नेट आएपछि फेरि प्रयास गर्नुस्।',
+  'New customer? Request a connection':'नयाँ ग्राहक? सेवा सुरु गर्न अनुरोध गर्नुस्','Your name':'तपाईंको नाम','Phone':'फोन','Area / tole':'ठाउँ / टोल','Landmark':'घर चिन्ने चिनारी','Share my location':'मेरो लोकेसन पठाउनुस्',
+  'Location added':'लोकेसन थपियो','Jars package':'जार प्याकेज','Send request':'अनुरोध पठाउनुस्','Thank you! We will call you soon.':'धन्यवाद! हामी छिट्टै फोन गर्छौं।',
+  'Name and phone are required.':'नाम र फोन चाहिन्छ।','Loading…':'लोड हुँदैछ…','Pure water, healthy life':'शुद्ध पानी, स्वस्थ जीवन','Rate':'दर','per jar':'प्रति जार','Already a customer? Use the link we sent you on WhatsApp.':'पहिलेदेखिको ग्राहक? हामीले WhatsApp मा पठाएको लिंक खोल्नुस्।',
+  'Could not send. Please try again.':'पठाउन सकिएन। फेरि प्रयास गर्नुस्।','Reason':'कारण'
+};
+const S = { lang: ls.get('oo_lang', 'ne'), token: null, link: null, qty: 3, when: 'asap', orders: ls.get('oo_orders', []), view: 'order', msg: '', busy: false, geo: null };
+const t = k => S.lang === 'ne' ? (NE[k] || k) : k;
+let db;
+
+function hero(title, sub) {
+  return `<div class="hero"><button class="lang" data-a="lang">${S.lang === 'ne' ? 'English' : 'नेपाली'}</button>
+   <div class="brand"><img src="../icon-192.png" alt=""><div><b>OZEN</b><span>Homely Hub Nepal · ${t('Pure water, healthy life')}</span></div></div>
+   <div class="hello">${esc(title)}</div><div class="sub">${esc(sub || '')}</div></div>`;
+}
+const contact = () => {
+  const L = S.link || {}; const ph = String(L.contact || '').split('/')[0].replace(/\D/g, '');
+  if (!ph) return '';
+  return `<div class="row contact"><a href="tel:${ph}">📞 ${t('Call us')}</a><a href="https://wa.me/977${ph.slice(-10)}" target="_blank" rel="noopener">💬 ${t('WhatsApp')}</a></div>`;
+};
+const statusLabel = o => ({ new: t('Order received'), accepted: t('Confirmed'), delivered: t('Delivered'), rejected: t('Not accepted'), cancelled: t('Cancelled') }[o.status] || o.status);
+const when = k => ({ asap: t('As soon as possible'), morning: t('Morning'), afternoon: t('Afternoon'), evening: t('Evening'), tomorrow: t('Tomorrow') }[k] || k);
+const fmt = ms => new Date(ms).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kathmandu' });
+
+function render() {
+  const r = $('#root');
+  if (S.view === 'loading') { r.innerHTML = hero(t('Order drinking water')) + `<main><div class="card center muted">${t('Loading…')}</div></main>`; return; }
+  if (S.view === 'bad') { r.innerHTML = hero(t('Order drinking water')) + `<main><div class="card"><div class="alert bad">${t('This link is not active. Please contact us.')}</div>${contact()}<button class="btn ghost" data-a="signup">${t('New customer? Request a connection')}</button></div></main>`; return; }
+  if (S.view === 'signup') return renderSignup();
+  const L = S.link; const rate = +L.rate || 60;
+  const mine = S.orders.filter(o => o.token === S.token).slice(0, 8);
+  r.innerHTML = hero(`${t('Namaste')}, ${L.name}`, `${t('Package')}: ${L.pkg} ${t('jars')} · ${t('Rate')} ${money(rate)} ${t('per jar')}`) + `<main>
+   <div class="card">
+    <h2>${t('How many jars?')}</h2>
+    <div class="qty"><button data-a="minus" aria-label="−">−</button><output id="q">${S.qty}</output><button data-a="plus" aria-label="+">+</button></div>
+    <div class="chips">${[...new Set([1, 2, 3, +L.pkg || 3])].sort((a, b) => a - b).map(n => `<button class="chip ${S.qty === n ? 'on' : ''}" data-a="setq" data-n="${n}">${n}</button>`).join('')}</div>
+    <h2 style="margin-top:12px">${t('When?')}</h2>
+    <div class="chips">${['asap', 'morning', 'afternoon', 'evening', 'tomorrow'].map(k => `<button class="chip ${S.when === k ? 'on' : ''}" data-a="when" data-k="${k}">${when(k)}</button>`).join('')}</div>
+    <label for="note">${t('Note (optional)')}</label><textarea id="note" maxlength="300" placeholder="${t('e.g. 3rd floor, call before coming')}"></textarea>
+    <div class="total"><span class="muted">${t('Estimated bill')}</span><b>${money(S.qty * rate)}</b></div>
+    ${S.msg ? `<div class="alert ${S.msg.ok ? 'ok' : 'bad'}">${esc(S.msg.text)}</div>` : ''}
+    <button class="btn" data-a="order" ${S.busy ? 'disabled' : ''}>${S.busy ? t('Sending…') : t('Place order')}</button>
+   </div>
+   ${mine.length ? `<div class="card"><h2>${t('My orders')}</h2>${mine.map(o => `<div class="ord"><div><b>${o.qty} ${t('jars')}</b> · ${when(o.when)}<div class="small muted">${fmt(o.at)}${o.partner && o.status === 'accepted' ? ` · ${esc(o.partner)} ${t('will deliver')}` : ''}${o.reason ? ` · ${t('Reason')}: ${esc(o.reason)}` : ''}</div>
+     ${o.status === 'new' ? `<button class="link small" data-a="cancel" data-id="${o.id}">${t('Cancel')}</button>` : ''}</div><span class="st ${o.status}">${statusLabel(o)}</span></div>`).join('')}</div>` : ''}
+   <div class="card">${contact()}</div></main>`;
+}
+function renderSignup() {
+  $('#root').innerHTML = hero(t('New customer? Request a connection'), t('Already a customer? Use the link we sent you on WhatsApp.')) + `<main><div class="card">
+   <label for="sn">${t('Your name')}</label><input id="sn" maxlength="60" autocomplete="name">
+   <label for="sp">${t('Phone')}</label><input id="sp" type="tel" inputmode="tel" maxlength="15" autocomplete="tel">
+   <label for="sa">${t('Area / tole')}</label><input id="sa" maxlength="60">
+   <label for="sl">${t('Landmark')}</label><input id="sl" maxlength="120">
+   <button class="btn ghost" data-a="geo" style="margin-top:10px">📍 ${S.geo ? t('Location added') + ' ✓' : t('Share my location')}</button>
+   <label for="sk">${t('Jars package')}</label><select id="sk">${[3, 6, 9, 12, 15].map(n => `<option>${n}</option>`).join('')}</select>
+   <label for="sx">${t('Note (optional)')}</label><textarea id="sx" maxlength="300"></textarea>
+   ${S.msg ? `<div class="alert ${S.msg.ok ? 'ok' : 'bad'}">${esc(S.msg.text)}</div>` : ''}
+   <button class="btn" data-a="sendSignup" ${S.busy ? 'disabled' : ''}>${S.busy ? t('Sending…') : t('Send request')}</button></div></main>`;
+}
+async function refreshOrders() {
+  // read the latest status of this phone's own orders (each by its random id)
+  const mine = S.orders.filter(o => o.token === S.token && !['delivered', 'rejected', 'cancelled'].includes(o.status)).slice(0, 8);
+  for (const o of mine) {
+    try { const d = await db.collection('requests').doc(o.id).get(); if (d.exists) { const x = d.data(); Object.assign(o, { status: x.status, partner: x.partnerName || '', reason: x.reason || '' }); } } catch (e) {}
+  }
+  ls.set('oo_orders', S.orders); if (S.view === 'order') render();
+}
+async function placeOrder() {
+  if (S.busy) return;
+  if (!navigator.onLine) { S.msg = { ok: false, text: t('No internet. Please try again when connected.') }; return render(); }
+  if (S.orders.some(o => o.token === S.token && o.status === 'new') && !confirm(t('You already have an order waiting. Order again anyway?'))) return;
+  S.busy = true; S.msg = ''; render();
+  const note = ($('#note') || {}).value || '';
+  const data = { kind: 'order', status: 'new', token: S.token, cust: S.link.cust, name: S.link.name, qty: S.qty, when: S.when, note: note.slice(0, 300), at: Date.now() };
+  try {
+    const ref = db.collection('requests').doc();
+    await ref.set(data);
+    S.orders.unshift({ id: ref.id, token: S.token, qty: S.qty, when: S.when, status: 'new', at: data.at }); ls.set('oo_orders', S.orders.slice(0, 30));
+    S.msg = { ok: true, text: t('Order sent! We will deliver soon.') };
+  } catch (e) { console.error(e); S.msg = { ok: false, text: t('Could not send. Please try again.') }; }
+  S.busy = false; render();
+}
+async function sendSignup() {
+  const v = id => ($('#' + id).value || '').trim();
+  const name = v('sn'), phone = v('sp').replace(/[^\d+]/g, '');
+  if (!name || phone.length < 7) { S.msg = { ok: false, text: t('Name and phone are required.') }; return renderSignup(); }
+  if (!navigator.onLine) { S.msg = { ok: false, text: t('No internet. Please try again when connected.') }; return renderSignup(); }
+  S.busy = true; renderSignup();
+  const data = { kind: 'signup', status: 'new', name: name.slice(0, 60), phone: phone.slice(0, 15), area: v('sa').slice(0, 60), address: v('sl').slice(0, 120), pkg: +v('sk') || 3, note: v('sx').slice(0, 300), lat: S.geo ? S.geo[0] : null, lng: S.geo ? S.geo[1] : null, at: Date.now() };
+  try { await db.collection('requests').doc().set(data); S.msg = { ok: true, text: t('Thank you! We will call you soon.') }; }
+  catch (e) { console.error(e); S.msg = { ok: false, text: t('Could not send. Please try again.') }; }
+  S.busy = false; renderSignup();
+}
+document.addEventListener('click', async e => {
+  const el = e.target.closest('[data-a]'); if (!el) return; const a = el.dataset.a;
+  if (a === 'lang') { S.lang = S.lang === 'ne' ? 'en' : 'ne'; ls.set('oo_lang', S.lang); document.documentElement.lang = S.lang; render(); }
+  if (a === 'plus') { S.qty = Math.min(30, S.qty + 1); render(); }
+  if (a === 'minus') { S.qty = Math.max(1, S.qty - 1); render(); }
+  if (a === 'setq') { S.qty = +el.dataset.n; render(); }
+  if (a === 'when') { S.when = el.dataset.k; render(); }
+  if (a === 'order') placeOrder();
+  if (a === 'signup') { S.view = 'signup'; S.msg = ''; render(); }
+  if (a === 'sendSignup') sendSignup();
+  if (a === 'geo' && navigator.geolocation) navigator.geolocation.getCurrentPosition(p => { S.geo = [+p.coords.latitude.toFixed(6), +p.coords.longitude.toFixed(6)]; renderSignup(); }, () => {}, { enableHighAccuracy: true, timeout: 15000 });
+  if (a === 'cancel') {
+    if (!confirm(t('Cancel this order?'))) return;
+    try { await db.collection('requests').doc(el.dataset.id).update({ status: 'cancelled', cancelledAt: Date.now() }); const o = S.orders.find(x => x.id === el.dataset.id); if (o) o.status = 'cancelled'; ls.set('oo_orders', S.orders); render(); }
+    catch (x) { S.msg = { ok: false, text: t('Could not send. Please try again.') }; render(); }
+  }
+});
+function loadScript(src) { return new Promise((res, rj) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rj; document.head.appendChild(s); }); }
+async function boot() {
+  document.documentElement.lang = S.lang;
+  const q = new URLSearchParams(location.search);
+  if (q.get('c')) { ls.set('oo_token', q.get('c')); history.replaceState(null, '', location.pathname); }
+  S.token = ls.get('oo_token', null);
+  if (!S.token || q.has('new')) { S.view = 'signup'; }
+  else S.view = 'loading';
+  render();
+  if (!window.firebase) {
+    const v = '10.12.2';
+    await loadScript(`https://cdn.jsdelivr.net/npm/firebase@${v}/firebase-app-compat.js`);
+    await loadScript(`https://cdn.jsdelivr.net/npm/firebase@${v}/firebase-firestore-compat.js`);
+  }
+  firebase.initializeApp(CFG); db = firebase.firestore();
+  if (S.view === 'signup') return;
+  try {
+    const d = await db.collection('customerLinks').doc(S.token).get();
+    if (!d.exists || d.data().active === false) { S.view = 'bad'; return render(); }
+    S.link = d.data(); S.qty = Math.max(1, Math.min(30, +S.link.pkg || 3)); S.view = 'order'; render(); refreshOrders();
+    setInterval(refreshOrders, 60000);
+  } catch (e) { console.error(e); S.view = 'bad'; render(); }
+}
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+boot();
+</script>
+</body>
+</html>
