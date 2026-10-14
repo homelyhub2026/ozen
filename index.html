@@ -376,6 +376,8 @@ Object.assign(NE, {"Unpaid at delivery":"डेलिभरीमा नति�
 Object.assign(L, {"log_refund": ["Deposit refund {amt} to {name}", "{name} लाई {amt} धरौटी फिर्ता"], "log_suppay": ["Paid {amt} to {s}", "{s} लाई {amt} तिरियो"], "log_transfer_money": ["Moved {amt}: {a} → {b}", "{amt} सारियो: {a} → {b}"], "log_opening_setup": ["Opening balances set ({n} changes)", "सुरुको मौज्दात लागू ({n} परिवर्तन)"]});
 Object.assign(NE, {"{n} new online order(s)": "{n} नयाँ अनलाइन अर्डर", "Online orders": "अनलाइन अर्डर", "New customer request": "नयाँ ग्राहकको अनुरोध", "Add as customer": "ग्राहक बनाउनुस्", "Reject": "अस्वीकार", "Accept": "स्वीकार", "Accept online order": "अनलाइन अर्डर स्वीकार", "Who delivers": "कसले डेलिभर गर्ने", "This creates a pending order. Stock and money change only when you record the delivery.": "यसले बाँकी अर्डर बनाउँछ। डेलिभरी लेखेपछि मात्र स्टक र पैसा बदलिन्छ।", "Reason (the customer will see this)": "कारण (ग्राहकले देख्छन्)", "Creates the customer profile only. Then record the first delivery and send their order link.": "ग्राहकको प्रोफाइल मात्र बन्छ। त्यसपछि पहिलो डेलिभरी लेख्नुस् र अर्डर लिंक पठाउनुस्।", "Order link (WhatsApp)": "अर्डर लिंक (WhatsApp)", "Create a personal link. The customer opens it and orders without calling; orders appear in Orders → Online orders.": "ग्राहकको आफ्नै लिंक बनाउनुस्। उहाँले खोलेर फोन नगरी अर्डर गर्नुहुन्छ; अर्डर → अनलाइन अर्डरमा आउँछ।", "Create link": "लिंक बनाउनुस्", "Only this customer should get this link. Their orders appear in Orders → Online orders.": "यो लिंक यही ग्राहकलाई मात्र दिनुस्। उहाँको अर्डर अर्डर → अनलाइन अर्डरमा आउँछ।", "Copy link": "लिंक कपी", "Make a new link (old one stops working)": "नयाँ लिंक बनाउनुस् (पुरानो चल्दैन)", "Link copied": "लिंक कपी भयो", "Copy this link": "यो लिंक कपी गर्नुस्", "Link for new customers": "नयाँ ग्राहकका लागि लिंक", "Anyone with this link can ask to become a customer. You decide in Orders → Online orders.": "यो लिंक भएका जोसुकैले ग्राहक बन्न अनुरोध गर्न सक्छन्। निर्णय अर्डर → अनलाइन अर्डरमा तपाईंले गर्नुहुन्छ।", "Order OZEN drinking water — new customers request here:": "OZEN पिउने पानी — नयाँ ग्राहक यहाँ अनुरोध गर्नुस्:", "This online order was already handled.": "यो अनलाइन अर्डर पहिले नै हेरिसकियो।", "Namaste {name}! Order OZEN drinking water from this link (save it on your phone): {url} — Homely Hub Nepal": "नमस्ते {name}! OZEN पानी यो लिंकबाट अर्डर गर्नुस् (फोनमा सेभ गरेर राख्नुस्): {url} — Homely Hub Nepal", "As soon as possible": "सकेसम्म छिटो", "Morning": "बिहान", "Afternoon": "दिउँसो", "Evening": "बेलुका", "Tomorrow": "भोलि", "linkCreate": "अर्डर लिंक", "acceptRequest": "अनलाइन अर्डर स्वीकार", "rejectRequest": "अनलाइन अर्डर अस्वीकार", "signupConvert": "नयाँ ग्राहक"});
 Object.assign(L, {"log_link": ["Made an order link for {name}", "{name} को अर्डर लिंक बनाइयो"], "log_req_accept": ["Accepted online order: {n} jars for {name}", "अनलाइन अर्डर स्वीकार: {name} लाई {n} जार"], "log_req_reject": ["Rejected online request from {name}", "{name} को अनलाइन अनुरोध अस्वीकार"]});
+Object.assign(NE, {"Record old-version balances": "पुरानो संस्करणको मौज्दात रेकर्ड गर्नुस्", "If these differences come from customers or jars entered with the earlier app version (before the update), the dashboard numbers are right and only a record is missing. This button adds one \"existing balance\" record for them. No balance, jar or money changes.": "यी फरक अपडेटअघिको पुरानो एपबाट हालेका ग्राहक वा जारका कारण हो भने ड्यासबोर्डको अंक सही हो, रेकर्ड मात्र छैन। यो बटनले तिनका लागि एउटा \"पहिलेको मौज्दात\" रेकर्ड थप्छ। कुनै मौज्दात, जार वा पैसा फेरिँदैन।", "This record only documents old balances and cannot be undone.": "यो रेकर्डले पुरानो मौज्दात मात्र देखाउँछ, उल्टाउन मिल्दैन।", "adopt": "पुरानो मौज्दात रेकर्ड"});
+Object.assign(L, {"log_adopt": ["Recorded {n} balances saved by the earlier app version (no change)", "पुरानो एपका {n} मौज्दात रेकर्ड गरियो (फेरबदल छैन)"]});
 const t = k => P.lang === 'ne' ? (NE[k] ?? k) : k;
 const tf = (k, v) => t(k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
 const lg = (k, v) => { const p = L[k]; if (!p) return k; return (P.lang === 'ne' ? p[1] : p[0]).replace(/\{(\w+)\}/g, (_, x) => { const val = v?.[x]; return x === 'amt' ? money(val) : ((x === 'kind' || x === 'w' || x === 'w2' || x === 'cat') ? t(val ?? '') : (val ?? '')); }); };
@@ -906,11 +908,21 @@ const ACT = {
     o.result = id;
     return finish(o, a, 'log_cust_add', { name: r.name });
   },
+  // Balances saved by the first app version have no matching record. This writes one "existing balance"
+  // record so the full check can account for them. It does NOT change any balance.
+  async adopt(T, a) {
+    const o = await begin(T, a); const fx = [];
+    for (const it of a.items || []) { const [col, id, ...pp] = String(it.key).split('/'); const n = num(it.diff); if (!n || !['customers', 'meta'].includes(col)) continue; fx.push([col, id, pp.join('/'), n]); }
+    if (!fx.length) throw Object.assign(rej(t('Nothing to change: the balances already match.')), { nochange: true });
+    o.set('moves', a.opId, { type: 'adopt', opening: true, legacy: true, note: 'Balances saved by the earlier app version', by: me().id, at: Date.now(), fx });
+    return finish(o, a, 'log_adopt', { n: fx.length });
+  },
   async undo(T, a) {
     const o = await begin(T, a);
     const rec = await T.get(a.col, a.id); if (!rec) throw rej(t('Record not found.'));
     if (rec.void || rec.status === 'void' || rec.status === 'cancelled' || (a.col === 'orders' && rec.status !== 'delivered')) throw rej(t('This entry is already undone.'));
     if (a.col === 'txs' && (rec.ord || rec.close || rec.move)) throw rej(t('Undo this from its delivery / closing / stock entry.'));
+    if (rec.type === 'adopt') throw rej(t('This record only documents old balances and cannot be undone.'));
     const linkedIds = [...(rec.txIds || []), ...(rec.txId ? [rec.txId] : [])];
     const linked = []; for (const id of linkedIds) { const x = await T.get('txs', id); if (x && !x.void) linked.push(x); }
     const fx = [...neg(rec.fx), ...linked.flatMap(x => neg(x.fx))];
@@ -1054,7 +1066,7 @@ async function reconcile() {
   const sum = {};
   const add = list => { for (const r of list) { if (r.void || r.status === 'void') continue; for (const [c, i, p, n] of (r.fx || []).map(fxIn)) { if (i.startsWith('stats_')) continue; const k = c + '/' + i + '/' + p; sum[k] = (sum[k] || 0) + num(n); } } };
   add(orders); add(txs); add(moves);
-  const rows = []; const cmp = (label, key, actual) => { const exp = Math.round((sum[key] || 0) * 100) / 100; const act = Math.round(num(actual) * 100) / 100; rows.push({ label, exp, act, ok: Math.abs(exp - act) < 0.01 }); };
+  const rows = []; const cmp = (label, key, actual) => { const exp = Math.round((sum[key] || 0) * 100) / 100; const act = Math.round(num(actual) * 100) / 100; rows.push({ label, key, exp, act, diff: Math.round((act - exp) * 100) / 100, ok: Math.abs(exp - act) < 0.01 }); };
   cmp(t('Company bank'), 'meta/cash/bank', cashDoc().bank);
   for (const p of settings().partners) cmp(p.name + ' — ' + t('cash in hand'), 'meta/cash/p.' + p.id, cashDoc().p?.[p.id]);
   for (const w of settings().warehouses) { cmp(w.name + ' — ' + t('Filled'), `meta/stock/wh.${w.id}.filled`, stockDoc().wh?.[w.id]?.filled); cmp(w.name + ' — ' + t('Empty'), `meta/stock/wh.${w.id}.empty`, stockDoc().wh?.[w.id]?.empty); }
@@ -1430,7 +1442,7 @@ function moveLabel(m) {
 }
 function vStock() {
   const st = stockTotals(); const wh = stockDoc().wh || {}; const pay = payDoc();
-  const moves = allOf('moves').filter(m => !['custReturn', 'custFix', 'openCust', 'close'].includes(m.type)).sort((a, b) => b.at - a.at);
+  const moves = allOf('moves').filter(m => !['custReturn', 'custFix', 'openCust', 'close', 'adopt'].includes(m.type)).sort((a, b) => b.at - a.at);
   return `<h2>${t('Stock')}</h2>
   <div class="scroll"><table class="t">
    <thead><tr><th>${t('Warehouse')}</th><th>${t('Filled')}</th><th>${t('Empty')}</th></tr></thead>
@@ -1710,7 +1722,9 @@ function vCheck() {
   <button class="btn" data-act="runCheck" style="width:100%">${t('Run full check')}</button>
   ${r ? `<div class="alert ${r.every(x => x.ok) ? 'ok' : 'bad'}">${r.every(x => x.ok) ? t('All balances match the records.') : t('Some balances do not match — see below.')}</div>
    <div class="scroll"><table class="t"><thead><tr><th>${t('Item')}</th><th>${t('From records')}</th><th>${t('Dashboard')}</th><th></th></tr></thead><tbody>
-   ${r.map(x => `<tr><td>${esc(x.label)}</td><td>${x.exp}</td><td>${x.act}</td><td>${x.ok ? '✓' : '✗'}</td></tr>`).join('')}</tbody></table></div>` : ''}`;
+   ${r.map(x => `<tr><td>${esc(x.label)}</td><td>${x.exp}</td><td>${x.act}</td><td>${x.ok ? '✓' : '✗'}</td></tr>`).join('')}</tbody></table></div>
+   ${r.some(x => !x.ok) ? `<div class="alert warn small" style="margin-top:12px">${t('If these differences come from customers or jars entered with the earlier app version (before the update), the dashboard numbers are right and only a record is missing. This button adds one "existing balance" record for them. No balance, jar or money changes.')}</div>
+   <button class="btn" data-act="adoptOld" style="width:100%">${t('Record old-version balances')}</button>` : ''}` : ''}`;
 }
 function vReport() {
   const from = R.rFrom || isoDay(monthStart(Date.now())); const to = R.rTo || isoDay(Date.now());
@@ -2071,6 +2085,11 @@ document.addEventListener('click', async e => {
     case 'stmtOpen': R.page = 'stmt'; R.stmtAcc = el.dataset.acc; R.stmt = null; render(); makeStatement(el.dataset.acc, R.sFrom || '2025-01-01', isoDay(Date.now())); break;
     case 'stmtPdf': { const st = R.stmt; printHtml(`<h1>${t('Statement')} — ${esc(accName(st.acc))}</h1><div class="meta">${fmtDate(st.from)} – ${fmtDate(st.to)}</div><table><thead><tr><th>${t('Date')}</th><th style="text-align:left">${t('Details')}</th><th>${t('In')}</th><th>${t('Out')}</th><th>${t('Balance')}</th></tr></thead><tbody><tr><td></td><td style="text-align:left">${t('Opening balance')}</td><td></td><td></td><td>${money(st.open)}</td></tr>${st.rows.map(r => `<tr><td>${fmtDate(r.at)}</td><td style="text-align:left">${esc(r.label)}</td><td>${r.n > 0 ? money(r.n) : ''}</td><td>${r.n < 0 ? money(-r.n) : ''}</td><td>${money(r.bal)}</td></tr>`).join('')}<tr><td></td><td style="text-align:left">${t('Closing balance')}</td><td></td><td></td><td>${money(st.close)}</td></tr></tbody></table>`); break; }
     case 'stmtCsv': { const st = R.stmt; downloadCsv(`statement_${st.acc}.csv`, [['Date (AD)', 'Date (BS)', 'Details', 'In', 'Out', 'Balance'], ['', '', 'Opening balance', '', '', st.open], ...st.rows.map(r => { const b = adToBs(r.at); return [isoDay(r.at), b ? b.join('-') : '', r.label, r.n > 0 ? r.n : '', r.n < 0 ? -r.n : '', r.bal]; }), ['', '', 'Closing balance', '', '', st.close]]); break; }
+    case 'adoptOld': {
+      const items = (R.check || []).filter(x => !x.ok && /^(customers|meta)\//.test(x.key)).map(x => ({ key: x.key, diff: x.diff }));
+      if (!items.length || !confirm(t('Record old-version balances') + '?')) break;
+      if (await post('adopt', { items })) { R.check = await reconcile(); render(); }
+      break; }
     case 'runCheck': R.check = null; toast(t('Checking…')); try { R.check = await reconcile(); } catch (x) { toast(x.message); } render(); break;
     case 'qRetry': await flushQueue(); render(); break;
     case 'qDrop': if (confirm(t('Discard this entry? It will not be posted.'))) { Q.list.splice(+el.dataset.i, 1); Q.save(); render(); } break;
