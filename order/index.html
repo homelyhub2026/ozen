@@ -82,7 +82,11 @@ const NE = {
   'New customer? Request a connection':'नयाँ ग्राहक? सेवा सुरु गर्न अनुरोध गर्नुस्','Your name':'तपाईंको नाम','Phone':'फोन','Area / tole':'ठाउँ / टोल','Landmark':'घर चिन्ने चिनारी','Share my location':'मेरो लोकेसन पठाउनुस्',
   'Location added':'लोकेसन थपियो','Jars package':'जार प्याकेज','Send request':'अनुरोध पठाउनुस्','Thank you! We will call you soon.':'धन्यवाद! हामी छिट्टै फोन गर्छौं।',
   'Name and phone are required.':'नाम र फोन चाहिन्छ।','Loading…':'लोड हुँदैछ…','Pure water, healthy life':'शुद्ध पानी, स्वस्थ जीवन','Rate':'दर','per jar':'प्रति जार','Already a customer? Use the link we sent you on WhatsApp.':'पहिलेदेखिको ग्राहक? हामीले WhatsApp मा पठाएको लिंक खोल्नुस्।',
-  'Could not send. Please try again.':'पठाउन सकिएन। फेरि प्रयास गर्नुस्।','Reason':'कारण'
+  'Could not send. Please try again.':'पठाउन सकिएन। फेरि प्रयास गर्नुस्।','Reason':'कारण',
+  'Keep OZEN on your phone like an app':'OZEN लाई फोनमा एप जस्तै राख्नुस्','Install app':'एप इन्स्टल गर्नुस्','Next time just tap the OZEN icon to order.':'अर्को पटक OZEN आइकन थिचेर मात्र अर्डर गर्नुस्।',
+  'On iPhone: open this page in Safari, tap the Share button (square with arrow) at the bottom, then “Add to Home Screen”.':'iPhone मा: यो पेज Safari मा खोल्नुस्, तलको Share बटन (बाकस र तीर) थिच्नुस्, अनि “Add to Home Screen” थिच्नुस्।',
+  'On Android: tap ⋮ (top right) in Chrome, then “Install app” or “Add to Home screen”.':'Android मा: Chrome को माथि दायाँ ⋮ थिच्नुस्, अनि “Install app” वा “Add to Home screen” थिच्नुस्।',
+  'Opened inside WhatsApp/Facebook? Tap ⋮ and choose “Open in Chrome” (or Safari) first.':'WhatsApp/Facebook भित्र खुल्यो? पहिले ⋮ थिचेर “Open in Chrome” (वा Safari) छान्नुस्।','Close':'बन्द गर्नुस्'
 };
 const S = { lang: ls.get('oo_lang', 'ne'), token: null, link: null, qty: 3, when: 'asap', orders: ls.get('oo_orders', []), view: 'order', msg: '', busy: false, geo: null };
 const t = k => S.lang === 'ne' ? (NE[k] || k) : k;
@@ -123,7 +127,21 @@ function render() {
    </div>
    ${mine.length ? `<div class="card"><h2>${t('My orders')}</h2>${mine.map(o => `<div class="ord"><div><b>${o.qty} ${t('jars')}</b> · ${when(o.when)}<div class="small muted">${fmt(o.at)}${o.partner && o.status === 'accepted' ? ` · ${esc(o.partner)} ${t('will deliver')}` : ''}${o.reason ? ` · ${t('Reason')}: ${esc(o.reason)}` : ''}</div>
      ${o.status === 'new' ? `<button class="link small" data-a="cancel" data-id="${o.id}">${t('Cancel')}</button>` : ''}</div><span class="st ${o.status}">${statusLabel(o)}</span></div>`).join('')}</div>` : ''}
-   <div class="card">${contact()}</div></main>`;
+   <div class="card">${contact()}</div>${installCard()}</main>`;
+}
+// ---- install as an app (Android: real install prompt; iPhone: show the two taps) ----
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; if (S.view === 'order') render(); });
+window.addEventListener('appinstalled', () => { deferredPrompt = null; S.installed = true; render(); });
+const isStandalone = () => (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
+const inApp = () => /FBAN|FBAV|Instagram|WhatsApp|Line\//i.test(navigator.userAgent);
+function installCard() {
+  if (isStandalone() || S.installed) return '';
+  return `<div class="card center"><h2>📲 ${t('Keep OZEN on your phone like an app')}</h2>
+    <p class="small muted" style="margin:0 0 6px">${t('Next time just tap the OZEN icon to order.')}</p>
+    <button class="btn" data-a="install">${t('Install app')}</button>
+    ${S.showHow ? `<div class="alert" style="text-align:left">${inApp() ? t('Opened inside WhatsApp/Facebook? Tap ⋮ and choose “Open in Chrome” (or Safari) first.') + '<br><br>' : ''}${isIOS() ? t('On iPhone: open this page in Safari, tap the Share button (square with arrow) at the bottom, then “Add to Home Screen”.') : t('On Android: tap ⋮ (top right) in Chrome, then “Install app” or “Add to Home screen”.')}</div>` : ''}</div>`;
 }
 function renderSignup() {
   $('#root').innerHTML = hero(t('New customer? Request a connection'), t('Already a customer? Use the link we sent you on WhatsApp.')) + `<main><div class="card">
@@ -179,6 +197,10 @@ document.addEventListener('click', async e => {
   if (a === 'setq') { S.qty = +el.dataset.n; render(); }
   if (a === 'when') { S.when = el.dataset.k; render(); }
   if (a === 'order') placeOrder();
+  if (a === 'install') {
+    if (deferredPrompt) { deferredPrompt.prompt(); try { const c = await deferredPrompt.userChoice; if (c.outcome === 'accepted') S.installed = true; } catch (x) {} deferredPrompt = null; render(); }
+    else { S.showHow = true; render(); }
+  }
   if (a === 'signup') { S.view = 'signup'; S.msg = ''; render(); }
   if (a === 'sendSignup') sendSignup();
   if (a === 'geo' && navigator.geolocation) navigator.geolocation.getCurrentPosition(p => { S.geo = [+p.coords.latitude.toFixed(6), +p.coords.longitude.toFixed(6)]; renderSignup(); }, () => {}, { enableHighAccuracy: true, timeout: 15000 });
