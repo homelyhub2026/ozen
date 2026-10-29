@@ -247,12 +247,13 @@ const saveP = () => store.set('jh_prefs', P);
 
 /* ---------------- Nepali (BS) calendar ---------------- */
 const BS_START = 2075, BS_AD0 = Date.UTC(2018, 3, 14); // 2075-01-01 BS = 2018-04-14 AD
+// 2083: Asoj 31 and Mangsir 29 days (checked against the Nepali calendar: Kartik 1 = 18 Oct, Poush 1 = 16 Dec 2026)
 const BS = [
  [31,31,32,31,31,31,30,29,30,29,30,30],[31,32,31,32,31,30,30,30,29,29,30,30],
  [31,32,31,32,31,30,30,30,29,30,29,31],[31,31,31,32,31,31,30,29,30,29,30,30],
  [31,31,32,31,31,31,30,29,30,29,30,30],[31,32,31,32,31,30,30,30,29,29,30,30],
  [31,32,31,32,31,30,30,30,29,30,29,31],[30,32,31,32,31,30,30,30,29,30,30,30],
- [31,31,32,31,31,30,30,30,29,30,30,30],[31,31,32,31,31,30,30,30,29,30,30,30],
+ [31,31,32,31,31,31,30,29,29,30,30,30],[31,31,32,31,31,30,30,30,29,30,30,30],
  [31,32,31,32,30,31,30,30,29,30,30,30],[30,32,31,32,31,30,30,30,29,30,30,30],
  [31,31,32,31,31,31,30,30,29,30,30,30],[30,31,32,32,30,31,30,30,29,30,30,30],
  [30,32,31,32,31,30,30,30,29,30,30,30]
@@ -378,6 +379,10 @@ Object.assign(NE, {"{n} new online order(s)": "{n} नयाँ अनलाइ�
 Object.assign(L, {"log_link": ["Made an order link for {name}", "{name} को अर्डर लिंक बनाइयो"], "log_req_accept": ["Accepted online order: {n} jars for {name}", "अनलाइन अर्डर स्वीकार: {name} लाई {n} जार"], "log_req_reject": ["Rejected online request from {name}", "{name} को अनलाइन अनुरोध अस्वीकार"]});
 Object.assign(NE, {"Record old-version balances": "पुरानो संस्करणको मौज्दात रेकर्ड गर्नुस्", "If these differences come from customers or jars entered with the earlier app version (before the update), the dashboard numbers are right and only a record is missing. This button adds one \"existing balance\" record for them. No balance, jar or money changes.": "यी फरक अपडेटअघिको पुरानो एपबाट हालेका ग्राहक वा जारका कारण हो भने ड्यासबोर्डको अंक सही हो, रेकर्ड मात्र छैन। यो बटनले तिनका लागि एउटा \"पहिलेको मौज्दात\" रेकर्ड थप्छ। कुनै मौज्दात, जार वा पैसा फेरिँदैन।", "This record only documents old balances and cannot be undone.": "यो रेकर्डले पुरानो मौज्दात मात्र देखाउँछ, उल्टाउन मिल्दैन।", "adopt": "पुरानो मौज्दात रेकर्ड"});
 Object.assign(L, {"log_adopt": ["Recorded {n} balances saved by the earlier app version (no change)", "पुरानो एपका {n} मौज्दात रेकर्ड गरियो (फेरबदल छैन)"]});
+Object.assign(NE, {"Loan given": "सापटी दिएको", "Loan paid back": "सापटी फिर्ता आयो", "Loans given (to get back)": "दिएको सापटी (पाउनुपर्ने)", "Give a loan": "सापटी दिनुस्", "Given to (company / person)": "कसलाई दिएको (कम्पनी / व्यक्ति)", "Given before the app — the money already left (do not reduce bank or cash now)": "एपअघि नै दिएको — पैसा पहिले नै गइसक्यो (अहिले बैंक वा नगद नघटाउने)", "A loan is not an expense. It is shown as money to get back until it is paid back.": "सापटी खर्च होइन। फिर्ता नआउन्जेल पाउनुपर्ने रकममा देखिन्छ।", "Who paid back": "कसले फिर्ता गर्‍यो", "Money received in": "पैसा कहाँ आयो", "No loans to get back.": "पाउनुपर्ने सापटी छैन।", "Write who the loan was given to.": "कसलाई सापटी दिएको लेख्नुस्।", "Choose who is paying back.": "कसले फिर्ता गर्दैछ छान्नुस्।", "Only {m} is left to get back from {p}.": "{p} बाट {m} मात्र पाउन बाँकी छ।", "before app": "एपअघि", "loanGive": "सापटी दिएको", "loanRepay": "सापटी फिर्ता"});
+Object.assign(L, {"log_loan_out": ["Loan {amt} given to {p}", "{p} लाई {amt} सापटी दिइयो"], "log_loan_in": ["Loan {amt} paid back by {p}", "{p} ले {amt} सापटी फिर्ता गर्‍यो"]});
+Object.assign(NE, {"Connect to the internet first.":"पहिले इन्टरनेट जोड्नुस्।","Internet was lost. Connect and press Import again — it continues from here.":"इन्टरनेट गयो। जोडेर फेरि “हिसाब हाल्नुस्” थिच्नुस् — यहीँबाट अघि बढ्छ।","The app is empty. Now import the history file.":"एप खाली भयो। अब हिसाब फाइल हाल्नुस्।","These names are not in Settings:":"यी नाम सेटिङमा छैनन्:","Full history import": "पूरा पुरानो हिसाब हाल्नुस्", "Imports every past record (customers, deliveries, deposits, expenses, bank) with its own date from a prepared history file.": "तयार गरिएको फाइलबाट सबै पुराना रेकर्ड (ग्राहक, डेलिभरी, धरौटी, खर्च, बैंक) आफ्नै मितिमा हाल्छ।", "Practice mode: this is a safe test on this device only. The live app is not touched.": "अभ्यास मोड: यो यही फोन/कम्प्युटरमा मात्र सुरक्षित परीक्षण हो। असली एपमा केही हुँदैन।", "LIVE app: try it in practice mode first. Download a backup before emptying.": "असली एप: पहिले अभ्यास मोडमा परीक्षण गर्नुस्। खाली गर्नुअघि ब्याकअप डाउनलोड गर्नुस्।", "Empty the app": "एप खाली गर्नुस्", "History file (.json)": "हिसाब फाइल (.json)", "Import history": "हिसाब हाल्नुस्", "Choose the history file.": "हिसाब फाइल छान्नुस्।", "This is not a history file.": "यो हिसाब फाइल होइन।", "The app must be empty first. Use “Empty the app” below.": "पहिले एप खाली हुनुपर्छ। तलको “एप खाली गर्नुस्” प्रयोग गर्नुस्।", "Import {n} records from {f}?": "{f} बाट {n} रेकर्ड हाल्ने?", "{i} of {n} done…": "{n} मध्ये {i} भयो…", "Stopped at": "यहाँ रोकियो:", "All records imported.": "सबै रेकर्ड हालियो।", "This deletes every customer, delivery and money record in the app. Download a backup first. Continue?": "यसले एपका सबै ग्राहक, डेलिभरी र पैसाका रेकर्ड मेटाउँछ। पहिले ब्याकअप लिनुस्। अगाडि बढ्ने?", "Type DELETE to confirm": "पक्का गर्न DELETE लेख्नुस्", "Share capital": "सेयर लगानी", "Other income": "अन्य आम्दानी", "old jars": "पुरानो जार", "capital": "सेयर लगानी", "income": "अन्य आम्दानी"});
+Object.assign(L, {"log_capital": ["Share capital {amt} from {p}", "{p} बाट {amt} सेयर लगानी"], "log_income": ["Other income {amt}: {cat}", "अन्य आम्दानी {amt}: {cat}"]});
 const t = k => P.lang === 'ne' ? (NE[k] ?? k) : k;
 const tf = (k, v) => t(k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
 const lg = (k, v) => { const p = L[k]; if (!p) return k; return (P.lang === 'ne' ? p[1] : p[0]).replace(/\{(\w+)\}/g, (_, x) => { const val = v?.[x]; return x === 'amt' ? money(val) : ((x === 'kind' || x === 'w' || x === 'w2' || x === 'cat') ? t(val ?? '') : (val ?? '')); }); };
@@ -493,7 +498,7 @@ function DemoStore() {
     async updateMany(col, list) { for (const [id, data] of list) Object.assign(db[col][id], data); save(); cb(snap()); },
     reset() { try { localStorage.removeItem('jh_demo4'); } catch (e) {} location.reload(); },
     async hasDeliveries() { return all('orders').some(o => o.status === 'delivered' && !o.seed); },
-    async wipe() { for (const c of ['customers', 'orders', 'txs', 'moves', 'logs']) db[c] = {}; const st = db.meta.settings; db.meta = { settings: st, stock: { id: 'stock', wh: {}, factory: 0, total: 0 }, cash: { id: 'cash', p: {}, bank: 0 }, pay: { id: 'pay' } }; save(); cb(snap()); }
+    async wipe() { for (const c of ['customers', 'orders', 'txs', 'moves', 'logs', 'requests']) db[c] = {}; const st = db.meta.settings; db.meta = { settings: st, stock: { id: 'stock', wh: {}, factory: 0, total: 0 }, cash: { id: 'cash', p: {}, bank: 0 }, pay: { id: 'pay' } }; save(); cb(snap()); }
   };
 }
 
@@ -573,8 +578,8 @@ function FireStore() {
     async hasDeliveries() { return !!(S.meta.settings || {}).setupLocked || !(await fs.collection('orders').where('status', '==', 'delivered').limit(1).get()).empty; },
     async wipe() {
       const refs = [];
-      for (const c of ['customers', 'orders', 'txs', 'moves', 'logs']) (await fs.collection(c).get()).forEach(d => refs.push(d.ref));
-      (await fs.collection('meta').get()).forEach(d => { if (d.id.startsWith('stats_') || d.id === 'pay' || d.id === 'setup') refs.push(d.ref); });
+      for (const c of ['customers', 'orders', 'txs', 'moves', 'logs', 'requests']) (await fs.collection(c).get()).forEach(d => refs.push(d.ref));
+      (await fs.collection('meta').get()).forEach(d => { if (d.id.startsWith('stats_') || d.id === 'pay' || d.id === 'setup' || d.id === 'loans') refs.push(d.ref); });
       for (let i = 0; i < refs.length; i += 400) { const b = fs.batch(); refs.slice(i, i + 400).forEach(r => b.delete(r)); await b.commit(); }
       await fs.doc('meta/stock').set({ wh: {}, factory: 0, total: 0 }); await fs.doc('meta/cash').set({ p: {}, bank: 0 });
       const rid = Date.now(); cust.resetAt = rid; cust.docs = {}; cust.u = 0; store.set(CKEY, cust);
@@ -594,7 +599,7 @@ const depFor = pkg => Math.ceil(num(pkg) / 3) * num(settings().depositPer3);
 const PKGS = [3, 6, 9, 12, 15];
 const randToken = () => { const b = new Uint8Array(16); (window.crypto || crypto).getRandomValues(b); return Array.from(b, x => x.toString(16).padStart(2, '0')).join(''); };
 const reqWhen = k => t({ asap: 'As soon as possible', morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening', tomorrow: 'Tomorrow' }[k] || k || '');
-const orderBase = () => location.href.split('#')[0].split('?')[0].replace(/[^/]*$/, '') + 'order/';
+const orderBase = () => location.href.split('#')[0].split('?')[0].replace(/[^/]*$/, '') + 'order/';   // …/ozen/order/
 const F = (fx, col, id, path, n) => { n = Math.round(num(n) * 100) / 100; if (n) fx.push([col, id, path, n]); };
 const accFx = (fx, acc, n) => F(fx, 'meta', 'cash', accPath(acc), n);
 const statFx = (fx, at, field, n) => { const k = isoDay(at).replace(/-/g, ''); F(fx, 'meta', 'stats_' + k.slice(0, 4), `d.${k}.${field}`, n); };
@@ -602,14 +607,15 @@ const money2 = v => { const n = Number(v === '' || v == null ? 0 : v); if (!isFi
 const jarsN = (v, min = 0) => { const n = Number(v === '' || v == null ? 0 : v); if (!Number.isInteger(n) || n < min) throw rej(min ? t('Enter a whole number of jars (1 or more).') : t('Jar quantities must be whole numbers, 0 or more.')); return n; };
 const validAcc = a => { if (a !== 'bank' && !settings().partners.some(p => p.id === a)) throw rej(t('Choose where the money is.')); return a; };
 const bal = (cash, a) => num(get0(cash || {}, accPath(a)));
-const needBal = (cash, a, n) => { if (n > bal(cash, a) + 0.001) throw rej(tf('{a} has only {m}. Record where the money came from first (opening balance or a transfer).', { a: accName(a), m: money(bal(cash, a)) })); };
+let HIST = false; // true only while importing past records in date order
+const needBal = (cash, a, n) => { if (HIST) return; if (n > bal(cash, a) + 0.001) throw rej(tf('{a} has only {m}. Record where the money came from first (opening balance or a transfer).', { a: accName(a), m: money(bal(cash, a)) })); };
 const pastDate = v => { const at = fromInputDay(v); if (at > Date.now() + 60000) throw rej(t('Date cannot be in the future.')); return at; };
 async function begin(T, a) { if (await T.get('logs', a.opId)) throw dupErr(); return Ops(); }
 function finish(o, a, k, v) { o.set('logs', a.opId, { at: Date.now(), by: me().id, k, v }); return o; }
 async function needCust(T, id) { const c = await T.get('customers', id); if (!c || c.deleted) throw rej(t('Customer not found.')); return c; }
 // money record: from/to accounts (or payable:<supplier>), statement legs are derived from these
 function txRec(type, amount, from, to, extra) {
-  const acc = [from, to].filter(x => x && !String(x).startsWith('pay:'));
+  const acc = [from, to].filter(x => x && !/^(pay|loan):/.test(String(x)));
   return { type, amount, from: from || null, to: to || null, acc, by: me().id, ...extra };
 }
 
@@ -624,7 +630,7 @@ const ACT = {
       lat: a.lat ? num(a.lat) : null, lng: a.lng ? num(a.lng) : null, pkg, expDep: depFor(pkg), rate, partner: a.partner || me().id, note: String(a.note || '').trim() };
     if (a.id) { await needCust(T, a.id); o.upd('customers', a.id, base); return finish(o, a, 'log_cust_edit', { name }); }
     const id = 'c_' + a.opId;
-    o.set('customers', id, { ...base, active: true, at: Date.now(), by: me().id, held: 0, due: 0, deposit: 0, delivered: 0, hist: 0 });
+    o.set('customers', id, { ...base, active: true, at: HIST && a.date ? pastDate(a.date) : Date.now(), by: me().id, held: 0, due: 0, deposit: 0, delivered: 0, hist: 0 });
     o.result = id;
     return finish(o, a, 'log_cust_add', { name });
   },
@@ -655,14 +661,14 @@ const ACT = {
     if (ret > num(c.held)) throw rej(tf('{name} holds only {n} jars, so {r} empties cannot be returned.', { name: c.name, n: num(c.held), r: ret }));
     const filled = num(get0(st, `wh.${wh}.filled`)); if (qty > filled) throw rej(tf('Only {n} filled jars in {w}.', { n: filled, w: whName(wh) }));
     const rate = num(c.rate) || settings().rate; const bill = Math.round(qty * rate * 100) / 100;
-    const rc = money2(a.refillCash), rb = money2(a.refillBank), dc = money2(a.depCash), db = money2(a.depBank);
+    const rc = money2(a.refillCash), rb = money2(a.refillBank), dc = money2(a.depCash), db = money2(a.depBank), dOld = money2(a.depOld);
     const rcBy = rc ? validAcc(a.refillCashBy || me().id) : null, dcBy = dc ? validAcc(a.depCashBy || me().id) : null;
     if (rcBy === 'bank' || dcBy === 'bank') throw rej(t('Cash must be received by a partner.'));
     const at = pastDate(a.date); const pid = me().id; const oid = ord ? ord.id : a.opId;
     const fx = [];
     F(fx, 'meta', 'stock', `wh.${wh}.filled`, -qty); F(fx, 'meta', 'stock', `wh.${wh}.empty`, ret);
     F(fx, 'customers', c.id, 'held', qty - ret); F(fx, 'customers', c.id, 'delivered', qty);
-    F(fx, 'customers', c.id, 'due', bill - rc - rb); F(fx, 'customers', c.id, 'deposit', dc + db);
+    F(fx, 'customers', c.id, 'due', bill - rc - rb); F(fx, 'customers', c.id, 'deposit', dc + db + dOld);
     if (rc) accFx(fx, rcBy, rc); if (rb) accFx(fx, 'bank', rb); if (dc) accFx(fx, dcBy, dc); if (db) accFx(fx, 'bank', db);
     statFx(fx, at, 'bill', bill); statFx(fx, at, 'jars', qty); statFx(fx, at, 'rc', rc); statFx(fx, at, 'rb', rb); statFx(fx, at, 'dep', dc + db);
     const txIds = [];
@@ -671,7 +677,8 @@ const ACT = {
     if (rb) addTx('-rb', txRec('refill', rb, null, 'bank', {}));
     if (dc) addTx('-dc', txRec('deposit', dc, null, dcBy, { receivedBy: dcBy }));
     if (db) addTx('-db', txRec('deposit', db, null, 'bank', {}));
-    const data = { cust: c.id, qty, returned: ret, wh, rate, bill, paidCash: rc, paidBank: rb, paid: rc + rb, depCash: dc, depBank: db,
+    if (dOld) addTx('-do', txRec('deposit', dOld, null, null, { oldJars: true }));
+    const data = { cust: c.id, qty, returned: ret, wh, rate, bill, paidCash: rc, paidBank: rb, paid: rc + rb, depCash: dc, depBank: db, depOld: dOld,
       status: 'delivered', deliveredAt: at, deliveredBy: pid, owner: c.partner, fx, txIds };
     if (ord && ord.req) o.upd('requests', ord.req, { status: 'delivered', deliveredAt: at });
     if (ord) o.upd('orders', oid, data); else o.set('orders', oid, { ...data, direct: true, assigned: pid, by: pid, at, note: a.note || '' });
@@ -917,6 +924,43 @@ const ACT = {
     o.set('moves', a.opId, { type: 'adopt', opening: true, legacy: true, note: 'Balances saved by the earlier app version', by: me().id, at: Date.now(), fx });
     return finish(o, a, 'log_adopt', { n: fx.length });
   },
+  // Loan given to another company/person: money leaves the bank/partner and becomes an amount to get back.
+  // 'existing' = loan given before the app (no money moves now, only the amount to get back is recorded).
+  // Share capital put in by a partner/shareholder (not a sale, not income).
+  async capital(T, a) {
+    const o = await begin(T, a); const n = money2(a.amount); if (!n) throw rej(t('Enter an amount.'));
+    const to = validAcc(a.to || 'bank'); const who = String(a.who || '').trim().slice(0, 60);
+    const fx = []; accFx(fx, to, n);
+    o.set('txs', a.opId, { ...txRec('capital', n, null, to, { investor: who }), at: pastDate(a.date), note: a.note || '', fx }); o.fx(fx);
+    return finish(o, a, 'log_capital', { amt: n, p: who });
+  },
+  // Money that is not a jar sale (e.g. rice sold, correction found in the books).
+  async income(T, a) {
+    const o = await begin(T, a); const n = money2(a.amount); if (!n) throw rej(t('Enter an amount.'));
+    const to = validAcc(a.to); const fx = []; accFx(fx, to, n);
+    o.set('txs', a.opId, { ...txRec('income', n, null, to, { cat: a.cat || '' }), at: pastDate(a.date), note: a.note || '', fx }); o.fx(fx);
+    return finish(o, a, 'log_income', { amt: n, cat: (a.cat || '') + (a.note ? ' — ' + a.note : '') });
+  },
+  async loanGive(T, a) {
+    const o = await begin(T, a); const cash = await T.get('meta', 'cash');
+    const who = String(a.who || '').trim().slice(0, 60); if (!who) throw rej(t('Write who the loan was given to.'));
+    const n = money2(a.amount); if (!n) throw rej(t('Enter an amount.'));
+    const key = 'l_' + hashId(who.toLowerCase()); const fx = []; F(fx, 'meta', 'loans', `${key}.amt`, n);
+    let from = null;
+    if (!a.existing) { from = validAcc(a.from); needBal(cash, from, n); accFx(fx, from, -n); }
+    o.upd('meta', 'loans', { [`${key}.name`]: who });
+    o.set('txs', a.opId, { ...txRec('loanOut', n, from, 'loan:' + key, { borrower: who, existing: !!a.existing }), at: a.existing ? Date.now() : pastDate(a.date), note: a.note || '', fx }); o.fx(fx);
+    return finish(o, a, 'log_loan_out', { amt: n, p: who });
+  },
+  async loanRepay(T, a) {
+    const o = await begin(T, a); const loans = (await T.get('meta', 'loans')) || {};
+    const key = a.key; const L = loans[key]; if (!L) throw rej(t('Choose who is paying back.'));
+    const n = money2(a.amount); if (!n) throw rej(t('Enter an amount.'));
+    if (n > num(L.amt) + 0.001) throw rej(tf('Only {m} is left to get back from {p}.', { m: money(L.amt), p: L.name }));
+    const to = validAcc(a.to); const fx = []; F(fx, 'meta', 'loans', `${key}.amt`, -n); accFx(fx, to, n);
+    o.set('txs', a.opId, { ...txRec('loanIn', n, 'loan:' + key, to, { borrower: L.name }), at: pastDate(a.date), note: a.note || '', fx }); o.fx(fx);
+    return finish(o, a, 'log_loan_in', { amt: n, p: L.name });
+  },
   async undo(T, a) {
     const o = await begin(T, a);
     const rec = await T.get(a.col, a.id); if (!rec) throw rej(t('Record not found.'));
@@ -927,13 +971,13 @@ const ACT = {
     const linked = []; for (const id of linkedIds) { const x = await T.get('txs', id); if (x && !x.void) linked.push(x); }
     const fx = [...neg(rec.fx), ...linked.flatMap(x => neg(x.fx))];
     // never let a reversal make stock, cash or jars negative
-    const docs = { 'meta/stock': await T.get('meta', 'stock'), 'meta/cash': await T.get('meta', 'cash'), 'meta/pay': await T.get('meta', 'pay') };
+    const docs = { 'meta/stock': await T.get('meta', 'stock'), 'meta/cash': await T.get('meta', 'cash'), 'meta/pay': await T.get('meta', 'pay'), 'meta/loans': await T.get('meta', 'loans') };
     const cs = new Set(fx.filter(e => e[0] === 'customers').map(e => e[1]));
     for (const id of cs) docs['customers/' + id] = await T.get('customers', id);
     const sum = {}; for (const [c, i, p, n] of fx) { const k = c + '/' + i + '|' + p; sum[k] = (sum[k] || 0) + n; }
     for (const [k, n] of Object.entries(sum)) {
       const [ci, p] = k.split('|'); if (ci.startsWith('meta/stats')) continue;
-      const guard = ci === 'meta/stock' || ci === 'meta/cash' || ci === 'meta/pay' || (ci.startsWith('customers/') && (p === 'held' || p === 'deposit'));
+      const guard = ci === 'meta/stock' || ci === 'meta/cash' || ci === 'meta/pay' || ci === 'meta/loans' || (ci.startsWith('customers/') && (p === 'held' || p === 'deposit'));
       if (!guard) continue;
       const now = num(get0(docs[ci] || {}, p)); if (now + n < -0.001) throw rej(tf('Undo would make {what} negative ({v}). Undo the later entries first.', { what: p, v: Math.round((now + n) * 100) / 100 }));
     }
@@ -1038,7 +1082,7 @@ function statSum(from, to) {
 function txLegs(x) {
   if (!x || x.void) return [];
   const A = num(x.amount);
-  if ('from' in x || 'to' in x) { const L = []; if (x.from && !String(x.from).startsWith('pay:')) L.push([x.from, -A]); if (x.to && !String(x.to).startsWith('pay:')) L.push([x.to, A]); return L; }
+  if ('from' in x || 'to' in x) { const L = []; const real = v => v && !/^(pay|loan):/.test(String(v)); if (real(x.from)) L.push([x.from, -A]); if (real(x.to)) L.push([x.to, A]); return L; }
   const accOf = x.mode === 'online' ? 'bank' : x.partner;
   switch (x.type) {
     case 'sale': case 'payment': case 'deposit': case 'capital': case 'opening': return accOf ? [[accOf, A]] : [];
@@ -1072,6 +1116,7 @@ async function reconcile() {
   for (const w of settings().warehouses) { cmp(w.name + ' — ' + t('Filled'), `meta/stock/wh.${w.id}.filled`, stockDoc().wh?.[w.id]?.filled); cmp(w.name + ' — ' + t('Empty'), `meta/stock/wh.${w.id}.empty`, stockDoc().wh?.[w.id]?.empty); }
   cmp(t('At factory'), 'meta/stock/factory', stockDoc().factory); cmp(t('Total jars'), 'meta/stock/total', stockDoc().total);
   for (const k of SUPPLIERS) if (sum['meta/pay/' + k] || payDoc()[k]) cmp(t('Owed to') + ' ' + supName(k), 'meta/pay/' + k, payDoc()[k]);
+  for (const [k, L] of Object.entries(S.meta.loans || {})) if (L && typeof L === 'object') cmp(t('Loan given') + ': ' + (L.name || k), `meta/loans/${k}.amt`, L.amt);
   for (const c of custs.filter(c => !c.deleted)) for (const k of ['held', 'deposit', 'due', 'delivered']) { const key = `customers/${c.id}/${k}`; if (Math.abs((sum[key] || 0) - num(c[k])) >= 0.01) cmp(c.name + ' — ' + k, key, c[k]); }
   return rows;
 }
@@ -1253,7 +1298,8 @@ function vHome() {
   <h3>${t('Company money')}</h3>
   <div class="list">${settings().partners.map(p => `<button class="item" data-act="stmtOpen" data-acc="${p.id}"><div class="grow t">${esc(p.name)} <span class="s">${t('cash in hand')}</span></div><div class="amt ${ct.per[p.id] < 0 ? 'minus' : ''}">${money(ct.per[p.id])}</div></button>`).join('')}
     <button class="item" data-act="stmtOpen" data-acc="bank"><div class="grow t">${t('Company bank')}</div><div class="amt">${money(ct.bank)}</div></button>
-    <div class="item" style="cursor:default"><div class="grow t">${t('Total cash + bank')}</div><div class="amt">${money(ct.all)}</div></div></div>
+    <div class="item" style="cursor:default"><div class="grow t">${t('Total cash + bank')}</div><div class="amt">${money(ct.all)}</div></div>
+    ${loanTotal() ? `<button class="item" data-act="go" data-p="cash"><div class="grow t">${t('Loans given (to get back)')}</div><div class="amt">${money(loanTotal())}</div></button>` : ''}</div>
   <h3>${t('Customer balances')}</h3>
   <div class="stats" style="margin-top:0">
     ${stat(money(cu.dep), t('Refundable deposits held (owed back to customers)'))}
@@ -1467,10 +1513,14 @@ function vStock() {
 function txLabel(x) {
   const c = x.cust ? custById(x.cust) : null;
   const M = { sale: 'Refill payment', payment: 'Refill payment', refill: 'Refill payment', expense: 'Expense', capital: 'Investment', drawing: 'Withdrawal', handover: 'Transfer', transfer: 'Transfer',
-    deposit: 'Deposit received', refund: 'Deposit refunded', opening: 'Opening balance', supplierPay: 'Supplier payment', charge: 'Lost jar charge', depApplied: 'Due paid from deposit', writeOff: 'Due written off' };
+    deposit: 'Deposit received', refund: 'Deposit refunded', opening: 'Opening balance', supplierPay: 'Supplier payment', charge: 'Lost jar charge', depApplied: 'Due paid from deposit', writeOff: 'Due written off', loanOut: 'Loan given', loanIn: 'Loan paid back', capital: 'Share capital', income: 'Other income' };
   let a = t(M[x.type] || x.type);
   if (x.type === 'expense') a += ': ' + t(x.cat || 'Other') + (x.credit ? ` (${t('on credit')})` : '');
   if (x.type === 'supplierPay') a += ': ' + supName(x.supplier);
+  if (x.type === 'loanOut' || x.type === 'loanIn') a += ': ' + (x.borrower || '') + (x.existing ? ` (${t('before app')})` : '');
+  if (x.type === 'capital') a += ': ' + (x.investor || '');
+  if (x.type === 'income') a += ': ' + (x.cat || '');
+  if (x.oldJars) a += ` (${t('old jars')})`;
   if (c) a += ' — ' + c.name;
   const legs = txLegs({ ...x, void: false });
   const from = legs.filter(l => l[1] < 0).map(l => accName(l[0])), to = legs.filter(l => l[1] > 0).map(l => accName(l[0]));
@@ -1493,8 +1543,11 @@ function vCash() {
    <button class="btn ghost" data-act="moneyForm" data-type="expense">${t('Pay expense')}</button>
    <button class="btn ghost" data-act="moneyForm" data-type="supplier">${t('Pay supplier / factory')}</button>
    <button class="btn ghost" data-act="moneyForm" data-type="bankOut">${t('Bank withdrawal to partner')}</button>
+   <button class="btn ghost" data-act="loanForm" data-type="give">${t('Give a loan')}</button>
+   <button class="btn ghost" data-act="loanForm" data-type="repay">${t('Loan paid back')}</button>
    <button class="btn ghost" data-act="go" data-p="stmt" style="grid-column:1/-1">${t('Statements (bank / partner)')}</button>
   </div>
+  ${loanTotal() ? `<h3>${t('Loans given (to get back)')}</h3><div class="list">${Object.entries(S.meta.loans || {}).filter(([, L]) => L && num(L.amt)).map(([k, L]) => `<div class="item" style="cursor:default"><div class="grow t">${esc(L.name || k)}</div><div class="amt">${money(L.amt)}</div></div>`).join('')}</div>` : ''}
   <h3 class="row"><span class="grow">${t('Transactions')}</span>
    <select data-act="tacc" aria-label="${t('Account')}" class="btn ghost sm"><option value="">${t('All')}</option><option value="bank" ${R.tacc === 'bank' ? 'selected' : ''}>${t('Company bank')}</option>${partnerOpts(R.tacc)}</select></h3>
   <div class="list">${txs.length ? txs.map(x => { const [a, flow] = txLabel(x); const linked = x.ord || x.move || x.close;
@@ -1512,6 +1565,7 @@ function vMore() {
    <button class="item" data-act="go" data-p="check"><div class="grow t">${t('Check balances')}</div></button>
    <button class="item" data-act="go" data-p="queue"><div class="grow t">${t('Sync status')}</div><span class="chip">${esc(syncState()[1])}</span></button>
    <button class="item" data-act="go" data-p="log"><div class="grow t">${t('Activity log')}</div></button>
+   <button class="item" data-act="histPage"><div class="grow t">${t('Full history import')}</div></button>
    <button class="item" data-act="signupLink"><div class="grow t">🌐 ${t('Link for new customers')}</div></button>
    <button class="item" data-act="go" data-p="settings"><div class="grow t">${t('Settings')}</div></button>
   </div>
@@ -1577,10 +1631,11 @@ async function afterCutoff(cutoff) {
 }
 function setupDefaults() {
   const su = S.meta.setup || {}; const ct = cashTotals(); const st = stockDoc();
-  const cash = { bank: su.cash?.bank ?? ct.bank }; for (const p of settings().partners) cash[p.id] = su.cash?.[p.id] ?? ct.per[p.id];
-  const stock = {}; for (const w of settings().warehouses) { stock[`wh.${w.id}.filled`] = su.stock?.[`wh.${w.id}.filled`] ?? num(st.wh?.[w.id]?.filled); stock[`wh.${w.id}.empty`] = su.stock?.[`wh.${w.id}.empty`] ?? num(st.wh?.[w.id]?.empty); }
-  stock.factory = su.stock?.factory ?? num(st.factory);
-  return { cutoff: su.cutoff || Date.now(), cash, stock };
+  const cash = { bank: ct.bank }; for (const p of settings().partners) cash[p.id] = ct.per[p.id];
+  const stock = {}; for (const w of settings().warehouses) { stock[`wh.${w.id}.filled`] = num(st.wh?.[w.id]?.filled); stock[`wh.${w.id}.empty`] = num(st.wh?.[w.id]?.empty); }
+  stock.factory = num(st.factory);
+  // boxes start with today's balances and a cut-off of now, so untouched boxes never post anything
+  return { cutoff: Date.now(), cash, stock };
 }
 function vSetup() {
   const su = S.meta.setup; const d = R.setupForm || setupDefaults(); const cutIso = isoDay(d.cutoff); const cutTime = new Date(d.cutoff + KTM_OFF).toISOString().slice(11, 16);
@@ -1811,6 +1866,48 @@ const accOpts = (sel, opts = {}) => {
   return list.filter(([k]) => !(opts.noBank && k === 'bank')).map(([k, l]) => `<option value="${k}" ${k === sel ? 'selected' : ''}>${esc(l)}</option>`).join('') + (opts.credit ? `<option value="credit">${t('On credit (pay supplier later)')}</option>` : '');
 };
 const amtField = (name, label, v = '', extra = '') => `<label class="f"><span>${label}</span><input name="${name}" type="number" inputmode="decimal" min="0" step="0.01" value="${v}" ${extra}></label>`;
+// Full history import: a prepared file of past records (customers, deliveries, money, stock) posted
+// one by one in date order. Practice mode = safe test on this device only.
+async function historyImport(file) {
+  let H; try { H = JSON.parse(await file.text()); } catch (e) { toast(t('This is not a history file.')); return; }
+  if (!H || H.kind !== 'ozen-history' || !Array.isArray(H.ops)) { toast(t('This is not a history file.')); return; }
+  const already = (S.meta.settings || {}).histImport === H.id;   // same file started before: continue where it stopped
+  if ((S.customers.length || S.txs.length) && !already) { toast(t('The app must be empty first. Use “Empty the app” below.')); return; }
+  if (!DEMO && !navigator.onLine) { toast(t('Connect to the internet first.')); return; }
+  if (!confirm(tf('Import {n} records from {f}?', { n: H.ops.length, f: file.name }))) return;
+  // practice mode: use the real partner and warehouse names from the file
+  if (DEMO && H.settings) await post('settings', { s: H.settings }, { quiet: true });
+  // '@samir', '@naikap'… in the file are matched to this app's partners and warehouses by name
+  const map = {}; const missing = [];
+  for (const [tok, name] of Object.entries(H.people || {})) { const p = settings().partners.find(x => String(x.name || '').toLowerCase().includes(name)); if (p) map['@' + tok] = p.id; else missing.push(name); }
+  for (const [tok, name] of Object.entries(H.places || {})) { const w = settings().warehouses.find(x => String(x.name || '').toLowerCase().includes(name)); if (w) map['@' + tok] = w.id; else missing.push(name); }
+  if (missing.length) { alert(t('These names are not in Settings:') + ' ' + missing.join(', ')); return; }
+  const sub = v => typeof v === 'string' && v.startsWith('@') ? (map[v] || v) : v;
+  if (!already) await post('settings', { s: { histImport: H.id } }, { quiet: true });
+  const ids = {}; const box = $('#histProg'); HIST = true; let i = 0;
+  try {
+    for (const op of H.ops) {
+      i++; const a = { ...op.args, opId: 'h' + (H.id || 'x') + '_' + i };
+      for (const k of Object.keys(a)) a[k] = sub(a[k]);
+      for (const k of ['cust']) if (typeof a[k] === 'string' && a[k].startsWith('k:')) a[k] = ids[a[k]];
+      if (op.action === 'customerSave' && op.key) ids[op.key] = 'c_' + a.opId;   // fixed id, so a stopped import can continue
+      const r = await post(op.action, a, { quiet: true });
+      if (r === 'queued') throw new Error(t('Internet was lost. Connect and press Import again — it continues from here.'));
+      if (r === false) throw new Error(`#${i} ${op.action} ${op.label || ''}`);
+      if (box && i % 5 === 0) box.textContent = tf('{i} of {n} done…', { i, n: H.ops.length });
+    }
+  } catch (e) { HIST = false; if (box) box.textContent = t('Stopped at') + ' ' + e.message; alert(t('Stopped at') + ' ' + e.message); return; }
+  HIST = false; if (box) box.textContent = t('All records imported.');
+  closeSheet(); R.check = await reconcile(); R.page = 'check'; render();
+  toast(t('All records imported.'));
+}
+async function emptyApp() {
+  if (!confirm(t('This deletes every customer, delivery and money record in the app. Download a backup first. Continue?'))) return;
+  if (prompt(t('Type DELETE to confirm')) !== 'DELETE') return;
+  if (!DEMO) { await S.store.txn(async () => { const o = Ops(); o.upd('meta', 'settings', { setupLocked: false }); return o; }); }
+  closeSheet(); await S.store.wipe();
+  if (DEMO) { R.page = 'more'; render(); toast(t('The app is empty. Now import the history file.')); }
+}
 function linkForm(cid) {
   const c = custById(cid); if (!c) return;
   if (!c.link) { openSheet(`${t('Order link (WhatsApp)')} — ${c.name}`, `<p class="small">${t('Create a personal link. The customer opens it and orders without calling; orders appear in Orders → Online orders.')}</p>
@@ -1970,6 +2067,23 @@ function cCalc(init) {
   $('#closeOut').textContent = [lost ? (f.lostConfirm.checked ? tf('{n} jars marked lost (removed from owned jars).', { n: lost }) : tf('{n} jars not returned — tick "mark as lost" or collect them first.', { n: lost })) : '',
     tf('Refund {r}. Due left {d}.', { r: money(f.refund.value), d: money(left - wo) }), left - wo > 0 ? t('The due stays on the customer and in dashboard dues.') : ''].filter(Boolean).join(' ');
 }
+const loanTotal = () => Object.values(S.meta.loans || {}).reduce((a, L) => a + (L && typeof L === 'object' ? num(L.amt) : 0), 0);
+function loanForm(type) {
+  const loans = Object.entries(S.meta.loans || {}).filter(([, L]) => L && num(L.amt) > 0);
+  if (type === 'repay') {
+    if (!loans.length) { toast(t('No loans to get back.')); return; }
+    openSheet(t('Loan paid back'), `<label class="f"><span>${t('Who paid back')}</span><select name="key">${loans.map(([k, L]) => `<option value="${k}">${esc(L.name)} — ${money(L.amt)}</option>`).join('')}</select></label>
+      ${amtField('amount', t('Amount'))}<label class="f"><span>${t('Money received in')}</span><select name="to">${accOpts('bank')}</select></label>${dateField()}<label class="f"><span>${t('Note')}</span><input name="note"></label>`,
+      f => post('loanRepay', f));
+    return;
+  }
+  openSheet(t('Give a loan'), `<label class="f"><span>${t('Given to (company / person)')}</span><input name="who" maxlength="60" list="loanNames"><datalist id="loanNames">${loans.map(([, L]) => `<option value="${esc(L.name)}">`).join('')}</datalist></label>
+    ${amtField('amount', t('Amount'))}
+    <label class="row small" style="margin:0 0 10px"><input type="checkbox" name="existing" data-act="loanOld"> ${t('Given before the app — the money already left (do not reduce bank or cash now)')}</label>
+    <label class="f" id="loanFrom"><span>${t('Paid from')}</span><select name="from">${accOpts('bank')}</select></label>${dateField()}<label class="f"><span>${t('Note')}</span><input name="note"></label>
+    <p class="small muted">${t('A loan is not an expense. It is shown as money to get back until it is paid back.')}</p>`,
+    f => post('loanGive', { ...f, existing: !!f.existing }));
+}
 function moneyForm(type) {
   const cats = ['Fuel', 'Filling', 'Jar purchase', 'Labels', 'Rent', 'Salary', 'Vehicle repair', 'Other']; const pay = payDoc();
   const titles = { toBank: 'Deposit cash to bank', p2p: 'Give cash to another partner', bankOut: 'Bank withdrawal to partner', expense: 'Pay expense', supplier: 'Pay supplier / factory' };
@@ -2015,7 +2129,7 @@ async function runUndo(col, id, label) { if (!confirm(t('Undo this entry?') + (l
 document.addEventListener('click', async e => {
   const el = e.target.closest('[data-act]'); if (!el) return;
   const a = el.dataset.act;
-  if (['search', 'omine', 'tacc', 'mapLink', 'pkg', 'dcalc', 'ordCust', 'bsd', 'cfind', 'impFile', 'credSel'].includes(a)) return;
+  if (['search', 'omine', 'tacc', 'mapLink', 'pkg', 'dcalc', 'ordCust', 'bsd', 'cfind', 'impFile', 'credSel', 'loanOld'].includes(a)) return;
   if (a === 'ccalc') { setTimeout(() => cCalc(false), 0); return; }
   if (el.tagName === 'A') e.preventDefault();
   const id = el.dataset.id;
@@ -2037,6 +2151,7 @@ document.addEventListener('click', async e => {
     case 'custPdf': custPdf(custById(el.dataset.c)); break;
     case 'custCsv': { const c = custById(el.dataset.c); downloadCsv(`statement_${c.name}.csv`, [STMT_HEAD(), ...await custStatement(c)]); break; }
     case 'moneyForm': moneyForm(el.dataset.type); break;
+    case 'loanForm': loanForm(el.dataset.type); break;
     case 'stockForm': stockForm(el.dataset.type); break;
     case 'fillBill': { const f = el.closest('form'); const bill = num(f.qty.value) * num($('#billOut').dataset.rate); f.refillCash.value = ''; f.refillBank.value = ''; f[el.dataset.to].value = bill; dCalc(); break; }
     case 'noLoc': toast(t('No location saved')); break;
@@ -2059,6 +2174,15 @@ document.addEventListener('click', async e => {
     case 'pref': P[el.dataset.k] = el.dataset.v; saveP(); applyTheme(); render(); break;
     case 'printRep': printHtml(R.repPrint); break;
     case 'older': loadOlder(el.dataset.col); break;
+    case 'histPage': openSheet(t('Full history import'), `<p class="small">${t('Imports every past record (customers, deliveries, deposits, expenses, bank) with its own date from a prepared history file.')}</p>
+      <div class="alert ${DEMO ? 'ok' : 'warn'} small">${DEMO ? t('Practice mode: this is a safe test on this device only. The live app is not touched.') : t('LIVE app: try it in practice mode first. Download a backup before emptying.')}</div>
+      <button type="button" class="btn ghost" data-act="backup" style="width:100%">${t('Download backup')}</button>
+      <button type="button" class="btn ghost" data-act="emptyApp" style="width:100%;margin-top:8px;color:var(--bad)">${t('Empty the app')}</button>
+      <label class="f" style="margin-top:12px"><span>${t('History file (.json)')}</span><input type="file" accept=".json,application/json" id="histFile"></label>
+      <button type="button" class="btn" data-act="histRun" style="width:100%">${t('Import history')}</button>
+      <p class="small muted" id="histProg"></p>`, null); break;
+    case 'emptyApp': await emptyApp(); break;
+    case 'histRun': { const f = $('#histFile')?.files?.[0]; if (!f) { toast(t('Choose the history file.')); break; } await historyImport(f); break; }
     case 'linkForm': linkForm(el.dataset.c); break;
     case 'linkNew': { closeSheet(); const tk = await post('linkCreate', { cust: el.dataset.c }); if (tk) setTimeout(() => linkForm(el.dataset.c), 300); break; }
     case 'copyLink': try { await navigator.clipboard.writeText(el.dataset.url); toast(t('Link copied')); } catch (x) { prompt(t('Copy this link'), el.dataset.url); } break;
@@ -2145,6 +2269,7 @@ document.addEventListener('change', async e => {
   if (el.dataset.act === 'omine') { R.omine = el.checked; render(); }
   if (el.dataset.act === 'tacc') { R.tacc = el.value; render(); }
   if (el.dataset.act === 'pkg') { const x = $('#expDep'); if (x) x.textContent = t('Expected deposit') + ': ' + money(depFor(el.value)); }
+  if (el.dataset.act === 'loanOld') { const b = $('#loanFrom'); if (b) b.style.display = el.checked ? 'none' : ''; }
   if (el.dataset.act === 'credSel') { const b = $('#supBox'); if (b) b.style.display = el.value === 'credit' ? '' : 'none'; }
   if (el.dataset.act === 'ccalc') cCalc(false);
   if (el.dataset.act === 'bsd') {
