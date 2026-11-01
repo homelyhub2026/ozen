@@ -386,6 +386,7 @@ Object.assign(NE, {"{n} customers. Tap a name to open the profile.": "{n} ग्
 Object.assign(L, {"log_capital": ["Share capital {amt} from {p}", "{p} बाट {amt} सेयर लगानी"], "log_income": ["Other income {amt}: {cat}", "अन्य आम्दानी {amt}: {cat}"]});
 Object.assign(NE, {"Filled now": "अहिले भरिएको", "Empty now": "अहिले खाली", "7 days": "७ दिन", "30 days": "३० दिन", "Jars delivered from here": "यहाँबाट डेलिभर भएका जार", "deliveries": "डेलिभरी", "Empties returned here": "यहाँ फिर्ता आएका खाली जार", "Collected at delivery": "डेलिभरीमै उठेको", "Deliveries": "डेलिभरी", "Stock movements": "स्टक आवतजावत", "empties back": "खाली फिर्ता", "No deliveries from this warehouse in this period.": "यो अवधिमा यो गोदामबाट डेलिभरी छैन।", "No stock movements here in this period.": "यो अवधिमा यहाँ स्टक आवतजावत छैन।"});
 Object.assign(NE, {"Table": "तालिका", "List": "सूची", "Date (BS)": "मिति (वि.सं.)", "Date (AD)": "मिति (ई.सं.)", "Time": "समय", "Phone": "फोन", "Area": "ठाउँ", "Empties back": "खाली फिर्ता", "Unpaid": "नतिरेको", "Delivered by": "डेलिभर गर्ने", "Entry": "विवरण", "Entered by": "लेख्ने", "Note": "नोट"});
+Object.assign(NE, {"Deposit history": "धरौटी इतिहास", "date-wise": "मिति अनुसार", "Loading all records…": "सबै रेकर्ड लोड हुँदैछ…", "Received in this period": "यो अवधिमा आएको", "of which old jars": "जसमध्ये पुरानो जार", "Refunded in this period": "यो अवधिमा फिर्ता", "Used for refill due": "बाँकीमा कटाएको", "Received": "आएको", "Refunded / used": "फिर्ता / कटाएको", "Received (old jars)": "आएको (पुरानो जार)", "Refunded": "फिर्ता दिएको", "Old jars": "पुरानो जार", "Amount": "रकम", "Cash / bank": "नगद / बैंक", "No deposit records in this period.": "यो अवधिमा धरौटीको रेकर्ड छैन।"});
 const t = k => P.lang === 'ne' ? (NE[k] ?? k) : k;
 const tf = (k, v) => t(k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
 const lg = (k, v) => { const p = L[k]; if (!p) return k; return (P.lang === 'ne' ? p[1] : p[0]).replace(/\{(\w+)\}/g, (_, x) => { const val = v?.[x]; return x === 'amt' ? money(val) : ((x === 'kind' || x === 'w' || x === 'w2' || x === 'cat') ? t(val ?? '') : (val ?? '')); }); };
@@ -1260,10 +1261,10 @@ function render() {
   const s = settings(); const m = me();
   const pages = ['home', 'customers', 'orders', 'stock', 'cash', 'more'];
   const names = { home: 'Home', customers: 'Customers', orders: 'Orders', stock: 'Stock', cash: 'Cash', more: 'More' };
-  const V = { wh: vWarehouse, home: vHome, customers: vCustomers, cust: vCustomer, orders: vOrders, stock: vStock, cash: vCash, more: vMore, report: vReport, log: vLog, settings: vSettings, setup: vSetup, stmt: vStatement, check: vCheck, queue: vQueue };
+  const V = { deps: vDeposits, wh: vWarehouse, home: vHome, customers: vCustomers, cust: vCustomer, orders: vOrders, stock: vStock, cash: vCash, more: vMore, report: vReport, log: vLog, settings: vSettings, setup: vSetup, stmt: vStatement, check: vCheck, queue: vQueue };
   let body = '';
   try { body = (V[R.page] || vHome)(); } catch (e) { console.error(e); body = `<div class="alert bad">${esc(e.message)}</div>`; }
-  const navOn = R.page === 'wh' ? 'stock' : R.page === 'cust' ? 'customers' : ['report', 'log', 'settings', 'setup', 'stmt', 'check', 'queue'].includes(R.page) ? 'more' : R.page;
+  const navOn = R.page === 'deps' ? 'customers' : R.page === 'wh' ? 'stock' : R.page === 'cust' ? 'customers' : ['report', 'log', 'settings', 'setup', 'stmt', 'check', 'queue'].includes(R.page) ? 'more' : R.page;
   const scrollY = window.scrollY; const keep = app.dataset.page === R.page + (R.cust || '');
   const [sk, sl] = syncState();
   app.innerHTML = `
@@ -1345,7 +1346,7 @@ function vCustomers() {
   if (R.cfilter === 'mine') cs = cs.filter(c => c.partner === me().id);
   if (q) cs = cs.filter(c => [c.name, c.phone, c.area, c.address].join(' ').toLowerCase().includes(q));
   cs.sort((a, b) => (a.area || '').localeCompare(b.area || '') || a.name.localeCompare(b.name));
-  return `<h2 class="row"><span class="grow">${t('Customers')} <span class="muted small">(${S.customers.filter(c => c.active !== false).length})</span></span><button class="btn sm" data-act="custForm">+ ${t('Add customer')}</button></h2>
+  return `<h2 class="row"><span class="grow">${t('Customers')} <span class="muted small">(${S.customers.filter(c => c.active !== false).length})</span></span><button class="btn ghost sm" data-act="go" data-p="deps" style="margin-right:6px">${t('Deposit history')}</button><button class="btn sm" data-act="custForm">+ ${t('Add customer')}</button></h2>
   <input class="search" type="search" placeholder="${t('Search name, phone or area')}" value="${esc(R.q)}" data-act="search" aria-label="${t('Search name, phone or area')}">
   <div class="seg" style="margin:10px 0">
    ${[['active', 'All'], ['mine', 'Mine only'], ['due', 'Due'], ['closed', 'Closed']].map(([k, l]) => `<button data-act="cfilter" data-v="${k}" class="${R.cfilter === k ? 'on' : ''}">${t(l)}</button>`).join('')}
@@ -1526,6 +1527,63 @@ async function whExport(kind) {
     ws['!cols'] = head.map((h, i) => ({ wch: Math.min(40, Math.max(String(h).length, ...rows.map(r => String(r[i] ?? '').length)) + 2) }));
     const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, tab === 'del' ? 'Deliveries' : 'Stock'); XLSX.writeFile(wb, name + '.xlsx');
   } catch (e) { downloadCsv(name + '.csv', [head, ...rows]); }
+}
+
+// ---- deposit history: every deposit received / refunded / used for dues, date-wise, with PDF & Excel ----
+async function ensureAllTxs() {
+  if (DEMO || R.allTxsAt > Date.now() - 10 * 60000 || R.txLoading) return;
+  R.txLoading = true; try { R.extra.txs = await S.store.allOf('txs'); R.allTxsAt = Date.now(); } catch (e) {} R.txLoading = false; render();
+}
+const DEP_TYPES = ['deposit', 'refund', 'depApplied'];
+function depData() {
+  const rg = R.depRange || 'all'; const d0 = dayStart(Date.now());
+  const from = rg === 'today' ? d0 : rg === 'week' ? d0 - 6 * DAY : rg === 'month' ? d0 - 29 * DAY : 0;
+  const q = (R.depQ || '').toLowerCase();
+  const xs = allOf('txs').filter(x => DEP_TYPES.includes(x.type) && !x.void && num(x.at) >= from && x.cust)
+    .filter(x => { if (!q) return true; const c = custById(x.cust) || {}; return [c.name, c.phone, c.area].join(' ').toLowerCase().includes(q); })
+    .filter(x => (R.depKind || 'all') === 'all' || (R.depKind === 'in' ? x.type === 'deposit' : x.type !== 'deposit'))
+    .sort((a, b) => b.at - a.at);
+  const sum = xs.reduce((a, x) => { if (x.type === 'deposit') { a.inn += num(x.amount); if (x.oldJars) a.old += num(x.amount); } else if (x.type === 'refund') a.ref += num(x.amount); else a.used += num(x.amount); return a; }, { inn: 0, old: 0, ref: 0, used: 0 });
+  return { xs, sum, label: { today: t('Today'), week: t('7 days'), month: t('30 days'), all: t('All') }[rg] };
+}
+const depKindLabel = x => x.type === 'deposit' ? (x.oldJars ? t('Received (old jars)') : t('Received')) : x.type === 'refund' ? t('Refunded') : t('Used for refill due');
+const depVia = x => x.type === 'deposit' ? (x.oldJars ? t('Old jars') : x.to === 'bank' ? t('Bank') : x.to ? `${t('Cash')} — ${accName(x.to)}` : '') : x.type === 'refund' ? (x.from === 'bank' ? t('Bank') : x.from ? `${t('Cash')} — ${accName(x.from)}` : '') : '';
+const DEP_HEAD = () => [t('Date (BS)'), t('Date (AD)'), t('Time'), t('Customer'), t('Phone'), t('Area'), t('Entry'), t('Amount'), t('Cash / bank'), t('Entered by'), t('Note')];
+const depRow = x => { const c = custById(x.cust) || {}; return [bsStr(x.at), isoDay(x.at), hhmm(x.at), c.name || '', c.phone || '', c.area || '', depKindLabel(x), (x.type === 'deposit' ? '' : '-') + num(x.amount), depVia(x), partnerName(x.by), x.note || '']; };
+function vDeposits() {
+  ensureAllTxs();
+  const { xs, sum } = depData(); const rg = R.depRange || 'all'; const kind = R.depKind || 'all';
+  return `<button class="btn ghost sm" data-act="go" data-p="customers">← ${t('Customers')}</button>
+  <h2>${t('Deposit history')}</h2>
+  ${!DEMO && !R.allTxsAt ? `<div class="alert warn small">${t('Loading all records…')}</div>` : ''}
+  <div class="stats">
+   ${stat(money(custTotals().dep), t('Refundable deposits held (owed back to customers)'), '', 'data-act="custList" data-k="dep" role="button" style="cursor:pointer"')}
+   ${stat(money(sum.inn), `${t('Received in this period')}${sum.old ? `<br><span class="small muted">${t('of which old jars')}: ${money(sum.old)}</span>` : ''}`, 'accent2')}
+   ${stat(money(sum.ref), t('Refunded in this period'))}
+   ${stat(money(sum.used), t('Used for refill due'))}
+  </div>
+  <div class="seg">${[['today', 'Today'], ['week', '7 days'], ['month', '30 days'], ['all', 'All']].map(([k, l]) => `<button data-act="depRange" data-v="${k}" class="${rg === k ? 'on' : ''}">${t(l)}</button>`).join('')}</div>
+  <div class="seg">${[['all', 'All'], ['in', 'Received'], ['out', 'Refunded / used']].map(([k, l]) => `<button data-act="depKind" data-v="${k}" class="${kind === k ? 'on' : ''}">${t(l)}</button>`).join('')}</div>
+  <div class="row" style="gap:8px;margin:8px 0;flex-wrap:wrap"><input class="search" style="flex:1;margin:0" type="search" placeholder="${t('Search name, phone or area')}" value="${esc(R.depQ || '')}" data-act="depQ">
+   <button class="btn ghost sm" data-act="depPdf">PDF</button><button class="btn ghost sm" data-act="depXls">Excel</button></div>
+  ${xs.length ? `<div class="scroll"><table class="t xl"><thead><tr>${DEP_HEAD().map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>
+   ${xs.map(x => { const r = depRow(x); return `<tr data-act="openCust" data-id="${x.cust}" style="cursor:pointer">${r.map((v, i) => `<td${i === 7 ? ' class="n"' : ''}>${i === 3 ? `<a href="#" data-act="openCust" data-id="${x.cust}">${esc(v)}</a>` : i === 7 ? `<b style="color:${x.type === 'deposit' ? '#2f9a43' : '#c53a3a'}">${esc(money(Math.abs(num(v))))}</b>` : esc(v)}</td>`).join('')}</tr>`; }).join('')}
+   </tbody></table></div>` : `<div class="empty">${t('No deposit records in this period.')}</div>`}
+  ${moreBtn('txs')}`;
+}
+async function depExport(kind) {
+  const { xs, sum, label } = depData(); const rows = xs.map(depRow).reverse(); const head = DEP_HEAD();
+  const title = `${t('Deposit history')} (${label})`;
+  if (kind === 'pdf') {
+    printHtml(`<h1>${esc(title)}</h1><div class="meta">${t('Refundable deposits held (owed back to customers)')}: <b>${money(custTotals().dep)}</b><br>${t('Received in this period')}: ${money(sum.inn)}${sum.old ? ` (${t('of which old jars')}: ${money(sum.old)})` : ''} · ${t('Refunded in this period')}: ${money(sum.ref)} · ${t('Used for refill due')}: ${money(sum.used)}</div>
+      <table><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(v => `<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`);
+    return;
+  }
+  const name = `deposit_history_${isoDay(Date.now())}`;
+  try { await loadXlsx(); const ws = XLSX.utils.aoa_to_sheet([[title], [], head, ...rows.map(r => r.map((v, i) => i === 7 ? num(v) : v))]);
+    ws['!cols'] = head.map((h, i) => ({ wch: Math.min(40, Math.max(String(h).length, ...rows.map(r => String(r[i] ?? '').length)) + 2) }));
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Deposits'); XLSX.writeFile(wb, name + '.xlsx'); }
+  catch (e) { downloadCsv(name + '.csv', [head, ...rows]); }
 }
 // ---- one warehouse: what went out (deliveries) and what moved in/out (stock), with a date range ----
 function vWarehouse() {
@@ -1995,7 +2053,7 @@ function custList(k) {
   if (!L) return;
   const rows = S.customers.filter(L[1]).sort((a, b) => L[2](b) - L[2](a));
   const total = rows.reduce((a, c) => a + L[2](c), 0);
-  openSheet(`${L[0]} — ${k === 'held' ? total + ' ' + t('jars') : money(total)}`, rows.length ? `<p class="small muted">${tf('{n} customers. Tap a name to open the profile.', { n: rows.length })}</p>
+  openSheet(`${L[0]} — ${k === 'held' ? total + ' ' + t('jars') : money(total)}`, rows.length ? `${k === 'dep' ? `<button type="button" class="btn ghost sm" data-act="go" data-p="deps" style="width:100%;margin-bottom:8px">📅 ${t('Deposit history')} (${t('date-wise')}) →</button>` : ''}<p class="small muted">${tf('{n} customers. Tap a name to open the profile.', { n: rows.length })}</p>
     <div class="list">${rows.map(c => `<button type="button" class="item" data-act="openCust" data-id="${c.id}"><div class="grow"><div class="t">${esc(c.name)}</div><div class="s">${esc(c.area || '')}${c.phone ? ' · ' + esc(c.phone) : ''}</div></div><div class="amt">${L[3](c)}</div></button>`).join('')}</div>`
     : `<p class="muted">${t('Nobody right now.')}</p>`, null);
 }
@@ -2235,7 +2293,7 @@ async function runUndo(col, id, label) { if (!confirm(t('Undo this entry?') + (l
 document.addEventListener('click', async e => {
   const el = e.target.closest('[data-act]'); if (!el) return;
   const a = el.dataset.act;
-  if (['search', 'omine', 'tacc', 'mapLink', 'pkg', 'dcalc', 'ordCust', 'bsd', 'cfind', 'impFile', 'credSel', 'loanOld'].includes(a)) return;
+  if (['search', 'omine', 'tacc', 'mapLink', 'pkg', 'dcalc', 'ordCust', 'bsd', 'cfind', 'impFile', 'credSel', 'loanOld', 'depQ'].includes(a)) return;
   if (a === 'ccalc') { setTimeout(() => cCalc(false), 0); return; }
   if (el.tagName === 'A') e.preventDefault();
   const id = el.dataset.id;
@@ -2294,6 +2352,10 @@ document.addEventListener('click', async e => {
     case 'whRange': R.whRange = el.dataset.v; render(); break;
     case 'whTab': R.whTab = el.dataset.v; render(); break;
     case 'whView': R.whView = el.dataset.v; render(); break;
+    case 'depRange': R.depRange = el.dataset.v; render(); break;
+    case 'depKind': R.depKind = el.dataset.v; render(); break;
+    case 'depPdf': await depExport('pdf'); break;
+    case 'depXls': await depExport('xls'); break;
     case 'whPdf': await whExport('pdf'); break;
     case 'whXls': await whExport('xls'); break;
     case 'todayList': todayList(el.dataset.k); break;
@@ -2372,6 +2434,7 @@ document.addEventListener('click', async e => {
 });
 document.addEventListener('input', e => {
   const el = e.target;
+  if (el.dataset.act === 'depQ') { R.depQ = el.value; const pos = el.selectionStart; render(); const q = document.querySelector('[data-act="depQ"]'); if (q) { q.focus(); q.setSelectionRange(pos, pos); } }
   if (el.dataset.act === 'search') { R.q = el.value; if ($('#clist')) { const pos = el.selectionStart; render(); const s = $('.search'); if (s) { s.focus(); s.setSelectionRange(pos, pos); } } }
   if (el.type === 'date') updBs();
   if (el.dataset.act === 'dcalc') dCalc();
@@ -2567,7 +2630,7 @@ async function boot() {
 }
 if ('serviceWorker' in navigator && location.protocol === 'https:' && !DEMO) navigator.serviceWorker.register('sw.js').catch(() => {});
 // ---- automatic update: when a new index.html is uploaded to GitHub, every open app switches to it by itself ----
-const BUILD = '2026-11-01b';
+const BUILD = '2026-11-02a';
 async function checkUpdate() {
   if (DEMO || !/^https?:$/.test(location.protocol) || !navigator.onLine) return;
   try {
