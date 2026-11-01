@@ -383,6 +383,7 @@ Object.assign(NE, {"Loan given": "सापटी दिएको", "Loan paid b
 Object.assign(L, {"log_loan_out": ["Loan {amt} given to {p}", "{p} लाई {amt} सापटी दिइयो"], "log_loan_in": ["Loan {amt} paid back by {p}", "{p} ले {amt} सापटी फिर्ता गर्‍यो"]});
 Object.assign(NE, {"{n} customers. Tap a name to open the profile.": "{n} ग्राहक। प्रोफाइल खोल्न नाम थिच्नुस्।", "Nobody right now.": "अहिले कोही छैन।", "Nothing yet today.": "आज अहिलेसम्म केही छैन।", "Jars with customers": "ग्राहकसँग भएका जार", "got": "आएको", "Pay supplier / factory": "विक्रेता / फ्याक्ट्रीलाई तिर्नुस्", "A new version of the app is ready. It will load when you finish.":"एपको नयाँ संस्करण आयो। तपाईंको काम सकिएपछि खुल्छ।","Updating the app…":"एप अपडेट हुँदैछ…","Connect to the internet first.":"पहिले इन्टरनेट जोड्नुस्।","Internet was lost. Connect and press Import again — it continues from here.":"इन्टरनेट गयो। जोडेर फेरि “हिसाब हाल्नुस्” थिच्नुस् — यहीँबाट अघि बढ्छ।","The app is empty. Now import the history file.":"एप खाली भयो। अब हिसाब फाइल हाल्नुस्।","These names are not in Settings:":"यी नाम सेटिङमा छैनन्:","Full history import": "पूरा पुरानो हिसाब हाल्नुस्", "Imports every past record (customers, deliveries, deposits, expenses, bank) with its own date from a prepared history file.": "तयार गरिएको फाइलबाट सबै पुराना रेकर्ड (ग्राहक, डेलिभरी, धरौटी, खर्च, बैंक) आफ्नै मितिमा हाल्छ।", "Practice mode: this is a safe test on this device only. The live app is not touched.": "अभ्यास मोड: यो यही फोन/कम्प्युटरमा मात्र सुरक्षित परीक्षण हो। असली एपमा केही हुँदैन।", "LIVE app: try it in practice mode first. Download a backup before emptying.": "असली एप: पहिले अभ्यास मोडमा परीक्षण गर्नुस्। खाली गर्नुअघि ब्याकअप डाउनलोड गर्नुस्।", "Empty the app": "एप खाली गर्नुस्", "History file (.json)": "हिसाब फाइल (.json)", "Import history": "हिसाब हाल्नुस्", "Choose the history file.": "हिसाब फाइल छान्नुस्।", "This is not a history file.": "यो हिसाब फाइल होइन।", "The app must be empty first. Use “Empty the app” below.": "पहिले एप खाली हुनुपर्छ। तलको “एप खाली गर्नुस्” प्रयोग गर्नुस्।", "Import {n} records from {f}?": "{f} बाट {n} रेकर्ड हाल्ने?", "{i} of {n} done…": "{n} मध्ये {i} भयो…", "Stopped at": "यहाँ रोकियो:", "All records imported.": "सबै रेकर्ड हालियो।", "This deletes every customer, delivery and money record in the app. Download a backup first. Continue?": "यसले एपका सबै ग्राहक, डेलिभरी र पैसाका रेकर्ड मेटाउँछ। पहिले ब्याकअप लिनुस्। अगाडि बढ्ने?", "Type DELETE to confirm": "पक्का गर्न DELETE लेख्नुस्", "Share capital": "सेयर लगानी", "Other income": "अन्य आम्दानी", "old jars": "पुरानो जार", "capital": "सेयर लगानी", "income": "अन्य आम्दानी"});
 Object.assign(L, {"log_capital": ["Share capital {amt} from {p}", "{p} बाट {amt} सेयर लगानी"], "log_income": ["Other income {amt}: {cat}", "अन्य आम्दानी {amt}: {cat}"]});
+Object.assign(NE, {"Filled now": "अहिले भरिएको", "Empty now": "अहिले खाली", "7 days": "७ दिन", "30 days": "३० दिन", "Jars delivered from here": "यहाँबाट डेलिभर भएका जार", "deliveries": "डेलिभरी", "Empties returned here": "यहाँ फिर्ता आएका खाली जार", "Collected at delivery": "डेलिभरीमै उठेको", "Deliveries": "डेलिभरी", "Stock movements": "स्टक आवतजावत", "empties back": "खाली फिर्ता", "No deliveries from this warehouse in this period.": "यो अवधिमा यो गोदामबाट डेलिभरी छैन।", "No stock movements here in this period.": "यो अवधिमा यहाँ स्टक आवतजावत छैन।"});
 const t = k => P.lang === 'ne' ? (NE[k] ?? k) : k;
 const tf = (k, v) => t(k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
 const lg = (k, v) => { const p = L[k]; if (!p) return k; return (P.lang === 'ne' ? p[1] : p[0]).replace(/\{(\w+)\}/g, (_, x) => { const val = v?.[x]; return x === 'amt' ? money(val) : ((x === 'kind' || x === 'w' || x === 'w2' || x === 'cat') ? t(val ?? '') : (val ?? '')); }); };
@@ -1201,12 +1202,21 @@ function updBs() {
   });
 }
 function mapsDir(c) {
-  if (c.lat && c.lng) return `https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}`;
-  if (c.mapLink) return c.mapLink;
+  if (c.lat && c.lng) return `https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}&travelmode=driving&dir_action=navigate`;
+  if (c.mapLink) { const ll = parseLatLng(c.mapLink); if (ll) return `https://www.google.com/maps/dir/?api=1&destination=${ll[0]},${ll[1]}&travelmode=driving&dir_action=navigate`;
+    return /^https?:/i.test(c.mapLink) ? c.mapLink : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(c.mapLink); }
   return null;
 }
 function parseLatLng(link) {
-  const m = link.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/) || link.match(/[?&](?:q|query|destination|ll)=(-?\d+\.\d+),\s*(-?\d+\.\d+)/) || link.match(/^\s*(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)\s*$/);
+  link = String(link || '');
+  // 27°41'16.2"N 85°17'37.5"E  (what Google Maps shows when you tap a pin)
+  const d = link.match(/(\d+(?:\.\d+)?)\s*°\s*(\d+(?:\.\d+)?)?\s*['′]?\s*(\d+(?:\.\d+)?)?\s*(?:["″]|'')?\s*([NS])[\s,]+(\d+(?:\.\d+)?)\s*°\s*(\d+(?:\.\d+)?)?\s*['′]?\s*(\d+(?:\.\d+)?)?\s*(?:["″]|'')?\s*([EW])/i);
+  if (d) {
+    const dec = (g, m, s, h) => { const v = Number(g) + Number(m || 0) / 60 + Number(s || 0) / 3600; return (/[SW]/i.test(h) ? -v : v).toFixed(6); };
+    return [dec(d[1], d[2], d[3], d[4]), dec(d[5], d[6], d[7], d[8])];
+  }
+  const m = link.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/) || link.match(/[?&](?:q|query|destination|ll|center)=(?:loc:)?(-?\d+\.\d+),\s*(-?\d+\.\d+)/)
+    || link.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/) || link.match(/geo:(-?\d+\.\d+),(-?\d+\.\d+)/) || link.match(/(-?\d{1,2}\.\d{3,})\s*,\s*(-?\d{1,3}\.\d{3,})/);
   return m ? [m[1], m[2]] : null;
 }
 const waLink = ph => { let d = (ph || '').replace(/\D/g, ''); if (d.length === 10) d = '977' + d; return 'https://wa.me/' + d; };
@@ -1248,10 +1258,10 @@ function render() {
   const s = settings(); const m = me();
   const pages = ['home', 'customers', 'orders', 'stock', 'cash', 'more'];
   const names = { home: 'Home', customers: 'Customers', orders: 'Orders', stock: 'Stock', cash: 'Cash', more: 'More' };
-  const V = { home: vHome, customers: vCustomers, cust: vCustomer, orders: vOrders, stock: vStock, cash: vCash, more: vMore, report: vReport, log: vLog, settings: vSettings, setup: vSetup, stmt: vStatement, check: vCheck, queue: vQueue };
+  const V = { wh: vWarehouse, home: vHome, customers: vCustomers, cust: vCustomer, orders: vOrders, stock: vStock, cash: vCash, more: vMore, report: vReport, log: vLog, settings: vSettings, setup: vSetup, stmt: vStatement, check: vCheck, queue: vQueue };
   let body = '';
   try { body = (V[R.page] || vHome)(); } catch (e) { console.error(e); body = `<div class="alert bad">${esc(e.message)}</div>`; }
-  const navOn = R.page === 'cust' ? 'customers' : ['report', 'log', 'settings', 'setup', 'stmt', 'check', 'queue'].includes(R.page) ? 'more' : R.page;
+  const navOn = R.page === 'wh' ? 'stock' : R.page === 'cust' ? 'customers' : ['report', 'log', 'settings', 'setup', 'stmt', 'check', 'queue'].includes(R.page) ? 'more' : R.page;
   const scrollY = window.scrollY; const keep = app.dataset.page === R.page + (R.cust || '');
   const [sk, sl] = syncState();
   app.innerHTML = `
@@ -1483,6 +1493,30 @@ function orderRow(o) {
     <div class="right"><div class="amt">${money(o.bill)}</div>${num(o.bill) > num(o.paid) ? (num(c.due) > 0 ? `<span class="chip bad">${t('Due')} ${money(Math.min(num(c.due), o.bill - o.paid))}</span>` : '') : ''}</div></button>`;
 }
 
+// ---- one warehouse: what went out (deliveries) and what moved in/out (stock), with a date range ----
+function vWarehouse() {
+  const w = settings().warehouses.find(x => x.id === R.wh); if (!w) { R.page = 'stock'; return vStock(); }
+  const now = stockDoc().wh?.[w.id] || {}; const rg = R.whRange || 'month'; const d0 = dayStart(Date.now());
+  const from = rg === 'today' ? d0 : rg === 'week' ? d0 - 6 * DAY : rg === 'month' ? d0 - 29 * DAY : 0;
+  const os = allOf('orders').filter(o => o.status === 'delivered' && o.wh === w.id && num(o.deliveredAt) >= from).sort((a, b) => b.deliveredAt - a.deliveredAt);
+  const ms = allOf('moves').filter(m => !['custReturn', 'custFix', 'openCust', 'close', 'adopt'].includes(m.type) && !m.void && (m.wh === w.id || m.from === w.id || m.to === w.id) && num(m.at) >= from).sort((a, b) => b.at - a.at);
+  const sum = os.reduce((a, o) => ({ n: a.n + 1, jars: a.jars + num(o.qty), ret: a.ret + num(o.returned), bill: a.bill + num(o.bill), paid: a.paid + num(o.paid) }), { n: 0, jars: 0, ret: 0, bill: 0, paid: 0 });
+  const tab = R.whTab || 'del';
+  return `<button class="btn ghost sm" data-act="go" data-p="stock">← ${t('Stock')}</button>
+  <h2>${esc(w.name)}</h2>
+  <div class="stats">${stat(num(now.filled), t('Filled now'))}${stat(num(now.empty), t('Empty now'))}</div>
+  <div class="seg">${[['today', 'Today'], ['week', '7 days'], ['month', '30 days'], ['all', 'All']].map(([k, l]) => `<button data-act="whRange" data-v="${k}" class="${rg === k ? 'on' : ''}">${t(l)}</button>`).join('')}</div>
+  <div class="stats">
+   ${stat(sum.jars, `${t('Jars delivered from here')} · ${sum.n} ${t('deliveries')}`)}
+   ${stat(sum.ret, t('Empties returned here'))}
+   ${stat(money(sum.bill), t('Refill sales'))}
+   ${stat(money(sum.paid), t('Collected at delivery'), 'accent2')}
+  </div>
+  <div class="seg">${[['del', 'Deliveries'], ['mov', 'Stock movements']].map(([k, l]) => `<button data-act="whTab" data-v="${k}" class="${tab === k ? 'on' : ''}">${t(l)}</button>`).join('')}</div>
+  ${tab === 'del'
+    ? `<div class="list">${os.length ? os.map(o => orderRow(o).replace('</div></div>\n    <div class="right">', ` · ${t('empties back')} ${num(o.returned)}</div></div>\n    <div class="right">`)).join('') : `<div class="empty">${t('No deliveries from this warehouse in this period.')}</div>`}</div>${moreBtn('orders')}`
+    : `<div class="list">${ms.length ? ms.map(m => `<button class="item" data-act="undoMove" data-id="${m.id}"><div class="grow"><div class="t">${esc(moveLabel(m))}</div><div class="s">${esc(partnerName(m.by))} · ${fmtDT(m.at)}</div></div></button>`).join('') : `<div class="empty">${t('No stock movements here in this period.')}</div>`}</div>${moreBtn('moves')}`}`;
+}
 function moveLabel(m) {
   switch (m.type) {
     case 'buy': return lg('log_buy', { n: m.qty, amt: (allOf('txs').find(x => x.id === m.txId) || {}).amount || 0 });
@@ -1499,9 +1533,9 @@ function vStock() {
   return `<h2>${t('Stock')}</h2>
   <div class="scroll"><table class="t">
    <thead><tr><th>${t('Warehouse')}</th><th>${t('Filled')}</th><th>${t('Empty')}</th></tr></thead>
-   <tbody>${settings().warehouses.map(w => `<tr><td>${esc(w.name)}</td><td><b>${num(wh[w.id]?.filled)}</b></td><td>${num(wh[w.id]?.empty)}</td></tr>`).join('')}
+   <tbody>${settings().warehouses.map(w => `<tr data-act="whOpen" data-id="${w.id}" style="cursor:pointer"><td><a href="#" data-act="whOpen" data-id="${w.id}">${esc(w.name)}</a> ›</td><td><b>${num(wh[w.id]?.filled)}</b></td><td>${num(wh[w.id]?.empty)}</td></tr>`).join('')}
    <tr><td>${t('At factory')}</td><td colspan="2"><b>${st.factory}</b></td></tr>
-   <tr><td>${t('Customers hold')}</td><td colspan="2"><b>${st.held}</b></td></tr>
+   <tr data-act="custList" data-k="held" style="cursor:pointer"><td><a href="#" data-act="custList" data-k="held">${t('Customers hold')}</a> ›</td><td colspan="2"><b>${st.held}</b></td></tr>
    <tr><td><b>${t('Total')}</b></td><td colspan="2"><b>${st.sum}</b></td></tr></tbody></table></div>
   <div class="alert ${st.total === st.sum ? 'ok' : 'bad'} small">${t('Count check')}: ${st.total === st.sum ? t('Matches') : t('Does not match') + ` (${st.sum} / ${st.total})`}</div>
   ${SUPPLIERS.some(k => num(pay[k])) ? `<div class="alert warn small">${SUPPLIERS.filter(k => num(pay[k])).map(k => `${t('Owed to')} ${supName(k)}: <b>${money(pay[k])}</b>`).join(' · ')}</div>` : ''}
@@ -2219,7 +2253,10 @@ document.addEventListener('click', async e => {
       <p class="small muted" id="histProg"></p>`, null); break;
     case 'emptyApp': await emptyApp(); break;
     case 'histRun': { const f = $('#histFile')?.files?.[0]; if (!f) { toast(t('Choose the history file.')); break; } await historyImport(f); break; }
-    case 'custList': custList(el.dataset.k); break;
+    case 'custList': closeSheet(); custList(el.dataset.k); break;
+    case 'whOpen': R.page = 'wh'; R.wh = el.dataset.id; R.whTab = 'del'; render(); window.scrollTo(0, 0); break;
+    case 'whRange': R.whRange = el.dataset.v; render(); break;
+    case 'whTab': R.whTab = el.dataset.v; render(); break;
     case 'todayList': todayList(el.dataset.k); break;
     case 'owedList': owedList(); break;
     case 'linkForm': linkForm(el.dataset.c); break;
@@ -2491,7 +2528,7 @@ async function boot() {
 }
 if ('serviceWorker' in navigator && location.protocol === 'https:' && !DEMO) navigator.serviceWorker.register('sw.js').catch(() => {});
 // ---- automatic update: when a new index.html is uploaded to GitHub, every open app switches to it by itself ----
-const BUILD = '2026-10-29d';
+const BUILD = '2026-11-01a';
 async function checkUpdate() {
   if (DEMO || !/^https?:$/.test(location.protocol) || !navigator.onLine) return;
   try {
