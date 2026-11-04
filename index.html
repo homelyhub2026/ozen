@@ -1025,13 +1025,19 @@ const ACT = {
 /* ---------------- posting, offline queue and sync state ---------------- */
 const QKEY = () => 'oz_queue_' + (FIREBASE_CONFIG.projectId || 'demo');
 const Q = { list: store.get(QKEY(), []), save() { store.set(QKEY(), this.list); renderSync(); } };
-const isNetErr = e => !e.rej && !e.dup && (!navigator.onLine || e.code === 'unavailable' || e.code === 'deadline-exceeded');
+// Weak or no internet: any of these means "could not reach the server" → keep the entry on the phone and retry.
+const isNetErr = e => !e.rej && !e.dup && (!navigator.onLine || ['unavailable', 'deadline-exceeded', 'aborted', 'resource-exhausted', 'internal', 'cancelled'].includes(e.code)
+  || /offline|network|timed? ?out|fetch|connection/i.test(String(e.message || '')));
+// A save that takes too long on a weak connection is kept on the phone instead of hanging. Safe: every entry has a
+// fixed id, so if the slow save did reach the server, the retry is recognised as "already saved" and not posted twice.
+let TX_TIMEOUT = 20000;
+const txnTimed = fn => Promise.race([S.store.txn(fn), new Promise((_, rj) => setTimeout(() => rj(Object.assign(new Error('timed out'), { code: 'deadline-exceeded' })), TX_TIMEOUT))]);
 async function post(name, args, opts = {}) {
   const a = { ...args, opId: args.opId || ('op' + uid()) };
   if (!DEMO && !navigator.onLine) { Q.list.push({ name, a, at: Date.now(), by: me().id, status: 'pending' }); Q.save(); if (!opts.quiet) toast(t('Saved on this device — pending sync. It is not posted until it syncs.')); return 'queued'; }
   try {
     S.sync = 'saving'; renderSync();
-    const r = await S.store.txn(T => ACT[name](T, a));
+    const r = await txnTimed(T => ACT[name](T, a));
     S.sync = 'synced'; renderSync(); if (!opts.quiet) toast(t('Saved')); return r === undefined ? true : r;
   } catch (e) {
     S.sync = 'synced'; renderSync();
@@ -1046,7 +1052,7 @@ async function flushQueue() {
   if (flushing || DEMO || !S.store || !navigator.onLine) return; flushing = true;
   try {
     for (const q of Q.list.filter(x => x.status === 'pending')) {
-      try { await S.store.txn(T => ACT[q.name](T, q.a)); q.status = 'done'; }
+      try { await txnTimed(T => ACT[q.name](T, q.a)); q.status = 'done'; Q.save(); }
       catch (e) { if (e.dup) q.status = 'done'; else if (e.rej) { q.status = 'failed'; q.err = e.message; } else break; }
     }
     Q.list = Q.list.filter(x => x.status !== 'done'); Q.save();
@@ -2667,6 +2673,7 @@ document.addEventListener('submit', async e => {
 window.addEventListener('online', () => { S.online = true; flushQueue(); render(); });
 window.addEventListener('offline', () => { S.online = false; render(); });
 setInterval(() => flushQueue(), 30000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') flushQueue(); });
 
 /* ---------------- login ---------------- */
 const BRANDHEAD = () => `<img class="logo" src="${IMG.LOGO}" alt="${esc(settings().company)}"><img class="ozen" src="${IMG.OZEN}" alt="OZEN Processed Drinking Water"><p class="tag">शुद्ध पानी, स्वस्थ जीवन</p>`;
@@ -2799,7 +2806,7 @@ async function boot() {
 }
 if ('serviceWorker' in navigator && location.protocol === 'https:' && !DEMO) navigator.serviceWorker.register('sw.js').catch(() => {});
 // ---- automatic update: when a new index.html is uploaded to GitHub, every open app switches to it by itself ----
-const BUILD = '2026-11-02c';
+const BUILD = '2026-11-04a';
 async function checkUpdate() {
   if (DEMO || !/^https?:$/.test(location.protocol) || !navigator.onLine) return;
   try {
@@ -2807,6 +2814,9 @@ async function checkUpdate() {
     const m = txt.match(/const BUILD = '([^']+)'/); if (!m || m[1] === BUILD) return;
     const busy = document.querySelector('.sheet') || Q.list.some(x => x.status === 'pending') || S.sync === 'saving';
     if (busy) { toast(t('A new version of the app is ready. It will load when you finish.')); setTimeout(checkUpdate, 60000); return; }
+    // put the new version into the phone's copy first, so the reload opens it (the app opens from that copy)
+    try { if (window.caches) { const c = await caches.open('ozen-v5'); const base = location.pathname.replace(/[^/]*$/, '');
+      for (const k of [base, base + 'index.html']) await c.put(new Request(location.origin + k), new Response(txt, { headers: { 'Content-Type': 'text/html; charset=utf-8' } })); } } catch (e) {}
     toast(t('Updating the app…')); setTimeout(() => location.reload(), 1200);
   } catch (e) {}
 }
