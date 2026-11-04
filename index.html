@@ -389,6 +389,7 @@ Object.assign(NE, {"Filled now": "अहिले भरिएको", "Empty no
 Object.assign(NE, {"Table": "तालिका", "List": "सूची", "Date (BS)": "मिति (वि.सं.)", "Date (AD)": "मिति (ई.सं.)", "Time": "समय", "Phone": "फोन", "Area": "ठाउँ", "Empties back": "खाली फिर्ता", "Unpaid": "नतिरेको", "Delivered by": "डेलिभर गर्ने", "Entry": "विवरण", "Entered by": "लेख्ने", "Note": "नोट"});
 Object.assign(NE, {"Deposit history": "धरौटी इतिहास", "date-wise": "मिति अनुसार", "Loading all records…": "सबै रेकर्ड लोड हुँदैछ…", "Received in this period": "यो अवधिमा आएको", "of which old jars": "जसमध्ये पुरानो जार", "Refunded in this period": "यो अवधिमा फिर्ता", "Used for refill due": "बाँकीमा कटाएको", "Received": "आएको", "Refunded / used": "फिर्ता / कटाएको", "Received (old jars)": "आएको (पुरानो जार)", "Refunded": "फिर्ता दिएको", "Old jars": "पुरानो जार", "Amount": "रकम", "Cash / bank": "नगद / बैंक", "No deposit records in this period.": "यो अवधिमा धरौटीको रेकर्ड छैन।"});
 Object.assign(NE, {"Refill payments": "भराइको भुक्तानी", "Deposits received": "धरौटी आएको", "Deposits refunded": "धरौटी फिर्ता", "Expenses": "खर्च", "Supplier / factory payments": "विक्रेता / फ्याक्ट्री भुक्तानी", "Cash deposited to bank": "नगद बैंकमा जम्मा", "Partner to partner": "पार्टनरबीच नगद", "Bank withdrawal to partner": "बैंकबाट पार्टनरलाई", "Loans (given / paid back)": "सापटी (दिएको / फिर्ता)", "Opening / corrections": "सुरुको / मिलान", "Other": "अन्य", "Money history": "पैसाको इतिहास", "Money history — filter by date, partner, kind": "पैसाको इतिहास — मिति, पार्टनर, किसिम अनुसार", "All accounts": "सबै खाता", "All kinds": "सबै किसिम", "This month": "यो महिना", "Dates": "मिति छान्नुस्", "From": "देखि", "To": "सम्म", "Money in": "आएको", "Money out": "गएको", "Net in this period": "यो अवधिको फरक", "Search customer, note, category…": "ग्राहक, नोट, शीर्षक खोज्नुस्…", "By kind": "किसिम अनुसार", "Kind": "किसिम", "Entries": "रेकर्ड", "In": "आयो", "Out": "गयो", "Details": "विवरण", "From → to": "कहाँबाट → कहाँ", "Expenses by category": "शीर्षक अनुसार खर्च", "Expenses by who paid": "कसले तिर्‍यो अनुसार खर्च", "On credit": "उधारो", "Nothing for these filters.": "यो फिल्टरमा केही छैन।"});
+Object.assign(NE, {"Pre-company fund": "कम्पनीअघिको कोष", "Money put into the fund": "कोषमा हालेको पैसा", "Spent from the fund": "कोषबाट खर्च", "Moved to the company": "कम्पनीमा सारेको", "Who put it in": "कसले हाल्यो", "All five partners": "पाँचै जना पार्टनर", "Spent on": "खर्चको शीर्षक", "Paid by": "कसले तिर्‍यो", "Details": "विवरण", "e.g. company registration, jar labels advance": "जस्तै: कम्पनी दर्ता, जार लेबल एडभान्स", "This fund is kept apart. It does not change company cash, bank, reports or the balance check.": "यो कोष छुट्टै छ। कम्पनीको नगद, बैंक, रिपोर्ट वा मौज्दात जाँचमा असर गर्दैन।", "Only {m} is left in the fund.": "कोषमा {m} मात्र बाँकी छ।", "Put in": "हालेको", "Spent": "खर्च", "Left in the fund": "कोषमा बाँकी", "Add expense": "खर्च थप्नुस्", "Money in": "पैसा आयो", "Put in by": "कसले हाल्यो", "All entries": "सबै रेकर्ड", "By": "कसले", "Left": "बाँकी", "No entries yet.": "अहिलेसम्म रेकर्ड छैन।", "Undo this entry?": "यो रेकर्ड उल्टाउने?", "Undone": "उल्टाइयो", "Saved": "सेभ भयो", "Rs 20,000 from each partner, kept in Samir’s account before the company bank account was opened. Recorded here separately — it is not company cash or bank.": "कम्पनीको बैंक खाता खोल्नुअघि हरेक पार्टनरले रु २०,००० समीरको खातामा राखेको। यहाँ छुट्टै राखिएको छ — यो कम्पनीको नगद वा बैंक होइन।", "Registration & legal": "दर्ता र कानुनी", "Branding & printing": "ब्रान्डिङ र छपाइ", "T-shirts & uniform": "टी-सर्ट र पोसाक", "Godown / warehouse": "गोदाम", "Phone & SIM": "फोन र सिम", "Website & domain": "वेबसाइट र डोमेन", "Professional fees": "सेवा शुल्क", "Stamp & documents": "छाप र कागजात", "Transport": "यातायात"});
 const t = k => P.lang === 'ne' ? (NE[k] ?? k) : k;
 const tf = (k, v) => t(k).replace(/\{(\w+)\}/g, (_, x) => v[x] ?? '');
 const lg = (k, v) => { const p = L[k]; if (!p) return k; return (P.lang === 'ne' ? p[1] : p[0]).replace(/\{(\w+)\}/g, (_, x) => { const val = v?.[x]; return x === 'amt' ? money(val) : ((x === 'kind' || x === 'w' || x === 'w2' || x === 'cat') ? t(val ?? '') : (val ?? '')); }); };
@@ -400,7 +401,7 @@ const DEF_SETTINGS = {
   warehouses: [{ id: 'naikap', name: 'Naikap (Main)' }, { id: 'wh2', name: 'Warehouse 2' }, { id: 'wh3', name: 'Warehouse 3' }],
   partners: [1, 2, 3, 4, 5].map(i => ({ id: 'p' + i, name: (FIREBASE_CONFIG.partners || [])[i - 1] || 'Partner ' + i, email: '' }))
 };
-const S = { sync: 'synced', slots: {}, store: null, user: null, online: navigator.onLine, meta: {}, customers: [], orders: [], txs: [], moves: [], logs: [], requests: [], loaded: false };
+const S = { sync: 'synced', slots: {}, store: null, user: null, online: navigator.onLine, meta: {}, customers: [], orders: [], txs: [], moves: [], logs: [], requests: [], fund: [], loaded: false };
 const R = { page: 'home', cust: null, hist: null, ofilter: 'pending', omine: false, q: '', cfilter: 'active', tacc: '' };
 const settings = () => {
   const s = Object.assign({}, DEF_SETTINGS, S.meta.settings || {});
@@ -478,7 +479,8 @@ function DemoStore() {
     meta: { ...(db.meta || {}) },
     customers: Object.values(db.customers || {}), orders: Object.values(db.orders || {}),
     txs: Object.values(db.txs || {}), moves: Object.values(db.moves || {}), logs: Object.values(db.logs || {}),
-    requests: Object.values(db.requests || {}).filter(r => r.status === 'new')
+    requests: Object.values(db.requests || {}).filter(r => r.status === 'new'),
+    fund: Object.values(db.fund || {})
   });
   const all = col => Object.values(db[col] || {});
   return {
@@ -562,6 +564,8 @@ function FireStore() {
       fs.collection('orders').where('status', '==', 'pending').onSnapshot(s => { pendingOrders = docs(s); mergeOrders(); }, err);
       // online orders and new-customer requests sent from the OZEN Order page
       fs.collection('requests').where('status', '==', 'new').onSnapshot(s => { snap.requests = docs(s); fire(); }, err);
+      // pre-company fund: its own small ledger, kept apart from company money
+      fs.collection('fund').onSnapshot(s => { snap.fund = docs(s); fire(); }, () => {});
       for (const [c, n] of [['txs', 50], ['moves', 20], ['logs', 30]]) fs.collection(c).orderBy('at', 'desc').limit(n).onSnapshot(s => { snap[c] = docs(s); fire(); }, err);
     },
     // One atomic, server-confirmed transaction. Reads inside fn are checked again at commit (retried by Firestore on conflict).
@@ -1263,10 +1267,10 @@ function render() {
   const s = settings(); const m = me();
   const pages = ['home', 'customers', 'orders', 'stock', 'cash', 'more'];
   const names = { home: 'Home', customers: 'Customers', orders: 'Orders', stock: 'Stock', cash: 'Cash', more: 'More' };
-  const V = { money: vMoney, deps: vDeposits, wh: vWarehouse, home: vHome, customers: vCustomers, cust: vCustomer, orders: vOrders, stock: vStock, cash: vCash, more: vMore, report: vReport, log: vLog, settings: vSettings, setup: vSetup, stmt: vStatement, check: vCheck, queue: vQueue };
+  const V = { fund: vFund, money: vMoney, deps: vDeposits, wh: vWarehouse, home: vHome, customers: vCustomers, cust: vCustomer, orders: vOrders, stock: vStock, cash: vCash, more: vMore, report: vReport, log: vLog, settings: vSettings, setup: vSetup, stmt: vStatement, check: vCheck, queue: vQueue };
   let body = '';
   try { body = (V[R.page] || vHome)(); } catch (e) { console.error(e); body = `<div class="alert bad">${esc(e.message)}</div>`; }
-  const navOn = R.page === 'money' ? 'cash' : R.page === 'deps' ? 'customers' : R.page === 'wh' ? 'stock' : R.page === 'cust' ? 'customers' : ['report', 'log', 'settings', 'setup', 'stmt', 'check', 'queue'].includes(R.page) ? 'more' : R.page;
+  const navOn = R.page === 'fund' ? 'more' : R.page === 'money' ? 'cash' : R.page === 'deps' ? 'customers' : R.page === 'wh' ? 'stock' : R.page === 'cust' ? 'customers' : ['report', 'log', 'settings', 'setup', 'stmt', 'check', 'queue'].includes(R.page) ? 'more' : R.page;
   const scrollY = window.scrollY; const keep = app.dataset.page === R.page + (R.cust || '');
   const [sk, sl] = syncState();
   app.innerHTML = `
@@ -1532,6 +1536,68 @@ async function whExport(kind) {
 }
 
 
+
+// ================= Pre-company fund (Rs 20,000 × 5 kept in Samir's account before the company bank) =================
+// A separate ledger: money in from partners, what it was spent on, and anything later moved to the company.
+// It is NOT company cash or bank and never changes any company balance, report or check.
+const FUND_CATS = ['Registration & legal', 'Branding & printing', 'T-shirts & uniform', 'Godown / warehouse', 'Phone & SIM', 'Website & domain', 'Professional fees', 'Stamp & documents', 'Transport', 'Other'];
+const fundLive = () => (S.fund || []).filter(x => !x.void);
+function fundTotals() { let inn = 0, out = 0, moved = 0; for (const x of fundLive()) { if (x.kind === 'in') inn += num(x.amount); else if (x.kind === 'out') out += num(x.amount); else if (x.kind === 'move') moved += num(x.amount); } return { inn, out, moved, left: inn - out - moved }; }
+async function fundSave(kind, f) {
+  const amount = money2(f.amount); if (!amount) { toast(t('Enter an amount.')); return false; }
+  if (kind !== 'in' && amount > fundTotals().left + 0.001) { toast(tf('Only {m} is left in the fund.', { m: money(fundTotals().left) })); return false; }
+  const id = 'f' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const rec = { kind, amount, at: pastDate(f.date), by: me().id, note: String(f.note || '').slice(0, 300),
+    ...(kind === 'in' ? { who: f.who || '' } : {}), ...(kind === 'out' ? { cat: f.cat || 'Other', paidBy: f.paidBy || '' } : {}) };
+  try { await S.store.txn(async () => { const o = Ops(); o.set('fund', id, rec); return o; }); toast(t('Saved')); return true; }
+  catch (e) { toast(e.message || t('Could not save.')); return false; }
+}
+function fundForm(kind) {
+  const title = { in: t('Money put into the fund'), out: t('Spent from the fund'), move: t('Moved to the company') }[kind];
+  const people = settings().partners.map(p => `<option value="${p.id}">${esc(p.name || p.id)}</option>`).join('');
+  openSheet(title, `${amtField('amount', t('Amount'))}
+    ${kind === 'in' ? `<label class="f"><span>${t('Who put it in')}</span><select name="who">${people}<option value="all">${t('All five partners')}</option></select></label>` : ''}
+    ${kind === 'out' ? `<label class="f"><span>${t('Spent on')}</span><select name="cat">${FUND_CATS.map(c => `<option value="${c}">${t(c)}</option>`).join('')}</select></label>
+      <label class="f"><span>${t('Paid by')}</span><select name="paidBy">${people}</select></label>` : ''}
+    ${dateField()}<label class="f"><span>${t('Details')}</span><input name="note" maxlength="300" placeholder="${kind === 'out' ? t('e.g. company registration, jar labels advance') : ''}"></label>
+    <p class="small muted">${t('This fund is kept apart. It does not change company cash, bank, reports or the balance check.')}</p>`,
+    f => fundSave(kind, f));
+}
+const FUND_HEAD = () => [t('Date (BS)'), t('Date (AD)'), t('Entry'), t('Details'), t('By'), t('In'), t('Out'), t('Left')];
+function fundRows() {
+  let bal = 0; return fundLive().sort((a, b) => a.at - b.at).map(x => {
+    const inn = x.kind === 'in' ? num(x.amount) : 0, out = x.kind === 'in' ? 0 : num(x.amount); bal += inn - out;
+    const label = x.kind === 'in' ? t('Put in') : x.kind === 'out' ? t(x.cat || 'Other') : t('Moved to the company');
+    const by = x.kind === 'in' ? (x.who === 'all' ? t('All five partners') : partnerName(x.who)) : x.kind === 'out' ? partnerName(x.paidBy) : '';
+    return { x, row: [bsStr(x.at), isoDay(x.at), label, x.note || '', by, inn || '', out || '', bal] };
+  });
+}
+function vFund() {
+  const T = fundTotals(); const rows = fundRows(); const byCat = {}; for (const x of fundLive()) if (x.kind === 'out') byCat[t(x.cat || 'Other')] = (byCat[t(x.cat || 'Other')] || 0) + num(x.amount);
+  const byWho = {}; for (const x of fundLive()) if (x.kind === 'in') { const k = x.who === 'all' ? t('All five partners') : partnerName(x.who); byWho[k] = (byWho[k] || 0) + num(x.amount); }
+  return `<button class="btn ghost sm" data-act="go" data-p="more">← ${t('More')}</button>
+  <h2>🏦 ${t('Pre-company fund')}</h2>
+  <div class="alert small">${t('Rs 20,000 from each partner, kept in Samir’s account before the company bank account was opened. Recorded here separately — it is not company cash or bank.')}</div>
+  <div class="stats">${stat(money(T.inn), t('Put in'), 'accent2')}${stat(money(T.out), t('Spent'))}${T.moved ? stat(money(T.moved), t('Moved to the company')) : ''}${stat(money(T.left), t('Left in the fund'), 'wide')}</div>
+  <div class="btns" style="grid-template-columns:1fr 1fr 1fr">
+   <button class="btn" data-act="fundForm" data-k="out">− ${t('Add expense')}</button>
+   <button class="btn ghost" data-act="fundForm" data-k="in">+ ${t('Money in')}</button>
+   <button class="btn ghost" data-act="fundForm" data-k="move">→ ${t('Moved to the company')}</button></div>
+  ${Object.keys(byCat).length ? `<div class="grid2"><div><h3>${t('Spent on')}</h3><div class="scroll"><table class="t xl"><tbody>${Object.entries(byCat).sort((a, b) => b[1] - a[1]).map(([c, v]) => `<tr><td>${esc(c)}</td><td class="n">${money(v)}</td></tr>`).join('')}</tbody></table></div></div>
+   <div><h3>${t('Put in by')}</h3><div class="scroll"><table class="t xl"><tbody>${Object.entries(byWho).map(([c, v]) => `<tr><td>${esc(c)}</td><td class="n">${money(v)}</td></tr>`).join('')}</tbody></table></div></div></div>` : ''}
+  <div class="row" style="gap:8px;margin:12px 0 6px"><h3 class="grow" style="margin:0">${t('All entries')} (${rows.length})</h3><button class="btn ghost sm" data-act="fundPdf">PDF</button><button class="btn ghost sm" data-act="fundXls">Excel</button></div>
+  ${rows.length ? `<div class="scroll"><table class="t xl"><thead><tr>${FUND_HEAD().map(h => `<th>${esc(h)}</th>`).join('')}<th></th></tr></thead><tbody>
+   ${rows.slice().reverse().map(r => `<tr>${r.row.map((v, i) => `<td${i >= 5 ? ' class="n"' : ''}>${i >= 5 && v !== '' ? (i === 5 ? `<b style="color:#2f9a43">${money(v)}</b>` : i === 6 ? `<b style="color:#c53a3a">${money(v)}</b>` : money(v)) : esc(v)}</td>`).join('')}<td><button class="btn ghost sm" data-act="fundUndo" data-id="${r.x.id}">${t('Undo')}</button></td></tr>`).join('')}
+  </tbody></table></div>` : `<div class="empty">${t('No entries yet.')}</div>`}`;
+}
+async function fundExport(kind) {
+  const T = fundTotals(); const rows = fundRows().map(r => r.row); const head = FUND_HEAD(); const title = t('Pre-company fund');
+  if (kind === 'pdf') { printHtml(`<h1>${esc(title)}</h1><div class="meta">${t('Put in')}: <b>${money(T.inn)}</b> · ${t('Spent')}: <b>${money(T.out)}</b>${T.moved ? ` · ${t('Moved to the company')}: <b>${money(T.moved)}</b>` : ''} · ${t('Left in the fund')}: <b>${money(T.left)}</b></div>
+    <table><thead><tr>${head.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map(v => `<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`); return; }
+  const name = `pre_company_fund_${isoDay(Date.now())}`;
+  try { await loadXlsx(); const ws = XLSX.utils.aoa_to_sheet([[title], [], head, ...rows]); ws['!cols'] = head.map(h => ({ wch: Math.max(12, String(h).length + 4) })); ws['!cols'][3] = { wch: 40 };
+    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Fund'); XLSX.writeFile(wb, name + '.xlsx'); } catch (e) { downloadCsv(name + '.csv', [head, ...rows]); }
+}
 // ---- money history: every cash/bank record, filter by date, account, kind, direction; expense breakdowns; PDF & Excel ----
 const MONEY_KINDS = [
   ['refill', 'Refill payments', x => ['refill', 'payment', 'sale'].includes(x.type)],
@@ -1785,6 +1851,7 @@ function vMore() {
    <button class="item" data-act="go" data-p="check"><div class="grow t">${t('Check balances')}</div></button>
    <button class="item" data-act="go" data-p="queue"><div class="grow t">${t('Sync status')}</div><span class="chip">${esc(syncState()[1])}</span></button>
    <button class="item" data-act="go" data-p="log"><div class="grow t">${t('Activity log')}</div></button>
+   <button class="item" data-act="go" data-p="fund"><div class="grow t">🏦 ${t('Pre-company fund')}</div><div class="amt">${money(fundTotals().left)}</div></button>
    <button class="item" data-act="histPage"><div class="grow t">${t('Full history import')}</div></button>
    <button class="item" data-act="signupLink"><div class="grow t">🌐 ${t('Link for new customers')}</div></button>
    <button class="item" data-act="go" data-p="settings"><div class="grow t">${t('Settings')}</div></button>
@@ -2437,6 +2504,11 @@ document.addEventListener('click', async e => {
     case 'whRange': R.whRange = el.dataset.v; render(); break;
     case 'whTab': R.whTab = el.dataset.v; render(); break;
     case 'whView': R.whView = el.dataset.v; render(); break;
+    case 'fundForm': fundForm(el.dataset.k); break;
+    case 'fundPdf': await fundExport('pdf'); break;
+    case 'fundXls': await fundExport('xls'); break;
+    case 'fundUndo': { const x = (S.fund || []).find(f => f.id === el.dataset.id); if (!x || !confirm(t('Undo this entry?'))) break;
+      try { await S.store.txn(async () => { const o = Ops(); o.upd('fund', x.id, { void: true, voidBy: me().id, voidAt: Date.now() }); return o; }); toast(t('Undone')); } catch (e) { toast(e.message); } break; }
     case 'mRange': R.mRange = el.dataset.v; render(); break;
     case 'mDir': R.mDir = el.dataset.v; render(); break;
     case 'mKindPick': R.mKind = el.dataset.v; render(); window.scrollTo(0, 0); break;
@@ -2690,6 +2762,7 @@ function onData(snap) {
   const newReq = (snap.requests || []).filter(r => !(S.requests || []).some(x => x.id === r.id));
   if (S.loaded && newReq.length) { toast(tf('{n} new online order(s)', { n: newReq.length })); try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {} }
   S.requests = (snap.requests || []).sort((a, b) => a.at - b.at);
+  S.fund = (snap.fund || []).sort((a, b) => a.at - b.at);
   S.meta = snap.meta || {}; S.customers = (snap.customers || []).filter(c => !c.deleted); S.orders = snap.orders; S.txs = snap.txs; S.moves = snap.moves; S.logs = snap.logs;
   S.loaded = true;
   if (!DEMO && S.meta.settings && (S.meta.settings.schema || 1) < 2) migrate();
@@ -2726,7 +2799,7 @@ async function boot() {
 }
 if ('serviceWorker' in navigator && location.protocol === 'https:' && !DEMO) navigator.serviceWorker.register('sw.js').catch(() => {});
 // ---- automatic update: when a new index.html is uploaded to GitHub, every open app switches to it by itself ----
-const BUILD = '2026-11-02b';
+const BUILD = '2026-11-02c';
 async function checkUpdate() {
   if (DEMO || !/^https?:$/.test(location.protocol) || !navigator.onLine) return;
   try {
