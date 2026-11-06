@@ -1665,10 +1665,13 @@ function reqList() {
 async function importBillNos(file) {
   let d; try { d = JSON.parse(await file.text()); } catch (e) { toast(t('This file could not be read.')); return; }
   if (!d || d.kind !== 'ozen-bill-numbers' || !Array.isArray(d.orders)) { toast(t('This is not a bill-number file.')); return; }
-  const out = $('#bnProg'); let done = 0, skip = 0, miss = 0; const all = allOf('orders');
+  const out = $('#bnProg'); let done = 0, skip = 0, miss = 0;
+  if (out) out.textContent = t('Loading all records…');
+  if (!DEMO) { try { R.extra.orders = await S.store.allOf('orders'); R.allOrdAt = Date.now(); } catch (e) {} }
+  const all = allOf('orders');
   for (const r of d.orders) {
-    const o = all.find(x => x.id === r.id); if (!o || o.status !== 'delivered') { miss++; continue; }
-    if (String(o.billNo || '') === String(r.billNo) && (o.billSeries || 'inv') === r.billSeries && (r.depVoucher === undefined || String(o.depVoucher || '') === String(r.depVoucher))) { skip++; continue; }
+    const o = all.find(x => x.id === r.id); if (o && o.status !== 'delivered') { miss++; continue; }
+    if (o && String(o.billNo || '') === String(r.billNo) && (o.billSeries || 'inv') === r.billSeries && (r.depVoucher === undefined || String(o.depVoucher || '') === String(r.depVoucher))) { skip++; continue; }   // already set
     const a = { id: r.id, billNo: r.billNo, billSeries: r.billSeries, opId: 'bn_' + r.id + '_' + r.billSeries + r.billNo }; if (r.depVoucher !== undefined) a.depVoucher = r.depVoucher;
     const ok = await post('setBillNo', a, { quiet: true }); if (ok) done++; else miss++;
     if (out) out.textContent = tf('Done {a} · already set {b} · not found {c}', { a: done, b: skip, c: miss });
@@ -1808,9 +1811,10 @@ const PAN_NO = () => String(settings().pan || '623607237');
 function billFromOrder(o) {
   const c = custById(o.cust) || { name: '?' }; const dm = dueMap(o.cust); const rate = num(o.rate) || num(c.rate) || settings().rate;
   const kind = o.billSeries === 'chl' ? 'chl' : 'inv'; const pc = num(o.paidCash), pb = num(o.paidBank);
-  return { kind, no: o.billNo || billNo(o), at: o.deliveredAt, c, by: partnerName(o.deliveredBy), mode: pc ? 'cash' : pb ? 'bank' : 'credit',
+  const due = num(dm[o.id]), later = Math.max(0, num(o.bill) - num(o.paid) - due);
+  return { kind, no: o.billNo || billNo(o), at: o.deliveredAt, c, by: partnerName(o.deliveredBy), mode: pc ? 'cash' : pb ? 'bank' : later ? 'later' : 'credit',
     rows: [{ p: 'OZEN Processed Drinking Water — 20 L jar refill', q: num(o.qty), r: rate, a: num(o.bill) }],
-    paid: num(o.paid), due: num(dm[o.id]), outstanding: num(c.due), paidHow: [pc ? `${t('Cash')} ${money(pc)}` : '', pb ? `${t('Bank / QR')} ${money(pb)}` : ''].filter(Boolean).join(' · '),
+    paid: num(o.paid) + later, due, outstanding: num(c.due), paidHow: [pc ? `Cash ${money(pc)}` : '', pb ? `Bank / QR ${money(pb)}` : '', later ? `paid later ${money(later)}` : ''].filter(Boolean).join(' · '),
     dep: num(o.depCash) + num(o.depBank) + num(o.depOld), vch: o.depVoucher || '', comb: o.combNo || '', id: o.id };
 }
 function billFromComb(cid, no) {
@@ -1823,7 +1827,7 @@ function billMarkup(d) {
   const s = settings(); const sub = d.rows.reduce((x, r) => x + r.a, 0); const total = sub;
   const KIND = d.kind === 'chl' ? 'CHALAN' : 'INVOICE';
   const st = d.kind === 'chl' && d.due ? ['cr', 'ON CREDIT'] : d.due ? ['due', 'DUE'] : ['ok', 'PAID'];
-  const mode = d.mode === 'cash' ? 'Cash' : d.mode === 'bank' ? 'Bank / QR' : 'Credit';
+  const mode = d.mode === 'cash' ? 'Cash' : d.mode === 'bank' ? 'Bank / QR' : d.mode === 'later' ? 'Credit (paid later)' : 'Credit';
   const m2 = n => num(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const phone = (s.contact || '').split(/[\/,]/)[0].trim();
   return `<article class="ozb">
@@ -3321,7 +3325,7 @@ async function boot() {
 }
 if ('serviceWorker' in navigator && location.protocol === 'https:' && !DEMO) navigator.serviceWorker.register('sw.js').catch(() => {});
 // ---- automatic update: when a new index.html is uploaded to GitHub, every open app switches to it by itself ----
-const BUILD = '2026-11-06b';
+const BUILD = '2026-11-06c';
 async function checkUpdate() {
   if (DEMO || !/^https?:$/.test(location.protocol) || !navigator.onLine) return;
   try {
