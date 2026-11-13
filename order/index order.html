@@ -156,7 +156,7 @@ function renderSignup() {
    <label for="sa">${t('Area / tole')}</label><input id="sa" maxlength="60">
    <label for="sl">${t('Landmark')}</label><input id="sl" maxlength="120">
    <button class="btn ghost" data-a="geo" style="margin-top:10px">📍 ${S.geo ? t('Location added') + ' ✓' : t('Share my location')}</button>
-   <label for="sk">${t('Jars package')}</label><select id="sk">${[3, 6, 9, 12, 15].map(n => `<option>${n}</option>`).join('')}</select>
+   <label for="sk">${t('Jars package')}</label><select id="sk">${[1, 2, 3, 6, 9, 12, 15].map(n => `<option ${n === 3 ? 'selected' : ''}>${n}</option>`).join('')}</select>
    <label for="sx">${t('Note (optional)')}</label><textarea id="sx" maxlength="300"></textarea>
    ${S.msg ? `<div class="alert ${S.msg.ok ? 'ok' : 'bad'}">${esc(S.msg.text)}</div>` : ''}
    <button class="btn" data-a="sendSignup" ${S.busy ? 'disabled' : ''}>${S.busy ? t('Sending…') : t('Send request')}</button></div></main>`;
