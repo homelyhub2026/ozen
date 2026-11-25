@@ -3004,7 +3004,7 @@ async function makeSupLedger(k) {
     r.owed = Math.round(owed * 100) / 100; r.atF = atF; rows.push(r);
   }
   const fillers = vendors().filter(v => v.kind === 'filling').length;
-  R.supl = { k, rows, owed: Math.round(owed * 100) / 100, atF, live: num(payDoc()[k]), liveF: fillers > 1 ? atF : num(stockDoc().factory) }; render();
+  R.supl = { k, ms, ts, rows, owed: Math.round(owed * 100) / 100, atF, live: num(payDoc()[k]), liveF: fillers > 1 ? atF : num(stockDoc().factory) }; render();
 }
 function supFilter(rows) {
   const f = R.sFromS ? Date.UTC(...R.sFromS.split('-').map((v, i) => i === 1 ? v - 1 : +v)) - KTM_OFF : -Infinity;
@@ -3547,7 +3547,7 @@ document.addEventListener('click', async e => {
       openSheet(`${t('Bill correction')} — ${supName(k)}`, `<p class="small">${t('Use this when a bill from this vendor was entered too high (wrong quantity or rate). It lowers what we owe and the expense. No money moves and jar stock does not change.')}</p>
         <p class="small muted">${t('Owed now')}: <b>${money(owed)}</b></p>
         <input type="hidden" name="supplier" value="${esc(k)}">
-        <label class="f"><span>${t('Wrong jar count on an entry? (optional)')}</span><select name="fixMove" data-act="fixMv"><option value="">— ${t('No, only the amount')}</option>${allOf('moves').filter(m => !m.void && ((m.type === 'fromFactory' && (m.vendor || 'factory') === k) || (m.type === 'buy' && (m.vendor || 'jars') === k))).sort((a, b) => b.at - a.at).slice(0, 60).map(m => { const x = allOf('txs').find(y => y.id === m.txId); const r = x && num(m.qty) ? Math.round(num(x.amount) / num(m.qty) * 100) / 100 : 0; return `<option value="${esc(m.id)}" data-q="${num(m.qty)}" data-r="${r}">${fmtDate(m.at)} · ${num(m.qty)} ${t('jars')}${r ? ' × ' + money(r) : ''}</option>`; }).join('')}</select></label>
+        <label class="f"><span>${t('Wrong jar count on an entry? (optional)')}</span><select name="fixMove" data-act="fixMv"><option value="">— ${t('No, only the amount')}</option>${((R.supl && R.supl.ms) || allOf('moves')).filter(m => !m.void && ((m.type === 'fromFactory' && (m.vendor || 'factory') === k) || (m.type === 'buy' && (m.vendor || 'jars') === k))).sort((a, b) => b.at - a.at).slice(0, 60).map(m => { const x = ((R.supl && R.supl.ts) || allOf('txs')).find(y => y.id === m.txId); const r = x && num(m.qty) ? Math.round(num(x.amount) / num(m.qty) * 100) / 100 : 0; return `<option value="${esc(m.id)}" data-q="${num(m.qty)}" data-r="${r}">${fmtDate(m.at)} · ${num(m.qty)} ${t('jars')}${r ? ' × ' + money(r) : ''}</option>`; }).join('')}</select></label>
         <div class="f2" id="fixQ" style="display:none"><label class="f"><span>${t('Right number of jars')}</span><input name="fixQty" type="number" inputmode="numeric" min="0" step="1" data-act="fixMv"></label><div></div></div>
         ${amtField('amount', t('Reduce the bill by'), '')}
         <label class="f"><span>${t('Reason')} *</span><input name="note" placeholder="${t('e.g. 17 Kartik: 129 jars, not 148')}" required></label>
@@ -3979,7 +3979,7 @@ async function boot() {
 }
 if ('serviceWorker' in navigator && location.protocol === 'https:' && !DEMO) navigator.serviceWorker.register('sw.js').catch(() => {});
 // ---- automatic update: when a new index.html is uploaded to GitHub, every open app switches to it by itself ----
-const BUILD = '2026-11-25c';
+const BUILD = '2026-11-25d';
 async function checkUpdate() {
   if (DEMO || !/^https?:$/.test(location.protocol) || !navigator.onLine) return;
   try {
