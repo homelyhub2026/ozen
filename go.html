@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ne">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B6E99">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OZEN GO">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<title>OZEN GO</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0}body{font-family:Inter,"Mukta",system-ui,Segoe UI,Arial,sans-serif;background:#E7EEF2;color:#0F2530}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:default}
+.phone{max-width:480px;margin:0 auto;min-height:100vh;background:#F2F6F8;display:flex;flex-direction:column}
+.hd{background:#0B6E99;color:#fff;padding:calc(14px + env(safe-area-inset-top,0px)) 16px 14px}.hd .k{font-size:12px;opacity:.85;font-weight:700;letter-spacing:.05em;display:flex;justify-content:space-between}.hd h1{margin:2px 0 10px;font-size:20px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.hs{background:rgba(255,255,255,.14);border-radius:12px;padding:9px}.hs b{font-size:18px;display:block}.hs span{font-size:11px;opacity:.92}
+.pad{padding:12px 14px 90px;display:flex;flex-direction:column;gap:10px;flex:1}
+.tabs{display:flex;gap:8px}.tabs button{flex:1;height:44px;border-radius:12px;border:1px solid #C9D6DD;background:#fff;font-weight:600}.tabs button.on{background:#0F2530;color:#fff;border-color:#0F2530}
+.card{background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 2px rgba(15,37,48,.08)}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.mut{color:#4A6070;font-size:13px}.big{font-size:22px;font-weight:800;color:#0B6E99}
+.tag{font-size:12px;border-radius:8px;padding:6px 8px}.t-own{background:#E3F1F8;color:#08506F}.t-on{background:#FEF3C7;color:#7A4A06}.t-ok{background:#E2F4E8;color:#1B6B3A;border-radius:999px;font-weight:700;white-space:nowrap}.t-bad{background:#FDE8E8;color:#9B1C1C;border-radius:999px;font-weight:700;white-space:nowrap}.t-gray{background:#EEF2F4;color:#4A6070;border-radius:999px;font-weight:700;white-space:nowrap}
+.b3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.btn{min-height:44px;border-radius:10px;border:1px solid #C9D6DD;background:#fff;font-weight:600;color:#0F2530;display:flex;align-items:center;justify-content:center;text-decoration:none;padding:0 12px}.pri{background:#0B6E99;color:#fff;border:0;font-weight:700}.wide{height:52px;border-radius:14px;font-size:16px;width:100%}
+.nav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:#fff;border-top:1px solid #DCE5EA;display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom,0px)}.nav button{border:0;background:none;height:60px;font-size:12px;font-weight:600;color:#4A6070;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.nav button.on{color:#0B6E99;font-weight:800}
+label.f{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:#4A6070}label.f input,label.f select{width:100%;min-width:0;height:48px;border:1px solid #C9D6DD;border-radius:10px;padding:0 10px;font-size:18px;font-weight:700;color:#0F2530;background:#fff}
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.seg button{height:44px;border-radius:10px;border:1px solid #C9D6DD;background:#fff;font-weight:600}.seg button.on{border:2px solid #0B6E99;background:#E3F1F8;color:#08506F}
+.li{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:3px 0}.li.t{border-top:1px solid #E5ECF0;padding-top:8px;font-weight:700}
+.toast{position:fixed;left:50%;top:20px;transform:translateX(-50%);background:#0F2530;color:#fff;padding:10px 16px;border-radius:10px;font-weight:600;z-index:9;display:none;max-width:90vw;text-align:center}
+.warn{background:#FEF3C7;color:#5C3804;border-radius:12px;padding:10px 14px;font-size:14px}.bad{background:#FDE8E8;color:#7F1D1D;border-radius:12px;padding:10px 14px;font-size:14px}.empty{color:#4A6070;text-align:center;padding:18px}
+.login{max-width:420px;margin:0 auto;padding:40px 20px;display:flex;flex-direction:column;gap:14px}.login h1{margin:0;color:#0B6E99}
+.search{height:46px;border:1px solid #C9D6DD;border-radius:12px;padding:0 12px;font-size:16px;width:100%}
+.demo{background:#b45309;color:#fff;text-align:center;font:600 12px system-ui;padding:5px}
+</style>
+</head>
+<body>
+<div id="app"></div><div class="toast" id="toast" role="status"></div>
+<script src="config.js"></script>
+<script>
+/* OZEN GO — the app for drivers and helpers.
+   Shows only what the driver needs: today's orders (assigned + online), delivery entry, van stock, cash, day close.
+   Nothing here touches stock, cash or customer balances directly: every delivery is saved as a "driver entry"
+   (collection sdel) and reaches the books only when an owner approves it in the main app. */
+const CFG = window.OZEN_CONFIG || {};
+const CONFIGURED = !!CFG.apiKey;
+const COMPANY_EMAIL = (CFG.companyEmail || '').trim().toLowerCase();
+const DAY = 86400000, KTM = 345 * 60000;
+const isoDay = ms => new Date(ms + KTM).toISOString().slice(0, 10);
+const money = n => 'Rs ' + Math.round(+n || 0).toLocaleString('en-IN');
+const num = v => +v || 0;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const $ = s => document.querySelector(s);
+const tm = ms => new Date(ms).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kathmandu' });
+function toast(m, ms) { const t = $('#toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toast.h); toast.h = setTimeout(() => t.style.display = 'none', ms || 2400); }
+const staffEmail = id => { const [u, d] = COMPANY_EMAIL.split('@'); return `${u}+${id.toLowerCase()}@${d}`; };
+
+const D = { cfg: null, sid: null, customers: {}, orders: [], requests: [], sdel: [], sdelOld: [], sday: null, ready: false };
+let V = { page: 'home', tab: 'mine', ref: null, edit: null, mode: 'cash', q: '' };
+const today = () => isoDay(Date.now());
+const C = id => D.customers[id];
+const me = () => (D.cfg && D.cfg.staff || []).find(x => x.id === D.sid) || { name: D.sid || '' };
+const whName = id => ((D.cfg && D.cfg.warehouses) || []).find(w => w.id === id)?.name || id || '';
+
+/* ---------------- data: Firebase, or practice mode on this device ---------------- */
+let API;
+function FireAPI() {
+  const fs = firebase.firestore(); const FV = firebase.firestore.FieldValue; const unsub = [];
+  const docs = s => s.docs.map(d => ({ ...d.data(), id: d.id, _p: d.metadata.hasPendingWrites }));
+  const MD = { includeMetadataChanges: true };
+  const err = e => { console.error(e); toast(e.code === 'permission-denied' ? 'Anumati chhaina — owner lai sodhnus' : e.message); };
+  return {
+    start(onChange) {
+      unsub.push(fs.collection('customers').onSnapshot(s => { s.docChanges().forEach(ch => { if (ch.type === 'removed') delete D.customers[ch.doc.id]; else D.customers[ch.doc.id] = { ...ch.doc.data(), id: ch.doc.id }; }); onChange(); }, err));
+      unsub.push(fs.collection('orders').where('status', '==', 'pending').onSnapshot(s => { D.orders = docs(s); onChange(); }, err));
+      unsub.push(fs.collection('requests').where('status', '==', 'new').onSnapshot(s => { D.requests = docs(s).filter(r => r.kind === 'order'); onChange(); }, err));
+      unsub.push(fs.collection('sdel').where('by', '==', D.sid).where('day', '==', today()).onSnapshot(MD, s => { D.sdel = docs(s); onChange(); }, err));
+      unsub.push(fs.collection('sdel').where('by', '==', D.sid).where('status', 'in', ['pending', 'sent', 'fix']).onSnapshot(MD, s => { D.sdelOld = docs(s); onChange(); }, err));
+      unsub.push(fs.collection('sday').doc(D.sid + '_' + today()).onSnapshot(MD, d => { D.sday = d.exists ? { ...d.data(), _p: d.metadata.hasPendingWrites } : null; onChange(); }, err));
+    },
+    addSdel(id, d) { return fs.collection('sdel').doc(id).set(d).catch(err); },
+    updSdel(id, d) { return fs.collection('sdel').doc(id).update(d).catch(err); },
+    delSdel(id) { return fs.collection('sdel').doc(id).delete().catch(err); },
+    takeReq(id) { return fs.collection('requests').doc(id).update({ takenBy: D.sid, takenAt: Date.now() }).catch(err); },
+    load(entry) { return fs.collection('sday').doc(D.sid + '_' + today()).set({ sid: D.sid, day: today(), loads: FV.arrayUnion(entry) }, { merge: true }).catch(err); },
+    closeDay(ids) { const b = fs.batch(); ids.forEach(id => b.update(fs.collection('sdel').doc(id), { status: 'sent', sentAt: Date.now() })); b.set(fs.collection('sday').doc(D.sid + '_' + today()), { sid: D.sid, day: today(), sent: true, sentAt: Date.now() }, { merge: true }); return b.commit().catch(err); },
+    stop() { unsub.splice(0).forEach(f => f()); }
+  };
+}
+// Practice: uses the main app's practice data on this device (same browser), so both can be tried together.
+function DemoAPI() {
+  const K = 'jh_demo4'; const read = () => { try { return JSON.parse(localStorage.getItem(K)) || {}; } catch (e) { return {}; } };
+  let cb = () => {};
+  const pull = () => { const db = read(); D.customers = Object.fromEntries(Object.values(db.customers || {}).map(c => [c.id, c]));
+    D.orders = Object.values(db.orders || {}).filter(o => o.status === 'pending'); D.requests = Object.values(db.requests || {}).filter(r => r.status === 'new' && r.kind === 'order');
+    const sd = Object.values(db.sdel || {}).filter(x => x.by === D.sid); D.sdel = sd.filter(x => x.day === today()); D.sdelOld = sd.filter(x => ['pending', 'sent', 'fix'].includes(x.status));
+    D.sday = (db.sday || {})[D.sid + '_' + today()] || null; cb(); };
+  const put = fn => { const db = read(); fn(db); localStorage.setItem(K, JSON.stringify(db)); pull(); };
+  window.addEventListener('storage', e => { if (e.key === K) pull(); });
+  return {
+    start(onChange) { cb = onChange; pull(); },
+    addSdel(id, d) { put(db => { (db.sdel = db.sdel || {})[id] = { ...d, id }; }); },
+    updSdel(id, d) { put(db => Object.assign(db.sdel[id], d)); },
+    delSdel(id) { put(db => { delete db.sdel[id]; }); },
+    takeReq(id) { put(db => Object.assign(db.requests[id], { takenBy: D.sid, takenAt: Date.now() })); },
+    load(entry) { put(db => { const k = D.sid + '_' + today(); const s = (db.sday = db.sday || {})[k] = db.sday[k] || { id: k, sid: D.sid, day: today(), loads: [] }; s.loads = [...(s.loads || []), entry]; }); },
+    closeDay(ids) { put(db => { ids.forEach(id => Object.assign(db.sdel[id], { status: 'sent', sentAt: Date.now() })); const k = D.sid + '_' + today(); const s = (db.sday = db.sday || {})[k] = db.sday[k] || { id: k, sid: D.sid, day: today(), loads: [] }; s.sent = true; s.sentAt = Date.now(); }); },
+    stop() {}
+  };
+}
+
+/* ---------------- what the screens need ---------------- */
+const active = () => { const m = new Map(); [...D.sdelOld, ...D.sdel].forEach(x => m.set(x.id, x)); return [...m.values()].filter(x => x.status !== 'rejected').sort((a, b) => a.at - b.at); };
+const usedRefs = () => new Set(active().filter(x => x.status !== 'approved' && x.ref).map(x => x.ref.id));
+function lists() {
+  const used = usedRefs();
+  const mine = [...D.orders.filter(o => o.assigned === D.sid && !used.has(o.id)).map(o => ({ type: 'order', id: o.id, cust: o.cust, qty: o.qty, at: o.at, src: o.source === 'online' ? 'online' : 'owner', note: o.note, wh: o.wh })),
+    ...D.requests.filter(r => r.takenBy === D.sid && !used.has(r.id)).map(r => ({ type: 'req', id: r.id, cust: r.cust, qty: r.qty, at: r.at, src: 'online', note: r.note }))].filter(x => C(x.cust)).sort((a, b) => a.at - b.at);
+  const open = D.requests.filter(r => !r.takenBy && !used.has(r.id) && C(r.cust)).map(r => ({ type: 'req', id: r.id, cust: r.cust, qty: r.qty, at: r.at, src: 'online', note: r.note })).sort((a, b) => a.at - b.at);
+  return { mine, open };
+}
+function totals() {
+  const L = D.sdel; const loads = (D.sday && D.sday.loads) || [];
+  const loaded = loads.reduce((a, x) => a + num(x.qty), 0), g = L.reduce((a, x) => a + num(x.qty), 0), r = L.reduce((a, x) => a + num(x.returned), 0);
+  const cash = L.filter(x => x.mode === 'cash').reduce((a, x) => a + num(x.paid), 0), qr = L.filter(x => x.mode === 'qr').reduce((a, x) => a + num(x.paid), 0);
+  const credit = L.reduce((a, x) => a + Math.max(0, num(x.qty) * num(x.rate) - num(x.paid)), 0);
+  return { n: L.length, loaded, g, r, vanFilled: loaded - g, vanEmpty: r, cash, qr, credit, wh: loads.length ? loads[loads.length - 1].wh : ((D.cfg.warehouses || [])[0] || {}).id };
+}
+function parseLL(l) { l = String(l || ''); const m = l.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/) || l.match(/[?&](?:q|query|destination|ll)=(-?\d+\.\d+),\s*(-?\d+\.\d+)/) || l.match(/^\s*(-?\d+\.\d+),\s*(-?\d+\.\d+)\s*$/); return m ? [m[1], m[2]] : null; }
+function mapsDir(c) {
+  if (c.lat && c.lng) return `https://www.google.com/maps/dir/?api=1&destination=${c.lat},${c.lng}&travelmode=driving&dir_action=navigate`;
+  if (c.mapLink) { const ll = parseLL(c.mapLink); if (ll) return `https://www.google.com/maps/dir/?api=1&destination=${ll[0]},${ll[1]}&travelmode=driving&dir_action=navigate`; return /^https?:/i.test(c.mapLink) ? c.mapLink : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(c.mapLink); }
+  return null;
+}
+const ICON = {
+  order: '<path d="M4 6h16M4 12h16M4 18h10"/>', van: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+  cash: '<rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/>', close: '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'
+};
+const svg = k => `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
+
+/* ---------------- screens ---------------- */
+function card(x) {
+  const c = C(x.cust); const dir = mapsDir(c);
+  return `<div class="card"><div class="row"><div><b style="font-size:16px">${esc(c.name)}</b><div class="mut">${esc(c.area || '')}${c.address ? ', ' + esc(c.address) : ''} · Package ${num(c.pkg)}</div></div>
+   <div style="text-align:right"><div class="big">${num(x.qty)} jar</div><div class="mut" style="font-size:11px">Baki ${money(c.due)}</div></div></div>
+   <div class="tag ${x.src === 'online' ? 't-on' : 't-own'}">${x.src === 'online' ? 'Online order' : 'Owner le diyeko'} · ${tm(x.at)}${x.note ? ' · ' + esc(x.note) : ''}</div>
+   ${V.tab === 'open' ? `<button class="btn pri" data-a="take" data-id="${esc(x.id)}">Ma lanchhu</button>` :
+   `<div class="b3">${c.phone ? `<a class="btn" href="tel:${esc(c.phone)}">Call</a>` : `<button class="btn" data-a="msg" data-v="Phone number chhaina">Call</button>`}
+     ${dir ? `<a class="btn" href="${esc(dir)}" target="_blank" rel="noopener">Map ↗</a>` : `<button class="btn" data-a="msg" data-v="Location chhaina — owner lai bhannus">Map</button>`}
+     <button class="btn pri" data-a="deliver" data-type="${x.type}" data-id="${esc(x.id)}" data-cust="${esc(x.cust)}" data-qty="${num(x.qty)}">Deliver</button></div>`}</div>`;
+}
+function statusTag(d) { if (d._p) return '<span class="tag t-on" style="border-radius:999px;font-weight:700;white-space:nowrap">Phone ma · sync baki</span>'; return d.status === 'approved' ? '<span class="tag t-ok">Hisab ma gayo ✓</span>' : d.status === 'fix' ? '<span class="tag t-bad">Sachyaunu parne</span>' : d.status === 'sent' ? '<span class="tag t-gray">Approval ma</span>' : '<span class="tag t-gray">Saved</span>'; }
+function vHome() {
+  const { mine, open } = lists(); const T = totals(); const list = V.tab === 'mine' ? mine : open;
+  const fixes = active().filter(d => d.status === 'fix');
+  return `${fixes.map(d => `<div class="bad"><b>Owner le sachyauna bhanyo:</b> ${esc(C(d.cust)?.name || '')} — ${esc(d.fixNote || '')}<div style="margin-top:8px;display:flex;gap:8px"><button class="btn pri" data-a="editSd" data-id="${esc(d.id)}">Sachyaunus</button></div></div>`).join('')}
+  <div class="tabs"><button class="${V.tab === 'mine' ? 'on' : ''}" data-a="tab" data-v="mine">Mero order (${mine.length})</button><button class="${V.tab === 'open' ? 'on' : ''}" data-a="tab" data-v="open">Online, nalieko (${open.length})</button></div>
+  ${T.loaded === 0 ? `<div class="warn">Gadi ma jar load gareko chhaina. <b>Gadi</b> ma gayera load garnus.</div>` : ''}
+  ${list.length ? list.map(card).join('') : `<div class="empty">${V.tab === 'mine' ? 'Tapai ko order sakiyo 👍' : 'Naya online order chhaina'}</div>`}
+  ${V.tab === 'mine' ? `<button class="btn" data-a="pick">+ Order bina deliver (arko customer)</button>` : ''}
+  ${D.sdel.length ? `<div class="mut" style="font-weight:700;margin-top:6px">Aaja deliver gareko</div>` + D.sdel.slice().sort((a, b) => b.at - a.at).map(d => `<div class="card" style="flex-direction:row;justify-content:space-between;align-items:center;padding:12px"><div><b>${esc(C(d.cust)?.name || '')}</b><div class="mut">${tm(d.at)} · ${d.qty} diyo · ${d.returned} khali · ${d.mode === 'cash' ? 'Cash' : d.mode === 'qr' ? 'QR' : 'Udharo'} ${money(d.paid)}</div></div>
+   <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">${statusTag(d)}${d.status === 'pending' ? `<button class="btn" style="min-height:34px;font-size:12px" data-a="editSd" data-id="${esc(d.id)}">Edit</button>` : ''}</div></div>`).join('') : ''}`;
+}
+function vPick() {
+  const q = V.q.toLowerCase(); const cs = Object.values(D.customers).filter(c => !c.deleted && c.active !== false && (!q || (c.name + ' ' + (c.area || '') + ' ' + (c.phone || '')).toLowerCase().includes(q))).sort((a, b) => a.name.localeCompare(b.name)).slice(0, 40);
+  return `<button class="btn" data-a="go" data-p="home" style="align-self:flex-start">← Pachhadi</button>
+  <input class="search" id="q" placeholder="Customer khojnus (naam, thau, phone)" value="${esc(V.q)}" data-a="q">
+  ${cs.map(c => `<button class="card" style="text-align:left;border:0" data-a="deliver" data-type="none" data-id="" data-cust="${esc(c.id)}" data-qty="${num(c.pkg)}"><b>${esc(c.name)}</b><span class="mut">${esc(c.area || '')} · jar ${num(c.held)} · baki ${money(c.due)}</span></button>`).join('') || '<div class="empty">Bhetiyena</div>'}`;
+}
+function vDeliver() {
+  const e = V.edit; const c = C(e.cust); const T = totals();
+  return `<button class="btn" data-a="go" data-p="home" style="align-self:flex-start">← Pachhadi</button>
+  <div class="card"><b style="font-size:17px">${esc(c.name)}</b><div class="mut">${esc(c.area || '')} · Rate ${money(c.rate)} · App ma jar ${num(c.held)}</div></div>
+  ${e.fixNote ? `<div class="bad"><b>Owner:</b> ${esc(e.fixNote)}</div>` : ''}
+  <div class="g2"><label class="f">Bhareko diyo<input id="g" type="number" inputmode="numeric" min="0" value="${num(e.qty)}" data-a="calc"></label><label class="f">Khali liyo<input id="r" type="number" inputmode="numeric" min="0" value="${e.returned ?? Math.min(num(e.qty), num(c.held))}"></label></div>
+  <label class="f">Customer sanga ahile kati jar chha? (bhareko + khali gannus)<input id="cnt" type="number" inputmode="numeric" min="0" placeholder="App ma ${num(c.held)}" value="${e.count ?? ''}" data-a="calc"></label><div id="cntm" class="mut"></div>
+  <div class="card"><div class="li"><span class="mut">Yo bill</span><b id="bl"></b></div><div class="li"><span class="mut">Pahile ko baki</span><b>${money(c.due)}</b></div><div class="li t"><span>Jamma linu parne</span><b id="tl" style="color:#0B6E99"></b></div>
+   <div class="seg">${[['cash', 'Cash'], ['qr', 'QR / Bank'], ['credit', 'Udharo']].map(([k, l]) => `<button class="${V.mode === k ? 'on' : ''}" data-a="mode" data-v="${k}">${l}</button>`).join('')}</div>
+   ${V.mode !== 'credit' ? `<label class="f">Kati liyo (Rs)<input id="paid" type="number" inputmode="decimal" min="0" value="${e.paid ?? ''}"></label>` : ''}</div>
+  <div class="g2"><label class="f">Bill No.<input id="bn" value="${esc(e.billNo || '')}" placeholder="jastai 206"></label><label class="f">Godam (load gareko)<select id="wh">${(D.cfg.warehouses || []).map(w => `<option value="${esc(w.id)}" ${w.id === (e.wh || T.wh) ? 'selected' : ''}>${esc(w.name)}</option>`).join('')}</select></label></div>
+  <label class="f">Note<input id="note" value="${esc(e.note || '')}" style="font-size:15px;font-weight:500"></label>
+  <button class="btn pri wide" data-a="save">${e.id ? 'Sachyayeko save' : 'Delivered — save'}</button>
+  ${e.id && e.status === 'pending' ? `<button class="btn" data-a="delSd" style="color:#9B1C1C">Yo entry hataunus</button>` : ''}
+  <div class="mut" style="text-align:center;font-size:12px">Owner le approve garepachhi matra hisab ma janchha</div>`;
+}
+function vVan() {
+  const T = totals(); const loads = (D.sday && D.sday.loads) || [];
+  return `<div class="card"><b>Aaja gadi ko jar</b><div class="li"><span class="mut">Load gareko</span><b>${T.loaded}</b></div><div class="li"><span class="mut">Deliver gareko</span><b>− ${T.g}</b></div><div class="li t"><span>Gadi ma bhareko hunu parne</span><b>${T.vanFilled}</b></div><div class="li"><span class="mut">Khali jar liyeko</span><b>${T.vanEmpty}</b></div></div>
+  <div class="card"><b>Godam bata load garnus</b><div class="g2"><label class="f">Godam<select id="lwh">${(D.cfg.warehouses || []).map(w => `<option value="${esc(w.id)}" ${w.id === T.wh ? 'selected' : ''}>${esc(w.name)}</option>`).join('')}</select></label><label class="f">Kati bhareko jar<input id="lq" type="number" inputmode="numeric" min="1" placeholder="20"></label></div><button class="btn pri" data-a="load">Load gare</button></div>
+  ${loads.length ? `<div class="card"><b>Aaja ko load</b>${loads.map(l => `<div class="li"><span class="mut">${tm(l.at)} · ${esc(whName(l.wh))}</span><b>${num(l.qty)}</b></div>`).join('')}</div>` : ''}`;
+}
+function vCash() {
+  const T = totals();
+  return `<div class="card"><b>Aaja ko paisa</b><div class="li"><span class="mut">Cash uthayo</span><b>${money(T.cash)}</b></div><div class="li"><span class="mut">QR / Bank</span><b>${money(T.qr)}</b></div><div class="li"><span class="mut">Udharo (customer baki)</span><b>${money(T.credit)}</b></div><div class="li t"><span>Haat ma cash (owner lai dine)</span><b style="color:#0B6E99">${money(T.cash)}</b></div></div>
+  ${D.sdel.filter(d => num(d.paid)).map(d => `<div class="card" style="flex-direction:row;justify-content:space-between;padding:12px"><span>${esc(C(d.cust)?.name || '')}</span><b>${d.mode === 'qr' ? 'QR' : 'Cash'} ${money(d.paid)}</b></div>`).join('')}`;
+}
+function vClose() {
+  const T = totals(); const sendable = active().filter(d => d.status === 'pending');
+  const bad = D.sdel.filter(d => d.count != null && d.count !== '' && num(d.count) !== num(d.app));
+  return `<div class="card"><b>Gadi ko jar</b><div class="li"><span class="mut">Load</span><b>${T.loaded}</b></div><div class="li"><span class="mut">Deliver gareko</span><b>− ${T.g}</b></div><div class="li"><span class="mut">Bhareko bachyo (godam ma firta)</span><b>${T.vanFilled}</b></div><div class="li"><span class="mut">Khali (godam ma)</span><b>${T.vanEmpty}</b></div></div>
+  <div class="card"><b>Paisa</b><div class="li"><span class="mut">Cash</span><b>${money(T.cash)}</b></div><div class="li"><span class="mut">QR</span><b>${money(T.qr)}</b></div><div class="li"><span class="mut">Udharo</span><b>${money(T.credit)}</b></div><div class="li t"><span>Owner lai bujhaune cash</span><b style="color:#0B6E99">${money(T.cash)}</b></div></div>
+  ${bad.map(d => `<div class="warn"><b>Herna parne:</b> ${esc(C(d.cust)?.name || '')} — app ma ${num(d.app)}, ganda ${num(d.count)} jar</div>`).join('')}
+  <div class="card"><div class="li"><span class="mut">Aaja delivered</span><b>${T.n}</b></div><div class="li"><span class="mut">Baki order</span><b>${lists().mine.length}</b></div></div>
+  ${sendable.length ? `<button class="btn pri wide" data-a="send">Owner lai approval pathaunus (${sendable.length})</button>` : `<div class="tag t-ok" style="text-align:center;padding:12px;border-radius:12px">${D.sday && D.sday.sent ? 'Approval ma pathaisakyo ✓' : 'Pathaune kehi chhaina'}</div>`}
+  <div class="mut" style="text-align:center;font-size:12px">Bhareko ra khali jar godam ma rakhera cash owner lai dinus</div>
+  <button class="btn" data-a="logout" style="margin-top:20px">Logout</button>`;
+}
+function render() {
+  if (!D.ready) return;
+  const T = totals();
+  const body = { home: vHome, pick: vPick, deliver: vDeliver, van: vVan, cash: vCash, close: vClose }[V.page]();
+  const nav = [['home', 'Order', 'order'], ['van', 'Gadi', 'van'], ['cash', 'Cash', 'cash'], ['close', 'Din band', 'close']];
+  const keep = V.page === 'deliver' ? ['g', 'r', 'cnt', 'paid', 'bn', 'note', 'wh'].map(k => [k, $('#' + k)?.value]) : null;
+  const qf = document.activeElement && document.activeElement.id === 'q';
+  $('#app').innerHTML = `${!CONFIGURED ? '<div class="demo">PRACTICE — yo phone ma matra save hunchha</div>' : ''}<div class="phone"><div class="hd"><div class="k"><span>OZEN GO</span><span>${navigator.onLine ? (active().some(d => d._p) ? '↻ Sync hudai…' : '● Online') : '○ Offline · phone ma save hunchha'}</span></div><h1>Namaste, ${esc(me().name)}</h1>
+  <div class="g3"><div class="hs"><b>${T.vanFilled} / ${T.vanEmpty}</b><span>Gadi: bhareko / khali</span></div><div class="hs"><b>${T.n} / ${lists().mine.length}</b><span>Delivered / baki</span></div><div class="hs"><b>${money(T.cash + T.qr)}</b><span>Cash ${Math.round(T.cash)} · QR ${Math.round(T.qr)}</span></div></div></div>
+  <div class="pad">${body}</div><nav class="nav">${nav.map(([k, l, i]) => `<button class="${V.page === k || (['deliver', 'pick'].includes(V.page) && k === 'home') ? 'on' : ''}" data-a="go" data-p="${k}">${svg(i)}${l}</button>`).join('')}</nav></div>`;
+  if (keep) { keep.forEach(([k, v]) => { const el = $('#' + k); if (el && v != null) el.value = v; }); calc(); }
+  if (qf) { const q = $('#q'); q.focus(); q.setSelectionRange(q.value.length, q.value.length); }
+}
+let rT; const scheduleRender = () => { if (V.page === 'deliver') return; clearTimeout(rT); rT = setTimeout(render, 60); };
+function calc() {
+  const c = C(V.edit.cust); if (!c) return; const g = num($('#g').value); const bill = g * num(c.rate);
+  $('#bl').textContent = money(bill); $('#tl').textContent = money(bill + num(c.due));
+  const p = $('#paid'); if (p && (p.dataset.touched !== '1')) p.value = Math.max(0, bill + num(c.due));
+  const cnt = $('#cnt').value; $('#cntm').innerHTML = cnt === '' ? '' : (num(cnt) === num(c.held) ? '<span style="color:#1B6B3A;font-weight:600">App ma pani ' + num(c.held) + ' · milyo ✓</span>' : '<span style="color:#9B1C1C;font-weight:600">App ma ' + num(c.held) + ' · farak ' + (num(cnt) - num(c.held)) + ' — owner lai dekhinchha</span>');
+}
+function openDeliver(e) { V.edit = e; V.mode = e.mode || 'cash'; V.page = 'deliver'; render(); window.scrollTo(0, 0); const p = $('#paid'); if (p && e.paid != null) p.dataset.touched = '1'; }
+
+/* ---------------- actions ---------------- */
+document.addEventListener('click', async ev => {
+  const el = ev.target.closest('[data-a]'); if (!el) return; const a = el.dataset.a, id = el.dataset.id;
+  if (a === 'tab') { V.tab = el.dataset.v; render(); }
+  if (a === 'go') { V.page = el.dataset.p; render(); window.scrollTo(0, 0); }
+  if (a === 'msg') toast(el.dataset.v);
+  if (a === 'pick') { V.q = ''; V.page = 'pick'; render(); }
+  if (a === 'take') { API.takeReq(id); V.tab = 'mine'; render(); toast('Order tapai ko list ma aayo'); }
+  if (a === 'deliver') { const ref = el.dataset.type === 'none' ? null : { type: el.dataset.type, id }; const ord = ref && ref.type === 'order' ? D.orders.find(o => o.id === id) : null;
+    openDeliver({ cust: el.dataset.cust, qty: num(el.dataset.qty), ref, wh: ord && ord.wh }); }
+  if (a === 'editSd') { const d = active().find(x => x.id === id); if (d) openDeliver({ ...d }); }
+  if (a === 'mode') { V.mode = el.dataset.v; render(); }
+  if (a === 'save') {
+    const e = V.edit, c = C(e.cust); const g = num($('#g').value), r = num($('#r').value); const cnt = $('#cnt').value;
+    if (g < 0 || r < 0 || (!g && !r)) { toast('Jar sankhya lekhnus'); return; }
+    if (r > num(c.held) + g) { toast(`${c.name} sanga ${num(c.held)} jar matra chha — khali ${r} mildaina`); return; }
+    const paid = V.mode === 'credit' ? 0 : num($('#paid')?.value);
+    if (V.mode !== 'credit' && !paid) { toast('Kati paisa liyo lekhnus, wa Udharo chhannus'); return; }
+    const rec = { by: D.sid, cust: e.cust, ref: e.ref || null, qty: g, returned: r, count: cnt === '' ? null : num(cnt), app: num(c.held), mode: V.mode, paid, rate: num(c.rate), billNo: $('#bn').value.trim().slice(0, 20), wh: $('#wh').value, note: $('#note').value.trim().slice(0, 200) };
+    if (e.id) { API.updSdel(e.id, { ...rec, status: e.status === 'fix' ? 'sent' : 'pending', editedAt: Date.now() }); toast(e.status === 'fix' ? 'Sachyayera owner lai pathayo' : 'Sachyayo'); }
+    else { const nid = D.sid + '_' + uid(); API.addSdel(nid, { ...rec, at: Date.now(), day: today(), status: 'pending' }); toast(navigator.onLine ? 'Saved — owner le approve garepachhi hisab ma janchha' : 'Phone ma save bhayo — net aaye pachhi afai janchha'); }
+    V.page = 'home'; V.edit = null; render(); window.scrollTo(0, 0);
+  }
+  if (a === 'delSd') { if (confirm('Yo entry hataune?')) { API.delSdel(V.edit.id); V.page = 'home'; V.edit = null; render(); } }
+  if (a === 'load') { const q = num($('#lq').value); if (q < 1) { toast('Kati jar load garyo lekhnus'); return; } API.load({ wh: $('#lwh').value, qty: q, at: Date.now() }); toast(q + ' jar load bhayo'); }
+  if (a === 'send') { const ids = active().filter(d => d.status === 'pending').map(d => d.id); if (!confirm(`${ids.length} delivery owner lai approval ma pathaune? Pathaepachhi edit garna mildaina.`)) return; API.closeDay(ids); toast(navigator.onLine ? 'Owner lai pathayo ✓' : 'Phone ma save bhayo — net aaye pachhi owner lai janchha'); }
+  if (a === 'logout') { if (confirm('Logout garne?')) { API.stop(); if (CONFIGURED) await firebase.auth().signOut(); else { localStorage.removeItem('ozd_demo_sid'); location.reload(); } } }
+});
+document.addEventListener('input', ev => {
+  const a = ev.target.dataset.a;
+  if (a === 'calc') calc();
+  if (ev.target.id === 'paid') ev.target.dataset.touched = '1';
+  if (a === 'q') { V.q = ev.target.value; render(); }
+});
+window.addEventListener('online', scheduleRender); window.addEventListener('offline', scheduleRender);
+
+/* ---------------- login ---------------- */
+function loginView(msg) {
+  $('#app').innerHTML = `${!CONFIGURED ? '<div class="demo">PRACTICE — main app ko practice data prayog garchha</div>' : ''}<form class="login" id="lf" autocomplete="on"><h1>OZEN GO</h1><p class="mut" style="margin:-8px 0 0">Driver app · Homely Hub Nepal</p><p class="mut">Owner le diyeko login ID ra password lekhnus.</p>
+  <label class="f">Login ID<input name="who" placeholder="D1" autocapitalize="characters" value="${esc(localStorage.getItem('ozd_last') || '')}" style="text-transform:uppercase"></label>
+  ${CONFIGURED ? `<label class="f">Password<input name="pw" type="password" autocomplete="current-password"></label>` : ''}
+  <button class="btn pri wide" type="submit">Login</button><div id="le" style="color:#9B1C1C;font-weight:600">${esc(msg || '')}</div></form>`;
+  $('#lf').addEventListener('submit', async ev => {
+    ev.preventDefault(); const f = new FormData(ev.target); const who = String(f.get('who') || '').trim().toLowerCase();
+    if (!/^d\d{1,2}$/.test(who)) { $('#le').textContent = 'Login ID jastai D1 lekhnus'; return; }
+    localStorage.setItem('ozd_last', who.toUpperCase());
+    if (!CONFIGURED) { localStorage.setItem('ozd_demo_sid', who); startDemo(); return; }
+    try { await firebase.auth().signInWithEmailAndPassword(staffEmail(who), String(f.get('pw') || '')); }
+    catch (e) { $('#le').textContent = e.code === 'auth/network-request-failed' ? 'Internet chhaina' : 'ID wa password milena'; }
+  });
+}
+function begin() { D.ready = true; API.start(scheduleRender); render(); }
+function startDemo() {
+  const sid = localStorage.getItem('ozd_demo_sid'); if (!sid) { loginView(); return; }
+  let db = {}; try { db = JSON.parse(localStorage.getItem('jh_demo4')) || {}; } catch (e) {}
+  const st = ((db.meta || {}).settings || {});
+  D.cfg = { staff: (st.staff || []).length ? st.staff : [{ id: sid, name: 'Driver ' + sid.toUpperCase() }], warehouses: (st.warehouses || [{ id: 'naikap', name: 'Naikap' }]).filter(w => w.active !== false) };
+  D.sid = sid; API = DemoAPI(); begin();
+}
+async function boot() {
+  if (!CONFIGURED) { startDemo(); return; }
+  $('#app').innerHTML = '<div class="login"><p class="mut">Loading…</p></div>';
+  const v = '10.12.2'; const ld = src => new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+  try { await ld(`https://cdn.jsdelivr.net/npm/firebase@${v}/firebase-app-compat.js`); await Promise.all([ld(`https://cdn.jsdelivr.net/npm/firebase@${v}/firebase-auth-compat.js`), ld(`https://cdn.jsdelivr.net/npm/firebase@${v}/firebase-firestore-compat.js`)]); }
+  catch (e) { $('#app').innerHTML = '<div class="login"><p>Load bhayena. Internet check garera feri kholnus.</p></div>'; return; }
+  firebase.initializeApp(CFG);
+  const fs = firebase.firestore(); try { fs.settings({ ignoreUndefinedProperties: true, merge: true }); } catch (e) {}
+  try { fs.enablePersistence({ synchronizeTabs: true }).catch(() => {}); } catch (e) {}
+  firebase.auth().onAuthStateChanged(async u => {
+    if (!u) { D.ready = false; loginView(); return; }
+    const ck = 'ozgo_cfg_' + u.uid; let fromServer = false;
+    try { const g = await fs.doc('staffcfg/main').get(); D.cfg = g.exists ? g.data() : null; fromServer = !g.metadata.fromCache; if (D.cfg) localStorage.setItem(ck, JSON.stringify(D.cfg)); }
+    catch (e) { try { D.cfg = JSON.parse(localStorage.getItem(ck)); } catch (x) { D.cfg = null; } }
+    const sid = D.cfg && (D.cfg.uids || {})[u.uid];
+    if (!sid) { if (!navigator.onLine && !D.cfg) { $('#app').innerHTML = '<div class="login"><h1>OZEN GO</h1><p>Pahilo palta login garda internet chahinchha. Net jodera feri kholnus.</p></div>'; return; }
+      await firebase.auth().signOut(); localStorage.removeItem(ck); loginView('Yo login ahile band chha. Owner lai sodhnus.'); return; }
+    D.sid = sid; API = FireAPI(); begin();
+  });
+}
+boot();
+if ('serviceWorker' in navigator && location.protocol === 'https:' && CONFIGURED) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>

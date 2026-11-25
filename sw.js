@@ -1,7 +1,7 @@
 // OZEN service worker: opens instantly from the phone's copy, then updates quietly in the background.
 // New versions still arrive by themselves (the app checks for a newer build and reloads).
-const CACHE = 'ozen-v5';
-const SHELL = ['./', './index.html', './config.js', './manifest.json', './icon-192.png', './icon-512.png'];
+const CACHE = 'ozen-v6';
+const SHELL = ['./', './index.html', './go.html', './config.js', './manifest.json', './icon-192.png', './icon-512.png'];
 const CDN = /^https:\/\/(cdn\.jsdelivr\.net\/npm\/firebase@|www\.gstatic\.com\/firebasejs\/|fonts\.(googleapis|gstatic)\.com\/)/;
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).catch(() => {})); self.skipWaiting(); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE && !k.startsWith('ozen-order')).map(k => caches.delete(k))))); self.clients.claim(); });
@@ -21,6 +21,6 @@ self.addEventListener('fetch', e => {
     const hit = await c.match(req, { ignoreSearch: true });
     const net = fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; }).catch(() => null);
     if (hit) { e.waitUntil(net); return hit; }
-    return (await net) || c.match('./index.html');
+    return (await net) || c.match(u.pathname.endsWith('go.html') ? './go.html' : './index.html');
   }));
 });
