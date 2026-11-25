@@ -554,6 +554,7 @@ Object.assign(NE, {"Advance": "अग्रिम", "Advance paid": "अग्�
 Object.assign(NE, {"Balance": "हिसाब बाँकी", "− we owe · + advance paid": "− हामीले तिर्न बाँकी · + अग्रिम तिरेको", "We owe": "हामीले तिर्न बाँकी", "Settled": "हिसाब चुक्ता"});
 Object.assign(NE, {"This is already the number.": "यो नम्बर पहिल्यै छ।", "Write the number printed on your paper Invoice for these deliveries.": "यी डेलिभरीको कागजी Invoice मा छापिएको नम्बर लेख्नुस्।", "Invoice no.": "Invoice नं.", "Other Invoices of this customer": "यो ग्राहकका अरू Invoice", "This customer already has an Invoice with this number.": "यो ग्राहकको यही नम्बरको Invoice पहिल्यै छ।"});
 Object.assign(NE, {"Order: by date & time": "क्रम: मिति र समय अनुसार", "Order: by bill no. (day by day, Invoice then Chalan)": "क्रम: बिल नं. अनुसार (दिन अनुसार, पहिले Invoice अनि Chalan)", "Newest on top": "नयाँ माथि", "Oldest on top": "पुरानो माथि", "All bills": "सबै बिल", "Invoice only": "Invoice मात्र", "Chalan only": "Chalan मात्र", "No bill no. yet": "बिल नं. नभएका"});
+Object.assign(NE, {"Order: bill no. only (all Invoices 1, 2, 3…, then Chalans)": "क्रम: बिल नं. मात्र (सबै Invoice १, २, ३…, अनि Chalan)"});
 Object.assign(NE, {"How they pay": "कसरी तिर्छन्", "Each delivery (now or a few days later)": "हरेक डेलिभरी (तुरुन्तै वा केही दिनपछि)", "Once a month (month-end bill)": "महिनामा एक पटक (महिनाको अन्तमा बिल)", "Enter the Invoice no.": "इनभ्वाइस नं. लेख्नुस्।", "Choose at least one delivery.": "कम्तीमा एउटा डेलिभरी छान्नुस्।", "A delivery is already in Invoice {n}.": "एउटा डेलिभरी पहिले नै इनभ्वाइस {n} मा छ।", "Delivery on credit. It will be included in the Invoice.": "उधारोमा डेलिभरी। यो इनभ्वाइसमा जोडिनेछ।", "Check the bill, then send it to the customer.": "बिल हेर्नुस्, अनि ग्राहकलाई पठाउनुस्।", "Send as photo": "फोटो पठाउनुस्", "Send as PDF": "PDF पठाउनुस्", "Copy photo + open chat": "फोटो कपी + च्याट खोल्नुस्", "WhatsApp text": "WhatsApp टेक्स्ट", "Print": "प्रिन्ट", "Remove this Invoice": "यो इनभ्वाइस हटाउनुस्", "Saved to Downloads. Attach it in WhatsApp.": "डाउनलोडमा सेभ भयो। WhatsApp मा जोडेर पठाउनुस्।", "Could not make the PDF.": "PDF बनाउन सकिएन।", "Bill photo copied. Paste it in the chat.": "बिलको फोटो कपी भयो। च्याटमा पेस्ट गर्नुस्।", "This phone cannot copy pictures. Use “Send as photo”.": "यो फोनले फोटो कपी गर्न सक्दैन। “फोटो पठाउनुस्” प्रयोग गर्नुस्।", "Remove this Invoice? The deliveries stay; only the Invoice grouping is removed.": "यो इनभ्वाइस हटाउने? डेलिभरी रहन्छन्; इनभ्वाइसमा जोडेको मात्र हट्छ।", "Invoice for unpaid deliveries": "बाँकी डेलिभरीको इनभ्वाइस", "Invoices for unpaid deliveries": "बाँकी डेलिभरीका इनभ्वाइस", "No unpaid deliveries without an Invoice.": "इनभ्वाइस नभएको बाँकी डेलिभरी छैन।", "Puts the chosen unpaid deliveries (Chalans) into one Invoice. Use it at month end, or when a customer asks for the bill before paying.": "छानिएका बाँकी डेलिभरी (चलान) एउटै इनभ्वाइसमा जोडिन्छन्। महिनाको अन्तमा, वा ग्राहकले तिर्नुअघि बिल मागेमा प्रयोग गर्नुस्।", "No paper bill no.": "कागजी बिल नं. छैन", "Invoice no.": "इनभ्वाइस नं.", "Period": "अवधि", "Make Invoice": "इनभ्वाइस बनाउनुस्", "Paid": "तिरेको", "Due": "बाँकी"});
 Object.assign(NE, {"Namaste {name}! Order OZEN water here: {url} (save this link) — Homely Hub Nepal": "नमस्ते {name}! OZEN पानी अर्डर गर्न यो लिंक थिच्नुहोस्: {url} (लिंक सेभ गर्नुहोस्) — Homely Hub Nepal"});
 Object.assign(NE, {"Package must be 1, 2, 3, 6, 9, 12 or 15 jars.": "प्याकेज १, २, ३, ६, ९, १२ वा १५ जारको हुनुपर्छ।"});
@@ -1892,6 +1893,11 @@ function delSort(a, b) {
     if (sr[ka.ser] !== sr[kb.ser]) return sr[ka.ser] - sr[kb.ser];
     const na = billNum(ka.no), nb = billNum(kb.no); if (na !== nb) return (na - nb) * dir;
   }
+  if (R.dSort === 'num') {
+    const ka = billKey(a), kb = billKey(b); const sr = { inv: 0, chl: 1, '': 2 };
+    if (sr[ka.ser] !== sr[kb.ser]) return sr[ka.ser] - sr[kb.ser];
+    const na = billNum(ka.no), nb = billNum(kb.no); if (na !== nb) return (na - nb) * dir;
+  }
   return (a.deliveredAt - b.deliveredAt) * dir;
 }
 function vOrders() {
@@ -1910,7 +1916,7 @@ function vOrders() {
       <select data-act="dBy" class="btn ghost sm"><option value="">${t('Everyone')}</option>${partnerOpts(R.dBy || '')}</select>
       <button class="btn ghost sm" data-act="dXls">Excel</button></div>
     <div class="row" style="gap:8px;margin-top:8px;flex-wrap:wrap">
-      <select data-act="dSort" class="btn ghost sm"><option value="date" ${R.dSort !== 'bill' ? 'selected' : ''}>${t('Order: by date & time')}</option><option value="bill" ${R.dSort === 'bill' ? 'selected' : ''}>${t('Order: by bill no. (day by day, Invoice then Chalan)')}</option></select>
+      <select data-act="dSort" class="btn ghost sm"><option value="date" ${R.dSort !== 'bill' ? 'selected' : ''}>${t('Order: by date & time')}</option><option value="bill" ${R.dSort === 'bill' ? 'selected' : ''}>${t('Order: by bill no. (day by day, Invoice then Chalan)')}</option><option value="num" ${R.dSort === 'num' ? 'selected' : ''}>${t('Order: bill no. only (all Invoices 1, 2, 3…, then Chalans)')}</option></select>
       <select data-act="dDir" class="btn ghost sm"><option value="desc" ${R.dDir !== 'asc' ? 'selected' : ''}>${t('Newest on top')}</option><option value="asc" ${R.dDir === 'asc' ? 'selected' : ''}>${t('Oldest on top')}</option></select>
       <select data-act="dSer" class="btn ghost sm"><option value="">${t('All bills')}</option><option value="inv" ${R.dSer === 'inv' ? 'selected' : ''}>${t('Invoice only')}</option><option value="chl" ${R.dSer === 'chl' ? 'selected' : ''}>${t('Chalan only')}</option><option value="none" ${R.dSer === 'none' ? 'selected' : ''}>${t('No bill no. yet')}</option></select></div>
     <div class="dsum"><span><b>${sum.n}</b> ${t('deliveries')}</span><span><b>${sum.j}</b> ${t('jars')}</span><span>${t('Bill')} <b>${money(sum.b)}</b></span><span>${t('Collected')} <b>${money(sum.p)}</b></span>${sum.b - sum.p > 0 ? `<span class="bad">${t('Unpaid')} <b>${money(sum.b - sum.p)}</b></span>` : ''}</div>
@@ -2245,7 +2251,7 @@ function orderRow(o) {
     <span class="chip warn">${t('Pending')}</span></button>`;
   const v = o.status === 'void';
   return `<button class="item ${v ? 'void' : ''}" data-act="${v ? 'noop' : 'orderAct'}" data-id="${o.id}">
-    <div class="grow"><div class="t">${esc(c.name)} — ${o.qty} ${t('jars')}</div><div class="s">${o.billNo ? `<b class="bno ${o.billSeries === 'chl' ? 'chl' : ''}">${o.billSeries === 'chl' ? 'C' : 'I'}-${esc(o.billNo)}</b> · ` : ''}${esc(partnerName(o.deliveredBy))} · ${fmtDT(o.deliveredAt)}</div></div>
+    <div class="grow"><div class="t">${esc(c.name)} — ${o.qty} ${t('jars')}</div><div class="s">${o.billNo ? `<b class="bno ${o.billSeries === 'chl' ? 'chl' : ''}">${o.billSeries === 'chl' ? 'C' : 'I'}-${esc(o.billNo)}</b> · ` : o.combNo ? `<b class="bno" title="${t('Invoice for unpaid deliveries')}">I-${esc(o.combNo)} ⧉</b> · ` : ''}${esc(partnerName(o.deliveredBy))} · ${fmtDT(o.deliveredAt)}</div></div>
     <div class="right"><div class="amt">${money(o.bill)}</div>${num(o.bill) > num(o.paid) ? (num(c.due) > 0 ? `<span class="chip bad">${t('Due')} ${money(Math.min(num(c.due), o.bill - o.paid))}</span>` : '') : ''}</div></button>`;
 }
 
@@ -4118,7 +4124,7 @@ async function boot() {
 }
 if ('serviceWorker' in navigator && location.protocol === 'https:' && !DEMO) navigator.serviceWorker.register('sw.js').catch(() => {});
 // ---- automatic update: when a new index.html is uploaded to GitHub, every open app switches to it by itself ----
-const BUILD = '2026-11-25p';
+const BUILD = '2026-11-25r';
 async function checkUpdate() {
   if (DEMO || !/^https?:$/.test(location.protocol) || !navigator.onLine) return;
   try {
