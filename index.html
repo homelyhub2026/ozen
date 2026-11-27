@@ -555,6 +555,9 @@ Object.assign(NE, {"Balance": "हिसाब बाँकी", "− we owe · 
 Object.assign(NE, {"This is already the number.": "यो नम्बर पहिल्यै छ।", "Write the number printed on your paper Invoice for these deliveries.": "यी डेलिभरीको कागजी Invoice मा छापिएको नम्बर लेख्नुस्।", "Invoice no.": "Invoice नं.", "Other Invoices of this customer": "यो ग्राहकका अरू Invoice", "This customer already has an Invoice with this number.": "यो ग्राहकको यही नम्बरको Invoice पहिल्यै छ।"});
 Object.assign(NE, {"Order: by date & time": "क्रम: मिति र समय अनुसार", "Order: by bill no. (day by day, Invoice then Chalan)": "क्रम: बिल नं. अनुसार (दिन अनुसार, पहिले Invoice अनि Chalan)", "Newest on top": "नयाँ माथि", "Oldest on top": "पुरानो माथि", "All bills": "सबै बिल", "Invoice only": "Invoice मात्र", "Chalan only": "Chalan मात्र", "No bill no. yet": "बिल नं. नभएका"});
 Object.assign(NE, {"Order: bill no. only (all Invoices 1, 2, 3…, then Chalans)": "क्रम: बिल नं. मात्र (सबै Invoice १, २, ३…, अनि Chalan)"});
+Object.assign(NE, {"This delivery is also in Invoice {n} (unpaid deliveries).": "यो डेलिभरी Invoice {n} (नतिरेका डेलिभरी) मा पनि छ।"});
+Object.assign(NE, {"Advance paid to": "अग्रिम तिरेको"});
+Object.assign(NE, {"Advance paid to suppliers": "सप्लायरलाई अग्रिम तिरेको"});
 Object.assign(NE, {"How they pay": "कसरी तिर्छन्", "Each delivery (now or a few days later)": "हरेक डेलिभरी (तुरुन्तै वा केही दिनपछि)", "Once a month (month-end bill)": "महिनामा एक पटक (महिनाको अन्तमा बिल)", "Enter the Invoice no.": "इनभ्वाइस नं. लेख्नुस्।", "Choose at least one delivery.": "कम्तीमा एउटा डेलिभरी छान्नुस्।", "A delivery is already in Invoice {n}.": "एउटा डेलिभरी पहिले नै इनभ्वाइस {n} मा छ।", "Delivery on credit. It will be included in the Invoice.": "उधारोमा डेलिभरी। यो इनभ्वाइसमा जोडिनेछ।", "Check the bill, then send it to the customer.": "बिल हेर्नुस्, अनि ग्राहकलाई पठाउनुस्।", "Send as photo": "फोटो पठाउनुस्", "Send as PDF": "PDF पठाउनुस्", "Copy photo + open chat": "फोटो कपी + च्याट खोल्नुस्", "WhatsApp text": "WhatsApp टेक्स्ट", "Print": "प्रिन्ट", "Remove this Invoice": "यो इनभ्वाइस हटाउनुस्", "Saved to Downloads. Attach it in WhatsApp.": "डाउनलोडमा सेभ भयो। WhatsApp मा जोडेर पठाउनुस्।", "Could not make the PDF.": "PDF बनाउन सकिएन।", "Bill photo copied. Paste it in the chat.": "बिलको फोटो कपी भयो। च्याटमा पेस्ट गर्नुस्।", "This phone cannot copy pictures. Use “Send as photo”.": "यो फोनले फोटो कपी गर्न सक्दैन। “फोटो पठाउनुस्” प्रयोग गर्नुस्।", "Remove this Invoice? The deliveries stay; only the Invoice grouping is removed.": "यो इनभ्वाइस हटाउने? डेलिभरी रहन्छन्; इनभ्वाइसमा जोडेको मात्र हट्छ।", "Invoice for unpaid deliveries": "बाँकी डेलिभरीको इनभ्वाइस", "Invoices for unpaid deliveries": "बाँकी डेलिभरीका इनभ्वाइस", "No unpaid deliveries without an Invoice.": "इनभ्वाइस नभएको बाँकी डेलिभरी छैन।", "Puts the chosen unpaid deliveries (Chalans) into one Invoice. Use it at month end, or when a customer asks for the bill before paying.": "छानिएका बाँकी डेलिभरी (चलान) एउटै इनभ्वाइसमा जोडिन्छन्। महिनाको अन्तमा, वा ग्राहकले तिर्नुअघि बिल मागेमा प्रयोग गर्नुस्।", "No paper bill no.": "कागजी बिल नं. छैन", "Invoice no.": "इनभ्वाइस नं.", "Period": "अवधि", "Make Invoice": "इनभ्वाइस बनाउनुस्", "Paid": "तिरेको", "Due": "बाँकी"});
 Object.assign(NE, {"Namaste {name}! Order OZEN water here: {url} (save this link) — Homely Hub Nepal": "नमस्ते {name}! OZEN पानी अर्डर गर्न यो लिंक थिच्नुहोस्: {url} (लिंक सेभ गर्नुहोस्) — Homely Hub Nepal"});
 Object.assign(NE, {"Package must be 1, 2, 3, 6, 9, 12 or 15 jars.": "प्याकेज १, २, ३, ६, ९, १२ वा १५ जारको हुनुपर्छ।"});
@@ -1721,7 +1724,7 @@ function vHome() {
   <div class="stats" style="margin-top:0">
     ${stat(money(cu.dep), t('Refundable deposits held (owed back to customers)'), '', 'data-act="custList" data-k="dep" role="button" style="cursor:pointer"')}
     ${stat(money(cu.depOut), t('Package deposits not yet received'), '', 'data-act="custList" data-k="depOut" role="button" style="cursor:pointer"')}
-    ${owed ? stat(money(owed), t('Owed to suppliers (factory / jars)'), 'wide', 'data-act="owedList" role="button" style="cursor:pointer"') : ''}
+    ${owed ? stat(owed < 0 ? '+ ' + money(-owed) : money(owed), owed < 0 ? t('Advance paid to suppliers') : t('Owed to suppliers (factory / jars)'), 'wide', 'data-act="owedList" role="button" style="cursor:pointer"') : ''}
   </div>
   <h3>${t('This month')}</h3>
   <div class="stats" style="margin-top:0">
@@ -1864,6 +1867,10 @@ async function loadOlder(col) {
   catch (e) { toast(e.message); }
 }
 
+async function ensureAllMoves() {
+  if (DEMO || R.allMovAt > Date.now() - 10 * 60000 || R.movLoading) return;
+  R.movLoading = true; try { R.extra.moves = await S.store.allOf('moves'); R.allMovAt = Date.now(); } catch (e) {} R.movLoading = false; render();
+}
 async function ensureAllOrders() {
   if (DEMO || R.allOrdAt > Date.now() - 10 * 60000 || R.ordLoading) return;
   R.ordLoading = true; try { R.extra.orders = await S.store.allOf('orders'); R.allOrdAt = Date.now(); } catch (e) {} R.ordLoading = false; render();
@@ -2100,7 +2107,7 @@ function billFromOrder(o) {
   return { kind, no: o.billNo || billNo(o), at: o.deliveredAt, c, by: partnerName(o.deliveredBy), mode: pc ? 'cash' : pb ? 'bank' : later ? 'later' : 'credit',
     rows: [{ p: 'OZEN Processed Drinking Water — 20 L jar refill', q: num(o.qty), r: rate, a: num(o.bill) }],
     paid: num(o.paid) + later, due, outstanding: num(c.due), paidHow: [pc ? `Cash ${money(pc)}` : '', pb ? `Bank / QR ${money(pb)}` : '', later ? `paid later ${money(later)}` : ''].filter(Boolean).join(' · '),
-    dep: num(o.depCash) + num(o.depBank) + num(o.depOld), vch: o.depVoucher || '', comb: o.combNo || '', id: o.id };
+    dep: num(o.depCash) + num(o.depBank) + num(o.depOld), vch: o.depVoucher || '', combOf: o.combNo || '', id: o.id };
 }
 function billFromComb(cid, no) {
   const c = custById(cid) || { name: '?' }; const dm = dueMap(cid); const os = custOrders(cid).filter(o => o.combNo === no); if (!os.length) return null;
@@ -2216,7 +2223,7 @@ function openBill(d, fresh) {
       ${d.stmt ? '' : d.comb ? `<button type="button" class="btn ghost" data-act="combNoForm">🔢 ${t('Bill no.')}</button><button type="button" class="btn ghost" data-act="bUncomb" style="color:var(--bad)">${t('Remove this Invoice')}</button>` : `<button type="button" class="btn ghost" data-act="billNoForm" data-id="${d.id}">🔢 ${t('Bill no.')}</button>
       <button type="button" class="btn ghost" data-act="billEdit" data-id="${d.id}">✏️ ${t('Edit delivery')}</button>
       <button type="button" class="btn ghost" data-act="ordUndo" data-id="${d.id}" style="color:var(--bad)">${t('Undo delivery')}</button>`}
-    </div>${d.comb ? '' : (d.comb === '' && false ? '' : '')}`, null);
+    </div>${d.combOf ? `<p class="small muted" style="margin-top:8px">${tf('This delivery is also in Invoice {n} (unpaid deliveries).', { n: esc(d.combOf) })}</p>` : ''}`, null);
 }
 function billSheet(o, fresh) { const go = () => openBill(billFromOrder(o), fresh); if (!R.hist || R.hist.id !== o.cust) loadHist(o.cust).then(() => { if (BILLD && BILLD.id === o.id && $('.ozb-wrap')) { BILLD = billFromOrder(o); $('.ozb-wrap').innerHTML = billMarkup(BILLD); } }); go(); }
 function combForm(cid) {
@@ -2493,10 +2500,11 @@ async function depExport(kind) {
 // ---- one warehouse: what went out (deliveries) and what moved in/out (stock), with a date range ----
 function vWarehouse() {
   if (!settings().warehouses.some(x => x.id === R.wh)) { R.page = 'stock'; return vStock(); }
+  ensureAllOrders(); ensureAllMoves();
   const { w, os, ms, sum } = whData(); const now = stockDoc().wh?.[w.id] || {}; const rg = R.whRange || 'month';
   const tab = R.whTab || 'del'; const view = R.whView || 'table';
   return `<button class="btn ghost sm" data-act="go" data-p="stock">← ${t('Stock')}</button>
-  <h2>${esc(w.name)}</h2>
+  <h2>${esc(w.name)}</h2>${!DEMO && (!R.allOrdAt || !R.allMovAt) ? `<div class="alert warn small">${t('Loading all records…')}</div>` : ''}
   <div class="stats">${stat(num(now.filled), t('Filled now'))}${stat(num(now.empty), t('Empty now'))}</div>
   <div class="seg">${[['today', 'Today'], ['week', '7 days'], ['month', '30 days'], ['all', 'All']].map(([k, l]) => `<button data-act="whRange" data-v="${k}" class="${rg === k ? 'on' : ''}">${t(l)}</button>`).join('')}</div>
   <div class="stats">
@@ -2542,7 +2550,7 @@ function vStock() {
    <tr data-act="custList" data-k="held" style="cursor:pointer"><td><a href="#" data-act="custList" data-k="held">${t('Customers hold')}</a> ›</td><td colspan="2"><b>${st.held}</b></td></tr>
    <tr><td><b>${t('Total')}</b></td><td colspan="2"><b>${st.sum}</b></td></tr></tbody></table></div>
   <div class="alert ${st.total === st.sum ? 'ok' : 'bad'} small">${t('Count check')}: ${st.total === st.sum ? t('Matches') : t('Does not match') + ` (${st.sum} / ${st.total})`}</div>
-  ${SUPPLIERS().some(k => num(pay[k])) ? `<div class="alert warn small">${SUPPLIERS().filter(k => num(pay[k])).map(k => `${t('Owed to')} ${supName(k)}: <b>${money(pay[k])}</b>`).join(' · ')}</div>` : ''}
+  ${SUPPLIERS().some(k => num(pay[k])) ? `<div class="alert warn small">${SUPPLIERS().filter(k => num(pay[k])).map(k => (num(pay[k]) < 0 ? `${t('Advance paid to')} ${supName(k)}: <b style="color:#1b8a3c">+ ${money(-num(pay[k]))}</b>` : `${t('Owed to')} ${supName(k)}: <b>${money(pay[k])}</b>`)).join(' · ')}</div>` : ''}
   <div class="btns">
    <button class="btn" data-act="stockForm" data-type="toFactory">${t('Send empties to factory')}</button>
    <button class="btn" data-act="stockForm" data-type="fromFactory">${t('Receive filled jars')}</button>
@@ -2583,7 +2591,7 @@ function vCash() {
   <div class="stats" style="margin-top:0">${settings().partners.map(p => stat(money(ct.per[p.id]), esc(p.name) + ' · ' + t('cash in hand'), ct.per[p.id] < 0 ? 'accent' : '', `data-act="stmtOpen" data-acc="${p.id}" role="button" style="cursor:pointer"`)).join('')}
    ${stat(money(ct.bank), t('Company bank'), '', 'data-act="stmtOpen" data-acc="bank" role="button" style="cursor:pointer"')}
    ${stat(money(ct.all), t('Total cash + bank'), 'wide')}</div>
-  ${owed.length ? `<div class="alert warn small">${owed.map(k => `${t('Owed to')} ${supName(k)}: <b>${money(pay[k])}</b>`).join(' · ')}</div>` : ''}
+  ${owed.length ? `<div class="alert warn small">${owed.map(k => (num(pay[k]) < 0 ? `${t('Advance paid to')} ${supName(k)}: <b style="color:#1b8a3c">+ ${money(-num(pay[k]))}</b>` : `${t('Owed to')} ${supName(k)}: <b>${money(pay[k])}</b>`)).join(' · ')}</div>` : ''}
   <div class="btns">
    <button class="btn" data-act="payForm">${t('Receive refill payment')}</button>
    <button class="btn" data-act="moneyForm" data-type="toBank">${t('Deposit cash to bank')}</button>
@@ -4124,7 +4132,7 @@ async function boot() {
 }
 if ('serviceWorker' in navigator && location.protocol === 'https:' && !DEMO) navigator.serviceWorker.register('sw.js').catch(() => {});
 // ---- automatic update: when a new index.html is uploaded to GitHub, every open app switches to it by itself ----
-const BUILD = '2026-11-25r';
+const BUILD = '2026-11-27a';
 async function checkUpdate() {
   if (DEMO || !/^https?:$/.test(location.protocol) || !navigator.onLine) return;
   try {
